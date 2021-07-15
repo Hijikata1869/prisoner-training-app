@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_15_104430) do
+ActiveRecord::Schema.define(version: 2021_07_15_104624) do
+
+  create_table "advices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "question_id"
+    t.text "advice", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_advices_on_question_id"
+    t.index ["user_id"], name: "index_advices_on_user_id"
+  end
 
   create_table "likes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -61,6 +71,8 @@ ActiveRecord::Schema.define(version: 2021_07_15_104430) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "advices", "questions"
+  add_foreign_key "advices", "users"
   add_foreign_key "likes", "training_logs"
   add_foreign_key "likes", "users"
   add_foreign_key "questions", "users"
