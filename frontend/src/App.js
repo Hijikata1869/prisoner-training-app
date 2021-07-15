@@ -1,24 +1,32 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
+// components
+import { Index } from './containers/Index';
+import { TrainingLogs } from './containers/TrainingLogs';
+import { Users } from './containers/Users';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          テキストを変更してみる
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/index">
+          <Index />
+        </Route>
+        <Route exact path="/training_logs">
+          <TrainingLogs />
+        </Route>
+        <Route exact path="/users">
+          <Users />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
