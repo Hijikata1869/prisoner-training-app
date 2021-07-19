@@ -16,7 +16,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/index">
+        <Route exact path="/">
           <Index />
         </Route>
         <Route exact path="/training_logs">
