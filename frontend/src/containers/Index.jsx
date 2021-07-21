@@ -1,5 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
+
+// apis
 import { fetchHome } from '../apis/home';
+
+// components
+import { Header } from '../components/Header';
 
 export const Index = () => {
   
@@ -12,7 +17,7 @@ export const Index = () => {
 
   return(
     <Fragment>
-      トップページ
+      <Header />
     </Fragment>
   )
 }
