@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, CssBaseline, Button  } from '@material-ui/core';
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 
 // apis
 import { fetchHome } from '../apis/home';
@@ -12,20 +12,22 @@ import CardItem1 from '../images/record.png';
 // components
 import { Header } from '../components/Header';
 
-const TopWrapper = styled.div`
-  margin-top: 5rem;
-`;
-
-const SecondWrapper = styled.div`
-  margin-top: 4rem;
-`;
-
-const MainLogoImage = styled.img`
-  width: 100%;
-  heitht: 100%;
-`;
+const useStyles = makeStyles((theme) => ({
+  topWrapper : {
+    marginTop: '5rem',
+  },
+  secondWrapper: {
+    marginTop: '4rem',
+  },
+  mainLogoImage: {
+    width: '100%',
+    height: '100%',
+  },
+}));
 
 export const Index = () => {
+  
+  const classes = useStyles();
   
   useEffect(() => {
     fetchHome()
@@ -37,7 +39,7 @@ export const Index = () => {
   return(
     <Fragment>
       <Header />
-      <TopWrapper>
+      <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
             <Grid container item sm={6} justifyContent="center">
@@ -54,13 +56,13 @@ export const Index = () => {
             </Grid>
             <Grid container item sm={6}>
               <Grid item>
-                <MainLogoImage src={MainLogo} alt="main logo" />
+                <img className={classes.mainLogoImage} src={MainLogo} alt="main logo" />
               </Grid>
             </Grid>
           </Grid>
         </Container>
-      </TopWrapper>
-      <SecondWrapper>
+      </div>
+      <div className={classes.secondWrapper}>
         <Container maxWidth="lg" >
           <Typography variant="h5" >
             することを選ぶ
@@ -84,7 +86,7 @@ export const Index = () => {
             </CardActions>
           </Card>
         </Container>
-      </SecondWrapper>
+      </div>
     </Fragment>
   )
 }
