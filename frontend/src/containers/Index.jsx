@@ -67,24 +67,28 @@ export const Index = () => {
           <Typography variant="h5" >
             することを選ぶ
           </Typography>
-          <Card>
-            <CardActionArea>
-              <CardMedia 
-                src={CardItem1}
-                title="record"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h5">
-                  記録する
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-            </CardActions>
-          </Card>
+          <Grid container spacing={4}>
+            <Grid item>
+              <Card>
+                <CardActionArea>
+                  <CardMedia 
+                    src={CardItem1}
+                    title="record"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h5">
+                      記録する
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
         </Container>
       </div>
     </Fragment>
