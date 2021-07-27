@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   topWrapper : {
     backgroundColor: theme.palette.background.paper,
     paddingTop: '5rem',
+    paddingBottom: '3rem',
   },
   mainLogoImage: {
     width: '100%',
