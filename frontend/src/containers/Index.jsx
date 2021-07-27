@@ -14,16 +14,44 @@ import { Header } from '../components/Header';
 
 const useStyles = makeStyles((theme) => ({
   topWrapper : {
-    marginTop: '5rem',
-  },
-  secondWrapper: {
-    marginTop: '4rem',
+    backgroundColor: theme.palette.background.paper,
+    paddingTop: '5rem',
   },
   mainLogoImage: {
     width: '100%',
     height: '100%',
   },
+  secondWrapper: {
+    margin: '4rem 0',
+  
+  },
+  card: {
+    marginTop: '15px',
+    height: '100%',
+    paddingBottom: 0,
+  },
+  cardMedia: {
+    height: '100%',
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  contentTitle: {
+    textAlign: 'center',
+  },
+  cardAction: {
+    width: '100%',
+    marginTop: '20px',
+    marginBottom: '10px',
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  actionButton: {
+    margin: '0 auto',
+  }
 }));
+
+const cards = [1, 2, 3];
 
 export const Index = () => {
   
@@ -49,8 +77,8 @@ export const Index = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary">
-                  早速使ってみる
+                <Button variant="contained" color="primary" size="large">
+                  さっそく使ってみる
                 </Button>
               </Grid>
             </Grid>
@@ -68,26 +96,33 @@ export const Index = () => {
             することを選ぶ
           </Typography>
           <Grid container spacing={4}>
-            <Grid item>
-              <Card>
-                <CardActionArea>
-                  <CardMedia 
-                    src={CardItem1}
-                    title="record"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h5">
-                      記録する
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                </CardActions>
-              </Card>
-            </Grid>
+            {cards.map((card) => (
+              <Grid item key={card} xs={12} md={4}>
+                <Card className={classes.card}>
+                  <CardActionArea className={classes.cardActionArea}>
+                    <CardMedia 
+                      component="img"
+                      className={classes.cardMedia}
+                      src={CardItem1}
+                      title="record"
+                    />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                        記録する
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions className={classes.cardAction}>
+                    <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
+                      さっそく記録する
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </div>
