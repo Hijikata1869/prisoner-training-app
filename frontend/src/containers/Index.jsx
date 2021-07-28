@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
-import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, CssBaseline, Button  } from '@material-ui/core';
+import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton  } from '@material-ui/core';
+import { ThumbUp } from '@material-ui/icons';
 
 // styles
 import { useStyles } from '../styles';
@@ -15,6 +16,7 @@ import CardItem1 from '../images/record.png';
 import { Header } from '../components/Header';
 
 const cards = [1, 2, 3];
+const trainingCards = [1, 2, 3, 4];
 
 export const Index = () => {
   
@@ -54,11 +56,11 @@ export const Index = () => {
         </Container>
       </div>
       <div className={classes.secondWrapper}>
-        <Container maxWidth="lg" >
+        <Container maxWidth="lg" className={classes.trainingLogContainer}>
           <Typography variant="h5" >
             することを選ぶ
           </Typography>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} className={classes.trainingCardContainer}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} md={4}>
                 <Card className={classes.card}>
@@ -87,6 +89,37 @@ export const Index = () => {
               </Grid>
             ))}
           </Grid>
+        </Container>
+      </div>
+      <div className={classes.thirdWrapper}>
+        <Container maxWidth="lg">
+          <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
+            みんなの記録
+          </Typography>
+          <Grid container spacing={4} >
+            {trainingCards.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={3}>
+                <Card className={classes.trainingCard}>
+                  <CardHeader 
+                    className={classes.cardHeader} 
+                    avatar={<Avatar></Avatar>} 
+                    title="ユーザー名" 
+                    subheader="2021-7-21"
+                  />
+                  <CardContent>
+                    <Typography variant="body1" >スクワット ステップ４ １０×２セット</Typography>
+                    <Typography variant="body1" >プルアップ ステップ２ １５×１セット</Typography>
+                  </CardContent>
+                  <CardActions>
+                    <IconButton>
+                      <ThumbUp/>
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Button variant="text" className={classes.toTrainingLogButton}>トレーニング記録一覧はこちら</Button>
         </Container>
       </div>
     </Fragment>

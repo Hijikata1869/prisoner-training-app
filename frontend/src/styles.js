@@ -12,7 +12,10 @@ import { makeStyles } from '@material-ui/core/styles';
   },
   secondWrapper: {
     margin: '4rem 0',
-  
+  },
+  thirdWrapper: {
+    marginTop: '4rem',
+    paddingBottom: '4rem',
   },
   card: {
     marginTop: '15px',
@@ -37,5 +40,12 @@ import { makeStyles } from '@material-ui/core/styles';
   },
   actionButton: {
     margin: '0 auto',
+  },
+  trainingCard: {
+    borderRadius: '1rem',
+  },
+  toTrainingLogButton: {
+    display: 'block',
+    margin: '20px 0 0 auto',
   }
 }));
