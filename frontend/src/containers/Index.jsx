@@ -144,6 +144,16 @@ export const Index = () => {
           </Grid>
         </Container>
       </div>
+      <div className={classes.footer}>
+        <Container className={classes.footerWrapper}>
+          <Typography variant="h6" align="center" gutterBottom>
+            Prisoner Training App
+          </Typography>
+          <Typography variant="subtitle1" align="center" color="textSecondary">
+            ここにはフッターの説明文が入ります。
+          </Typography>
+        </Container>
+      </div>
     </Fragment>
   )
 }

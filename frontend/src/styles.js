@@ -55,5 +55,9 @@ import { makeStyles } from '@material-ui/core/styles';
   fourthWrapperLogo: {
     width: '90%',
     height: '90%%',
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: '50px 0',
   }
 }));
