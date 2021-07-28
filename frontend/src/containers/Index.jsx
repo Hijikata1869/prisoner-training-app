@@ -11,6 +11,7 @@ import { fetchHome } from '../apis/home';
 // images
 import MainLogo from '../images/MainLogo.png';
 import CardItem1 from '../images/record.png';
+import FourthWrapperLogo from '../images/whatIsPrisoner2.png';
 
 // components
 import { Header } from '../components/Header';
@@ -120,6 +121,27 @@ export const Index = () => {
             ))}
           </Grid>
           <Button variant="text" className={classes.toTrainingLogButton}>トレーニング記録一覧はこちら</Button>
+        </Container>
+      </div>
+      <div className={classes.fourthWrapper}>
+        <Container className={classes.fourthContainer}>
+          <Typography variant="h5">
+            プリズナートレーニングとは？
+          </Typography>
+          <Grid container spacing={1} direction="row">
+            <Grid container item sm={6}>
+              <Grid item>
+                <img className={classes.fourthWrapperLogo} src={FourthWrapperLogo} />
+              </Grid>
+            </Grid>
+            <Grid container item sm={6} alignItems="center" >
+              <Grid item >
+                <Typography variant="h5" align="left" color="textPrimary" >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
         </Container>
       </div>
     </Fragment>

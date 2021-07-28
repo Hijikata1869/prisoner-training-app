@@ -47,5 +47,13 @@ import { makeStyles } from '@material-ui/core/styles';
   toTrainingLogButton: {
     display: 'block',
     margin: '20px 0 0 auto',
+  },
+  fourthWrapper: {
+  },
+  fourthContainer: {
+  },
+  fourthWrapperLogo: {
+    width: '90%',
+    height: '90%%',
   }
 }));
