@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect } from 'react';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, CssBaseline, Button  } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+
+// styles
+import { useStyles } from '../styles';
 
 // apis
 import { fetchHome } from '../apis/home';
@@ -11,46 +13,6 @@ import CardItem1 from '../images/record.png';
 
 // components
 import { Header } from '../components/Header';
-
-const useStyles = makeStyles((theme) => ({
-  topWrapper : {
-    backgroundColor: theme.palette.background.paper,
-    paddingTop: '5rem',
-    paddingBottom: '3rem',
-  },
-  mainLogoImage: {
-    width: '100%',
-    height: '100%',
-  },
-  secondWrapper: {
-    margin: '4rem 0',
-  
-  },
-  card: {
-    marginTop: '15px',
-    height: '100%',
-    paddingBottom: 0,
-  },
-  cardMedia: {
-    height: '100%',
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  contentTitle: {
-    textAlign: 'center',
-  },
-  cardAction: {
-    width: '100%',
-    marginTop: '20px',
-    marginBottom: '10px',
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  actionButton: {
-    margin: '0 auto',
-  }
-}));
 
 const cards = [1, 2, 3];
 
