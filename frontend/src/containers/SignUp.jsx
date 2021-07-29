@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const Login = () => {
+export const SignUp = () => {
 
   const classes = useStyles();
 
@@ -53,16 +53,22 @@ export const Login = () => {
             justifyContent="space-evenly" 
           >
             <Grid item className={classes.title}>
-              <Typography variant="h4">ログイン</Typography>
+              <Typography variant="h4">サインアップ</Typography>
+            </Grid>
+            <Grid item>
+              <TextField label="ニックネーム" fullWidth margin="normal" />
             </Grid>
             <Grid item>
               <TextField label="メールアドレス" fullWidth margin="normal" />
             </Grid>
             <Grid item>
-              <TextField label="パスワード" fullWidth margin="normal" type="password" className={classes.passwordFeild} />
+              <TextField label="パスワード" fullWidth margin="normal" type="password" />
             </Grid>
             <Grid item>
-              <Button className={classes.loginButton} variant="contained" color="primary">ログインする</Button>
+              <TextField label="パスワード(確認用)" fullWidth margin="normal" type="password" className={classes.passwordFeild} />
+            </Grid>
+            <Grid item>
+              <Button className={classes.loginButton} variant="contained" color="primary">登録する</Button>
             </Grid>
             <Grid item>
               <Button className={classes.loginButton} variant="contained" color="secondary">ゲストログインして使ってみる</Button>

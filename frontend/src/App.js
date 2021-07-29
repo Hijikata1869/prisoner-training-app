@@ -10,6 +10,7 @@ import { Index } from './containers/Index';
 import { TrainingLogs } from './containers/TrainingLogs';
 import { Users } from './containers/Users';
 import { Login } from './containers/Login';
+import { SignUp } from './containers/SignUp';
 
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route exact path="/sign_in">
           <Login />
+        </Route>
+        <Route exact path="/sign_up">
+          <SignUp />
         </Route>
       </Switch>
     </Router>
