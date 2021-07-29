@@ -5,10 +5,11 @@ import {
   Route,
 } from "react-router-dom";
 
-// components
+// containers
 import { Index } from './containers/Index';
 import { TrainingLogs } from './containers/TrainingLogs';
 import { Users } from './containers/Users';
+import { Login } from './containers/Login';
 
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
         </Route>
         <Route exact path="/users">
           <Users />
+        </Route>
+        <Route exact path="/sign_in">
+          <Login />
         </Route>
       </Switch>
     </Router>
