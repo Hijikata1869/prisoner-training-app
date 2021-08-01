@@ -1,8 +1,22 @@
 import axios from 'axios';
-import { usersIndex } from '../urls/index';
+import { usersIndexPage, postUserPage } from '../urls/index';
 
 export const fetchUsers = () => {
-  return axios.get(usersIndex)
+  return axios.get(usersIndexPage)
+  .then(res => {
+    return res.data
+  })
+  .catch((e) => console.error(e))
+}
+
+export const postUsers = (nickname, email, password) => {
+  return axios.post(postUserPage,
+    {
+      nickname: nickname,
+      email: email,
+      password: password
+    },
+  )
   .then(res => {
     return res.data
   })
