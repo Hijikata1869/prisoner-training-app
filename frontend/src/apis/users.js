@@ -9,7 +9,7 @@ export const fetchUsers = () => {
   .catch((e) => console.error(e))
 }
 
-export const postUsers = (nickname, email, password) => {
+export const postUser = (nickname, email, password) => {
   return axios.post(postUserPage,
     {
       nickname: nickname,
@@ -18,7 +18,7 @@ export const postUsers = (nickname, email, password) => {
     },
   )
   .then(res => {
-    return res.data
+    return res.data;
   })
   .catch((e) => console.error(e))
 }

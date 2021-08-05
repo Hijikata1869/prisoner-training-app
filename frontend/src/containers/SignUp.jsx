@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, Button } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, IconButton, Collapse, Backdrop, CardContent, Card, CardActions } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Alert } from '@material-ui/lab';
+import { useHistory } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 // components
 import { Header } from '../components/Header';
@@ -9,7 +12,7 @@ import { Header } from '../components/Header';
 import LoginLogo from '../images/loginLogo2.png';
 
 // apis
-import { postUsers } from '../apis/users';
+import { postUser } from '../apis/users';
 
 const useStyles = makeStyles((theme) => ({
   loginWrapper: {
@@ -33,17 +36,36 @@ const useStyles = makeStyles((theme) => ({
   loginButton: {
     width: '100%',
     margin: '0 auto',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+  backdropCard: {
+    padding: '50px',
   }
 }));
 
 export const SignUp = () => {
 
   const classes = useStyles();
+  const history = useHistory();
 
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmationPasssword, setConfirmationPassword] = useState("");
+  const [failedAlert, setFailedAlert] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [toggleOpen, setToggleOpen] = useState(false);
+
+  const hundleClose = () => {
+    setToggleOpen(false);
+  }
+
+  const hundleToggle = () => {
+    setToggleOpen(!toggleOpen);
+  }
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -64,9 +86,56 @@ export const SignUp = () => {
     }
   };
 
+  const postUsers = (nickname,email,password) => {
+    const result = postUser(nickname,email,password);
+    result
+    .then((res) => {
+      if (res.status === "success") {
+        hundleToggle();
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      setFailedAlert(true);
+    });
+  }
+
   return(
     <Fragment>
       <Header />
+      <Backdrop className={classes.backdrop} open={toggleOpen}>
+        <Card className={classes.backdropCard}>
+          <CardContent>
+            <Typography variant="h5" component="h2" >登録が完了しました</Typography>
+          </CardContent>
+          <CardActions>
+            <Button variant="contained" color="primary" fullWidth onClick={() => {history.push('/')}} >
+              アプリに戻る
+            </Button>
+          </CardActions>
+        </Card>
+      </Backdrop>
+      {
+        failedAlert ? 
+        <Collapse in={open}>
+        <Alert 
+          severity="error" 
+          action={
+                    <IconButton 
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {setOpen(false);}}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  }
+        >
+          登録できませんでした
+        </Alert>
+        </Collapse> : 
+        <></>
+      }
       <div className={classes.wrapper}>
         <Grid container direction="row">
           <Grid 
@@ -130,13 +199,20 @@ export const SignUp = () => {
                 className={classes.loginButton} 
                 variant="contained" 
                 color="primary"　
-                onClick={() => postUsers(nickname, email, password)}
+                onClick={() => postUsers(nickname,email,password)}
               >
                 登録する
               </Button>
             </Grid>
             <Grid item>
-              <Button className={classes.loginButton} variant="contained" color="secondary">ゲストログインして使ってみる</Button>
+              <Button 
+                className={classes.loginButton} 
+                variant="contained" 
+                color="secondary" 
+                onClick={() => { }}
+              >
+                ゲストログインして使ってみる
+              </Button>
             </Grid>
           </Grid>
           <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
