@@ -1,12 +1,19 @@
-import React, { Fragment } from 'react';
-import { Grid, Typography, TextField, Button } from '@material-ui/core';
+import React, { Fragment, useState } from 'react';
+import { Grid, Typography, TextField, Button, Backdrop, Card, CardContent, CardActions, Collapse, IconButton } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 // components
 import { Header } from '../components/Header';
 
 // images
 import LoginLogo from '../images/loginLogo2.png';
+
+// apis
+import { userSignIn } from '../apis/users';
 
 const useStyles = makeStyles((theme) => ({
   loginWrapper: {
@@ -30,16 +37,96 @@ const useStyles = makeStyles((theme) => ({
   loginButton: {
     width: '100%',
     margin: '0 auto',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+  backdropCard: {
+    padding: '50px',
   }
 }));
 
 export const Login = () => {
 
   const classes = useStyles();
+  const history = useHistory();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
+  const [failedAlert, setFailedAlert] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(true);
+
+  const hundleToggle = () => {
+    setOpen(!open);
+  }
+
+  const hundleChange = (e) => {
+    switch(e.target.name) {
+      case 'email':
+        setEmail(e.target.value);
+        break;
+      case 'password':
+        setPassword(e.target.value);
+        break;
+      default:
+        console.log('key not found');
+    }
+  }
+
+  const signInUsers = (email, password) => {
+    const result = userSignIn(email, password);
+    result
+    .then((res) => {
+      if (res.status === 200) {
+        hundleToggle();
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+      setFailedAlert(true);
+    });
+  }
 
   return(
     <Fragment>
       <Header />
+      <Backdrop className={classes.backdrop} open={open} >
+        <Card className={classes.backdropCard} >
+          <CardContent>
+            <Typography variant="h5" component="h2" >
+              ログインしました
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button variant="contained" color="primary" fullWidth onClick={() => {history.push('/')}} >
+              アプリに戻る
+            </Button>
+          </CardActions>
+        </Card>
+      </Backdrop>
+      {
+        failedAlert ? 
+        <Collapse in={alertOpen}>
+        <Alert 
+          severity="error" 
+          action={
+            <IconButton 
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {setAlertOpen(false);}}
+            >
+              <CloseIcon />
+            </IconButton>
+          }
+        >
+          登録できませんでした
+        </Alert>
+        </Collapse> : 
+        <></>
+      }
       <div className={classes.wrapper}>
         <Grid container direction="row">
           <Grid 
@@ -56,19 +143,42 @@ export const Login = () => {
               <Typography variant="h4">ログイン</Typography>
             </Grid>
             <Grid item>
-              <TextField label="メールアドレス" fullWidth margin="normal" />
+              <TextField 
+                label="メールアドレス" 
+                fullWidth 
+                margin="normal" 
+                name="email" 
+                value={email} 
+                onChange={hundleChange}
+              />
             </Grid>
             <Grid item>
-              <TextField label="パスワード" fullWidth margin="normal" type="password" className={classes.passwordFeild} />
+              <TextField 
+                label="パスワード" 
+                fullWidth 
+                margin="normal" 
+                type="password" 
+                className={classes.passwordFeild} 
+                name="password" 
+                value={password} 
+                onChange={hundleChange} 
+              />
             </Grid>
             <Grid item>
-              <Button className={classes.loginButton} variant="contained" color="primary">ログインする</Button>
+              <Button 
+                className={classes.loginButton} 
+                variant="contained" 
+                color="primary" 
+                onClick={() => signInUsers(email, password)}
+              >
+                ログインする
+              </Button>
             </Grid>
             <Grid item>
               <Button className={classes.loginButton} variant="contained" color="secondary">ゲストログインして使ってみる</Button>
             </Grid>
           </Grid>
-          <Grid className={classes.loginIconWrappr} container item md={9} sm={0} justifyContent="space-between">
+          <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
             <img className={classes.loginIcon} src={LoginLogo} />
           </Grid>
         </Grid>
