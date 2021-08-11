@@ -1,10 +1,18 @@
 import axios from 'axios';
-import { usersIndexPage, postUserPage, signInPost } from '../urls/index';
+import { usersIndexPage, postUserPage, signInPost, showUserPage } from '../urls/index';
 
 export const fetchUsers = () => {
   return axios.get(usersIndexPage)
   .then(res => {
     return res.data
+  })
+  .catch((e) => console.error(e))
+}
+
+export const fetchUser = (userId) => {
+  return axios.get(showUserPage(userId))
+  .then(res => {
+    return res
   })
   .catch((e) => console.error(e))
 }

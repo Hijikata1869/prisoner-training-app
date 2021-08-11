@@ -6,3 +6,4 @@ export const trainingLogIndexPage = `${DEFAULT_API_LOCALHOST}/training_log`;
 export const signUpPage = `${DEFAULT_API_LOCALHOST}/auth/sign_up`;
 export const postUserPage = `${DEFAULT_API_LOCALHOST}/auth`;
 export const signInPost = `${DEFAULT_API_LOCALHOST}/auth/sign_in`;
+export const showUserPage = (userId) => `${DEFAULT_API_LOCALHOST}/users/${userId}`;

@@ -23,9 +23,15 @@ function App() {
         <Route exact path="/training_logs">
           <TrainingLogs />
         </Route>
-        <Route exact path="/users">
-          <Users />
-        </Route>
+        <Route 
+          exact 
+          path="/users/:userId" 
+          render={({ match }) => 
+            <Users 
+              match={match} 
+            />
+          }
+        />
         <Route exact path="/sign_in">
           <Login />
         </Route>
