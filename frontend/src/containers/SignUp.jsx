@@ -54,7 +54,7 @@ export const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmationPasssword, setConfirmationPassword] = useState("");
+  const [confirmationPassword, setConfirmationPassword] = useState("");
   const [failedAlert, setFailedAlert] = useState(false);
   const [open, setOpen] = useState(true);
   const [toggleOpen, setToggleOpen] = useState(false);
@@ -190,7 +190,7 @@ export const SignUp = () => {
                 type="password" 
                 className={classes.passwordFeild} 
                 name="confirmationPassword" 
-                value={confirmationPasssword} 
+                value={confirmationPassword} 
                 onChange={hundleChange}
               />
             </Grid>

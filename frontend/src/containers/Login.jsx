@@ -4,7 +4,7 @@ import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
-
+import Cookies from 'js-cookie';
 
 // components
 import { Header } from '../components/Header';
@@ -81,6 +81,9 @@ export const Login = () => {
     .then((res) => {
       if (res.status === 200) {
         hundleToggle();
+        Cookies.set('access-token', res.headers['access-token']);
+        Cookies.set('client', res.headers['client']);
+        Cookies.set('uid', res.headers['uid']);
       }
     })
     .catch((e) => {
@@ -100,7 +103,12 @@ export const Login = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button variant="contained" color="primary" fullWidth onClick={() => {history.push('/')}} >
+            <Button 
+              variant="contained" 
+              color="primary" 
+              fullWidth 
+              onClick={() => history.push('/')} 
+            >
               アプリに戻る
             </Button>
           </CardActions>
@@ -122,7 +130,7 @@ export const Login = () => {
             </IconButton>
           }
         >
-          登録できませんでした
+          ログインできませんでした
         </Alert>
         </Collapse> : 
         <></>

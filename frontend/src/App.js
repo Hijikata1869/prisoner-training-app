@@ -11,6 +11,7 @@ import { TrainingLogs } from './containers/TrainingLogs';
 import { Users } from './containers/Users';
 import { Login } from './containers/Login';
 import { SignUp } from './containers/SignUp';
+import { UserUpdate } from './containers/UserUpdate';
 
 
 function App() {
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route exact path="/sign_up">
           <SignUp />
+        </Route>
+        <Route exaxt path="/auth/edit">
+          <UserUpdate />
         </Route>
       </Switch>
     </Router>

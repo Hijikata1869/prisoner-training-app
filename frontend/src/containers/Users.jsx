@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Typography, Grid, Avatar, Container, Button, Link } from '@material-ui/core';
+import { Typography, Grid, Avatar, Container, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 // apis
 import { fetchUser } from '../apis/users';
@@ -29,13 +31,19 @@ const useStyles = makeStyles((theme) => ({
 export const Users = ({ match }) => {
 
   const classes = useStyles();
+  const history = useHistory();
 
   const [user, setUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
 
   useEffect(() => {
-    fetchUser(match.params.userId)
+    const token = Cookies.get('access-token');
+    const client = Cookies.get('client');
+    const uid = Cookies.get('uid');
+    fetchUser(match.params.userId, token, client, uid)
     .then((res) => {
       setUser(res.data.user);
+      setCurrentUser(res.data.currentUser);
     }
     )
     .catch((e) => console.error(e));
@@ -43,6 +51,16 @@ export const Users = ({ match }) => {
 
   return(
     <Fragment>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={() => console.log({
+          user: user,
+          currentUser: currentUser,
+        })} 
+      >
+        認証テスト
+      </Button>
       <Header />
       <div>
         <Container className={classes.userWrapper}>
@@ -53,7 +71,11 @@ export const Users = ({ match }) => {
                 <Typography variant="h3" gutterBottom >{`${user.nickname}のプロフィール`}</Typography>
               </Grid>
               <Grid item>
-                <Avatar className={classes.largeAvatar}></Avatar>
+                <Avatar 
+                  className={classes.largeAvatar} 
+                  src={user.image}
+                >
+                </Avatar>
               </Grid>
               <Grid item>
                 <Typography variant="h3" gutterBottom >{`${user.nickname}`}</Typography>
@@ -69,9 +91,16 @@ export const Users = ({ match }) => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Button className={classes.updateButton} variant="contained" color="primary" >
-                  登録情報を更新する
-                </Button>
+                {user.id === currentUser.id ? 
+                  <Button 
+                    className={classes.updateButton} 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => {history.push('/auth/edit')}}
+                  >
+                    登録情報を更新する
+                  </Button> : "" 
+                }
               </Grid>
             </Grid>
           </Grid>

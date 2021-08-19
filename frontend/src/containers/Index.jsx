@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton  } from '@material-ui/core';
 import { ThumbUp } from '@material-ui/icons';
+import Cookies from 'js-cookie';
 
 // styles
 import { useStyles } from '../styles';
@@ -22,17 +23,11 @@ const trainingCards = [1, 2, 3, 4];
 export const Index = () => {
   
   const classes = useStyles();
-  
-  useEffect(() => {
-    fetchHome()
-    .then((data) => 
-      console.log(data)
-    )
-  },[])
 
   return(
     <Fragment>
       <Header />
+      <Button variant="contained" color="secondary" onClick={() => console.log(Cookies.get())} >Cookieテスト</Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
