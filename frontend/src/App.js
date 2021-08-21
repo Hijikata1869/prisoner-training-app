@@ -12,6 +12,7 @@ import { Users } from './containers/Users';
 import { Login } from './containers/Login';
 import { SignUp } from './containers/SignUp';
 import { UserUpdate } from './containers/UserUpdate';
+import { PasswordUpdate } from './containers/PasswordUpdate';
 
 
 function App() {
@@ -41,6 +42,9 @@ function App() {
         </Route>
         <Route exaxt path="/auth/edit">
           <UserUpdate />
+        </Route>
+        <Route exact path="/auth/password/edit">
+          <PasswordUpdate />
         </Route>
       </Switch>
     </Router>

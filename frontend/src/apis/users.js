@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { usersIndexPage, postUserPage, signInPost, showUserPage, userUpdate, userEditPage} from '../urls/index';
+import { usersIndexPage, postUserPage, signInPost, showUserPage, userUpdate, userEditPage, passwordUpdatePage } from '../urls/index';
 
 export const fetchUsers = () => {
   return axios.get(usersIndexPage)
@@ -87,5 +87,21 @@ export const userUpdateAction = (userId, nickname, email, introduction, password
   })
   .catch((e) => {
     console.error(e)
+  })
+}
+
+export const passwordUpdate = (token, client, uid, password, confirmationPassword) => {
+  return axios.put(passwordUpdatePage,{
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+    'password': password,
+    'password_confirmation': confirmationPassword
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
   })
 }
