@@ -42,7 +42,7 @@ module Api
 
       private
       def update_params
-        params.require(:user).permit(:email, :password, :nickname, :introduction, :image)
+        params.permit(:email, :password, :nickname, :introduction, :image)
       end
 
     end

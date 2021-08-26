@@ -67,7 +67,7 @@ export const fetchCurrentUser = (token, client, uid) => {
   })
 }
 
-export const userUpdateAction = (userId, nickname, email, introduction, password, image, token, client, uid) => {
+export const userUpdateAction = (userId, nickname, email, introduction, token, client, uid) => {
   return axios.patch(userUpdate(userId),{
     'access-token': token,
     'client': client,
@@ -75,8 +75,6 @@ export const userUpdateAction = (userId, nickname, email, introduction, password
     'nickname': nickname,
     'email': email,
     'introduction': introduction,
-    'password': password,
-    'image': image,
   })
   .then(res => {
     return {
@@ -100,6 +98,22 @@ export const passwordUpdate = (token, client, uid, password, confirmationPasswor
   })
   .then((res) => {
     return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const imageUpdate = (userId, token, client, uid, image) => {
+
+  return axios.patch(userUpdate(userId),image, {headers: {
+    'content-type': 'multipart/form-data',
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res.data;
   })
   .catch((e) => {
     console.error(e);

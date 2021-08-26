@@ -64,23 +64,14 @@ export const UserUpdate = () => {
       case 'introduction':
         setIntroduction(e.target.value);
         break;
-      case 'password':
-        setPassword(e.target.value);
-        break;
-      case 'confirmationPassword':
-        setConfirmationPassword(e.target.value);
-        break;
-      case 'image':
-        setImage(e.target.value);
-        break;
       default:
         console.log('key not found');
     }
   }
 
-  const updateUsers = (nickname, email, introduction, password, image, token, client, uid) => {
+  const updateUsers = (nickname, email, introduction, token, client, uid) => {
     const userId = currentUser.id;
-    const result = userUpdateAction(userId, nickname, email, introduction, password, image, token, client, uid);
+    const result = userUpdateAction(userId, nickname, email, introduction, token, client, uid);
     result
     .then((res) => {
       if (res.status === 200) {
@@ -151,47 +142,6 @@ export const UserUpdate = () => {
                     onChange={hundleChange}
                   />
                 </Grid>
-                <Grid item>
-                  <TextField 
-                    className={classes.passwordField} 
-                    variant="outlined" 
-                    fullWidth 
-                    type="password"
-                    label="新しいパスワード" 
-                    margin="normal" 
-                    name="password" 
-                    defaultValue={currentUser.password}
-                    value={password} 
-                    onChange={hundleChange}
-                  />
-                </Grid>
-                <Grid item>
-                  <TextField 
-                    className={classes.passwordField} 
-                    variant="outlined" 
-                    fullWidth 
-                    type="password"
-                    label="新しいパスワード(確認用)" 
-                    margin="normal" 
-                    name="confirmationPassword" 
-                    value={confirmationPassword} 
-                    onChange={hundleChange}
-                    helperText={confirmationPassword ? 
-                      password != confirmationPassword ? "パスワードが一致してません" : "" :
-                      ""
-                    }
-
-                  />
-                </Grid>
-                <Grid item className={classes.fileUploadArea}>
-                  <InputLabel>新しいプロフィール画像を選択</InputLabel>
-                  <Input 
-                    name="image" 
-                    type="file" 
-                    value={image} 
-                    onChange={hundleChange}
-                  />
-                </Grid>
               </Grid>
               <Grid item>
                 <Button 
@@ -199,7 +149,7 @@ export const UserUpdate = () => {
                   variant="contained" 
                   color="primary" 
                   size="large"
-                  onClick={() => updateUsers(nickname, email, introduction, password, image, token, client, uid)}
+                  onClick={() => updateUsers(nickname, email, introduction, token, client, uid)}
                 >
                   登録情報を更新する
                 </Button>

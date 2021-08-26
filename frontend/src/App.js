@@ -13,6 +13,7 @@ import { Login } from './containers/Login';
 import { SignUp } from './containers/SignUp';
 import { UserUpdate } from './containers/UserUpdate';
 import { PasswordUpdate } from './containers/PasswordUpdate';
+import { Practice } from './containers/Practice';
 
 
 function App() {
@@ -45,6 +46,9 @@ function App() {
         </Route>
         <Route exact path="/auth/password/edit">
           <PasswordUpdate />
+        </Route>
+        <Route exact path="/practice">
+          <Practice />
         </Route>
       </Switch>
     </Router>
