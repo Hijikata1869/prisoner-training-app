@@ -1,8 +1,11 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useRef, useEffect, useState } from 'react';
 import { Typography, Grid, Avatar, Container, Button, TextField, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+
 
 // apis
 import { fetchUser, imageUpdate } from '../apis/users';
@@ -26,6 +29,50 @@ const useStyles = makeStyles((theme) => ({
   updateButton: {
     marginTop: '2rem',
   },
+  previedwImage: {
+    width: '250px',
+    height: 'auto',
+  },
+  attachment: {
+    "& label": {
+      display: "inline-block",
+      position: "relative",
+      background: "#3f51b5",
+      color: "#fff",
+      fontSize: "16px",
+      padding: "10px 18px",
+      borderRadius: "4px",
+      transition: "all 0.3s",
+      marginRight: "1rem",
+      marginTop: "1rem",
+      "&:hover": {
+        background: "#888",
+        transition: "all 0.4s",
+      },
+      "& input":{
+        position: "absolute",
+        left: "0",
+        top: "0",
+        opacity: "0",
+        width: "100%",
+        height: "100%",
+        cursor: "pointer",
+        "&::-webkit-file-upload-button": {
+          cursor: "pointer",
+        }
+      },
+    },
+    filename: {
+      fontWeight: "16px",
+      margin: "0 0 0 10px",
+    }
+  },
+  previewTitle: {
+    marginTop: "1rem",
+  },
+  imageUpdateButton: {
+    marginBottom: "1rem"
+  }
 }))
 
 export const Users = ({ match }) => {
@@ -35,7 +82,18 @@ export const Users = ({ match }) => {
 
   const [user, setUser] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
-  const [image, setImage] = useState();
+  const [upImg, setUpImage] = useState();
+  const imgRef = useRef(null);
+  const [userImage, setUserImage] = useState([]);
+  const [crop, setCrop] = useState({ 
+    width: 160,
+    height: 160,
+    x: 0,
+    y: 0
+  });
+  const [completedCrop, setCompletedCrop] = useState(null);
+  const previewCanvasRef = useRef(null);
+  const [fileName, setFileName] = useState("");
 
   useEffect(() => {
     const token = Cookies.get('access-token');
@@ -45,37 +103,90 @@ export const Users = ({ match }) => {
     .then((res) => {
       setUser(res.data.user);
       setCurrentUser(res.data.currentUser);
+      setUserImage(res.data.user.image.url);
     }
     )
     .catch((e) => console.error(e));
   },[])
+  
+  const onLoad = useCallback((img) => {
+    imgRef.current = img;
+  },[]);
+  
+  const onSelectFile = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => setUpImage(reader.result));
+      reader.readAsDataURL(e.target.files[0]);
+      setFileName(e.target.files[0].name);
 
-  const selectImage = useCallback((e) => {
-    const selectedImage = e.target.files[0];
-    setImage(selectedImage);
-  },[])
-
-  const createFormData = () => {
-    const formData = new FormData();
-    formData.append('image', image);
-    return formData;
+      document.getElementById("uploadedFileName").textContent = `${e.target.files[0].name}`;
+    }
   }
 
-  const imageUpdateAction = () => {
+  useEffect(() => {
+    if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
+      return;
+    }
 
-    const currentUserId = currentUser.id;
-    const currentUserToken = Cookies.get('access-token');
-    const currentUserClient = Cookies.get('client');
-    const currentUserUid = Cookies.get('uid');
-    const data = createFormData();
+    const image = imgRef.current;
+    const canvas = previewCanvasRef.current;
+    const crop = completedCrop;
 
-    imageUpdate(currentUserId, currentUserToken, currentUserClient, currentUserUid, data)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((e) => {
-      console.error(e);
-    })
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+     // canvas は、JavaScriptを使用してすべてのピクセルを制御できる矩形の領域
+     // getContext("2d") オブジェクトは、線、ボックス、円、などを描画するメソッドを持っている
+    const ctx = canvas.getContext('2d');
+
+    const pixelRatio = window.devicePixelRatio;
+
+    canvas.width = crop.width * pixelRatio * scaleX;
+    canvas.height = crop.height * pixelRatio * scaleY;
+
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width * scaleX,
+      crop.height * scaleY
+    );
+  }, [completedCrop]);
+
+  const hundleImageUpdate = (canvas) => {
+    if (!canvas) {
+      return;
+    }
+    canvas.toBlob((blob) => {
+      const formData = new FormData();
+      formData.append('image', blob, fileName);
+      const currentUserId = currentUser.id;
+      const currentUserToken = Cookies.get('access-token');
+      const currentUserClient = Cookies.get('client');
+      const currentUserUid = Cookies.get('uid');
+
+      imageUpdate(currentUserId, currentUserToken, currentUserClient, currentUserUid, formData)
+      .then((res) => {
+        console.log({
+          data: res.data,
+          status: res.status
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    },
+    'image/png',
+    1
+    );
   }
 
   return(
@@ -92,15 +203,80 @@ export const Users = ({ match }) => {
               <Grid item>
                 <Avatar 
                   className={classes.largeAvatar} 
-                  src={user.image}
+                  src={userImage ? userImage : ""}
                 >
                 </Avatar>
               </Grid>
-              <Grid item>
-                <InputLabel>プロフィール画像を更新する</InputLabel>
-                <TextField type="file" onChange={(e) => selectImage(e)} />
-                <Button variant="contained" color="secondary" onClick={imageUpdateAction} >プロフィール画像を更新する</Button>
-              </Grid>
+              {user.id === currentUser.id ?
+                <Grid container item direction="column" alignItems="center" justifyContent="center" >
+                  <Grid item>
+                    <div className={classes.attachment}>
+                      <label>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={onSelectFile} 
+                          className={classes.profileChangeButton}
+                        />
+                        新しいプロフィール画像を選択する
+                      </label>
+                      <span className={classes.filename} id="uploadedFileName" >選択されていません</span>
+                    </div>
+                  </Grid>
+                  <Grid item>
+                    <div>
+                      {
+                        !completedCrop?.width || !completedCrop?.height ? 
+                        null : 
+                        <Typography 
+                          variant="body2" 
+                          color="textSecondary" 
+                          className={classes.previewTitle} 
+                        >
+                          プレビュー画像
+                        </Typography>
+                      }
+                      <ReactCrop 
+                        className={classes.previedwImage} 
+                        locked 
+                        circularCrop 
+                        src={upImg} 
+                        crop={crop} 
+                        onImageLoaded={onLoad} 
+                        onChange={(c) => setCrop(c)} 
+                        onComplete={(c) => setCompletedCrop(c)} 
+                      />
+                    </div>
+                  </Grid>
+                  <Grid item>
+                    <canvas 
+                      ref={previewCanvasRef} 
+                      style={{
+                        width: Math.round(completedCrop?.width ?? 0),
+                        height: Math.round(completedCrop?.height ?? 0),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button 
+                      variant="contained" 
+                      color="secondary" 
+                      className={classes.imageUpdateButton}
+
+                      // "?." はオプショナルチェーンと呼ばれる
+                      // オブジェクトのプロパティ参照時、 . (ドット表記法、MDNの文中ではチェーン演算子と呼称)を利用すると
+                      //オブジェクトが null や undefined の場合は Uncaught TypeError: Cannot read property が発生するが、 
+                      // ?. を使うと undefined が返る。
+                      // プロパティチェーンで利用すると、途中のプロパティのいずれかで undefined が返れば短絡評価されるので、それ以降は実行されない。
+                      disabled={!completedCrop?.width || !completedCrop?.height} 
+                      onClick={() => hundleImageUpdate(previewCanvasRef.current)}
+                    >
+                      プロフィール画像を更新する
+                    </Button>
+                  </Grid>
+                </Grid> :
+                null
+              }
               <Grid item>
                 <Typography variant="h3" gutterBottom >{`${user.nickname}`}</Typography>
               </Grid>

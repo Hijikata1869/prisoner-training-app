@@ -113,7 +113,10 @@ export const imageUpdate = (userId, token, client, uid, image) => {
     'uid': uid
   }})
   .then((res) => {
-    return res.data;
+    return {
+      data: res.data,
+      status: res.status
+    };
   })
   .catch((e) => {
     console.error(e);
