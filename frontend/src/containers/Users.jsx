@@ -13,6 +13,9 @@ import { fetchUser, imageUpdate } from '../apis/users';
 // components
 import { Header } from '../components/Header';
 import { UserMenu } from '../components/UserMenu';
+import { SuccessModal } from '../components/SuccessModal';
+import { FailedAlert } from '../components/FailedAlert';
+import { ReloadButton } from '../components/ReloadButton';
 
 const useStyles = makeStyles((theme) => ({
   userWrapper: {
@@ -46,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
       marginRight: "1rem",
       marginTop: "1rem",
       "&:hover": {
-        background: "#888",
+        background: "#303f9f",
         transition: "all 0.4s",
       },
       "& input":{
@@ -94,6 +97,8 @@ export const Users = ({ match }) => {
   const [completedCrop, setCompletedCrop] = useState(null);
   const previewCanvasRef = useRef(null);
   const [fileName, setFileName] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get('access-token');
@@ -179,9 +184,12 @@ export const Users = ({ match }) => {
           data: res.data,
           status: res.status
         });
+        setModalOpen(true);
       })
       .catch((e) => {
         console.error(e);
+        setOpenAlert(true);
+        window.scroll({top: 0, behavior: 'smooth'});
       })
     },
     'image/png',
@@ -192,6 +200,16 @@ export const Users = ({ match }) => {
   return(
     <Fragment>
       <Header />
+      {
+        modalOpen ? 
+        <SuccessModal message="プロフィール画像を変更しました" button={<ReloadButton />} /> :
+        null
+      }
+      {
+        openAlert ? 
+        <FailedAlert message="画像を更新できませんでした" /> : 
+        null
+      }
       <div>
         <Container className={classes.userWrapper}>
           <Grid container spacing={4}>

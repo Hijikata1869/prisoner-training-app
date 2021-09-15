@@ -58,10 +58,6 @@ export const Login = () => {
   const [failedAlert, setFailedAlert] = useState(false);
   const [alertOpen, setAlertOpen] = useState(true);
 
-  const hundleToggle = () => {
-    setOpen(!open);
-  }
-
   const hundleChange = (e) => {
     switch(e.target.name) {
       case 'email':
@@ -73,6 +69,10 @@ export const Login = () => {
       default:
         console.log('key not found');
     }
+  }
+
+  const hundleToggle = () => {
+    setOpen(!open);
   }
 
   const signInUsers = (email, password) => {
