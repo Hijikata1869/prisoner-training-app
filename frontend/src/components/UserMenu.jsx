@@ -3,6 +3,9 @@ import { Grid, Typography, Link, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
+  menuWrapper: {
+    height: '85vh',
+  },
   link: {
     '&:hover': {
       cursor: 'pointer',
@@ -16,7 +19,7 @@ export const UserMenu = () => {
 
   return(
     <Hidden only="xs">
-      <Grid container item md={3} sm={3}>
+      <Grid className={classes.menuWrapper} container item md={3} sm={3}>
         <Grid container item direction="column" justifyContent="space-evenly" >
           <Grid item >
             <Typography variant="h4">
