@@ -7,13 +7,15 @@ import {
 
 // containers
 import { Index } from './containers/Index';
-import { TrainingLogs } from './containers/TrainingLogs';
 import { Users } from './containers/Users';
 import { Login } from './containers/Login';
 import { SignUp } from './containers/SignUp';
 import { UserUpdate } from './containers/UserUpdate';
 import { PasswordUpdate } from './containers/PasswordUpdate';
-import { Practice } from './containers/Practice';
+import { UserTrainingLog } from './containers/UserTrainingLog';
+import { Bookmark } from './containers/Bookmark';
+import { UserQuestions } from './containers/UserQuestions';
+import { UserAdvices } from './containers/UserAdvices';
 
 
 function App() {
@@ -23,16 +25,26 @@ function App() {
         <Route exact path="/">
           <Index />
         </Route>
-        <Route exact path="/training_logs">
-          <TrainingLogs />
-        </Route>
         <Route 
-          exact 
           path="/users/:userId" 
           render={({ match }) => 
-            <Users 
-              match={match} 
-            />
+            <Switch>
+              <Route exact path={match.url}>
+                <Users match={match} />
+              </Route>
+              <Route path={`${match.path}/training_logs`}>
+                <UserTrainingLog match={match} />
+              </Route>
+              <Route path={`${match.path}/bookmarks`}>
+                <Bookmark />
+              </Route>
+              <Route path={`${match.path}/questions`}>
+                <UserQuestions />
+              </Route>
+              <Route path={`${match.path}/advices`}>
+                <UserAdvices />
+              </Route>
+            </Switch>
           }
         />
         <Route exact path="/sign_in">
@@ -46,9 +58,6 @@ function App() {
         </Route>
         <Route exact path="/auth/password/edit">
           <PasswordUpdate />
-        </Route>
-        <Route exact path="/practice">
-          <Practice />
         </Route>
       </Switch>
     </Router>

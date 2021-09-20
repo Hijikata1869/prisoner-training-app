@@ -179,11 +179,7 @@ export const Users = ({ match }) => {
       const currentUserUid = Cookies.get('uid');
 
       imageUpdate(currentUserId, currentUserToken, currentUserClient, currentUserUid, formData)
-      .then((res) => {
-        console.log({
-          data: res.data,
-          status: res.status
-        });
+      .then(() => {
         setModalOpen(true);
       })
       .catch((e) => {
