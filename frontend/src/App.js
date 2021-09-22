@@ -17,10 +17,14 @@ import { Bookmark } from './containers/Bookmark';
 import { UserQuestions } from './containers/UserQuestions';
 import { UserAdvices } from './containers/UserAdvices';
 
+// components
+import { Header } from './components/Header';
+
 
 function App() {
   return (
     <Router>
+      <Header />
       <Switch>
         <Route exact path="/">
           <Index />
@@ -29,7 +33,7 @@ function App() {
           path="/users/:userId" 
           render={({ match }) => 
             <Switch>
-              <Route exact path={match.url}>
+              <Route exact path={match.path}>
                 <Users match={match} />
               </Route>
               <Route path={`${match.path}/training_logs`}>

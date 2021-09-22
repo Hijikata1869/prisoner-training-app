@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
 // components
-import { Header } from '../components/Header';
 import { UserMenu } from '../components/UserMenu';
 
 // apis
@@ -89,7 +88,6 @@ export const UserUpdate = () => {
   return(
     <Fragment>
       {console.log(currentUser.nickname)}
-      <Header />
       <div>
         <Container className={classes.updateWrapper}>
           <Grid container spacing={4}>

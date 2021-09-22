@@ -10,9 +10,6 @@ import MainLogo from '../images/MainLogo.png';
 import CardItem1 from '../images/record.png';
 import FourthWrapperLogo from '../images/whatIsPrisoner2.png';
 
-// components
-import { Header } from '../components/Header';
-
 const cards = [1, 2, 3];
 const trainingCards = [1, 2, 3, 4];
 
@@ -22,7 +19,6 @@ export const Index = () => {
 
   return(
     <Fragment>
-      <Header />
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >

@@ -5,9 +5,6 @@ import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 
-// components
-import { Header } from '../components/Header';
-
 // images
 import LoginLogo from '../images/loginLogo2.png';
 
@@ -102,7 +99,6 @@ export const SignUp = () => {
 
   return(
     <Fragment>
-      <Header />
       <Backdrop className={classes.backdrop} open={toggleOpen}>
         <Card className={classes.backdropCard}>
           <CardContent>

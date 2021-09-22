@@ -3,9 +3,6 @@ import { Grid, Typography, TextField, InputLabel, Button } from '@material-ui/co
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
-// components
-import { Header } from '../components/Header';
-
 // api
 import { passwordUpdate } from '../apis/users';
 
@@ -65,7 +62,6 @@ export const PasswordUpdate = () => {
 
   return(
     <Fragment>
-      <Header />
         <Grid container>
           <Grid className={classes.textFieldWrapper} 
             container 

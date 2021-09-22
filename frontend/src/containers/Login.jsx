@@ -6,9 +6,6 @@ import { useHistory } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 import Cookies from 'js-cookie';
 
-// components
-import { Header } from '../components/Header';
-
 // images
 import LoginLogo from '../images/loginLogo2.png';
 
@@ -94,7 +91,6 @@ export const Login = () => {
 
   return(
     <Fragment>
-      <Header />
       <Backdrop className={classes.backdrop} open={open} >
         <Card className={classes.backdropCard} >
           <CardContent>

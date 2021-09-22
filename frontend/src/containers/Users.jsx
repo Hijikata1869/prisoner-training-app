@@ -11,7 +11,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { fetchUser, imageUpdate } from '../apis/users';
 
 // components
-import { Header } from '../components/Header';
 import { UserMenu } from '../components/UserMenu';
 import { SuccessModal } from '../components/SuccessModal';
 import { FailedAlert } from '../components/FailedAlert';
@@ -195,7 +194,6 @@ export const Users = ({ match }) => {
 
   return(
     <Fragment>
-      <Header />
       {
         modalOpen ? 
         <SuccessModal message="プロフィール画像を変更しました" button={<ReloadButton />} /> :
