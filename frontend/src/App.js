@@ -19,6 +19,7 @@ import { UserAdvices } from './containers/UserAdvices';
 
 // components
 import { Header } from './components/Header';
+import { UsersContainer } from './containers/UsersContainer';
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
                 <Users match={match} />
               </Route>
               <Route path={`${match.path}/training_logs`}>
-                <UserTrainingLog match={match} />
+                <UsersContainer match={match} mainComponent={<UserTrainingLog />} />
               </Route>
               <Route path={`${match.path}/bookmarks`}>
                 <Bookmark />

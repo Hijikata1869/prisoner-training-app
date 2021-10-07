@@ -1,5 +1,15 @@
 import axios from 'axios';
-import { usersIndexPage, postUserPage, signInPost, showUserPage, userUpdate, userEditPage, passwordUpdatePage } from '../urls/index';
+import { 
+  usersIndexPage, 
+  postUserPage, 
+  signInPost, 
+  showUserPage, 
+  userUpdate, 
+  userEditPage, 
+  passwordUpdatePage,
+  postTrainingUrl,
+
+ } from '../urls/index';
 
 export const fetchUsers = () => {
   return axios.get(usersIndexPage)
@@ -114,6 +124,30 @@ export const imageUpdate = (userId, token, client, uid, image) => {
   }})
   .then((res) => {
     return {
+      data: res.data,
+      status: res.status
+    };
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+
+export const postTraining = (userId, token, client, uid, trainingMenu, step, repetition, set, memo) => {
+  return axios.post(postTrainingUrl, {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+    'user_id': userId,
+    'training_menu': trainingMenu,
+    'step': step,
+    'repetition': repetition,
+    'set': set,
+    'memo': memo,
+  })
+  .then((res) => {
+    return{
       data: res.data,
       status: res.status
     };

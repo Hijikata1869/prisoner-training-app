@@ -11,9 +11,11 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const UsersContainer = () => {
+export const UsersContainer = ({ match, mainComponent }) => {
 
   const classes = useStyles();
+
+  console.log(match);
 
   return(
     <Fragment>
@@ -22,7 +24,8 @@ export const UsersContainer = () => {
           <Grid container spacing={4} >
             <UserMenu />
             <Grid container item md={9} sm={9} >
-              <Typography>トレーニングを記録する</Typography>
+              {/* このコンテナの中にコンポーネントとしてそれぞれのページを追加する */}
+              {mainComponent}
             </Grid>
           </Grid>
         </Container>
