@@ -17,10 +17,12 @@ module Api
       def show
         user = User.find(params[:id])
         current_user = current_api_v1_user
+        user_training_logs = TrainingLog.where(user_id: user.id)
 
         render json: {
           user: user,
-          currentUser: current_user
+          currentUser: current_user,
+          userTrainingLogs: user_training_logs
         }, status: :ok
       end
 

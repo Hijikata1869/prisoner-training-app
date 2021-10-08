@@ -2,18 +2,30 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Grid, Typography, Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 // apis
-import { postTraining, fetchCurrentUser } from '../apis/users';
+import { postTraining, fetchCurrentUser, fetchUser } from '../apis/users';
 
 const useStyles = makeStyles(() => ({
-  inputTrainingWrapper: {
+  inputTrainingLogWrapper: {
+    marginLeft: "1rem",
   },
   inputTrainingTitle: {
-    marginBottom: "4rem",
+    marginBottom: "1rem",
   },
   pastTrainingLogTitle: {
     marginTop: "4rem",
+    marginBottom: "3rem",
+  },
+  pastTrainingLogWrapper: {
+    marginBottom: "3rem",
+    marginLeft: "1rem",
+    border: "1px solid gray",
+    borderRadius: "10px",
+  },
+  trainingLogNotes: {
+    borderTop: "1px solid gray"
   }
 }));
 
@@ -26,7 +38,7 @@ const repsPrepare = () => {
 }
 
 
-export const UserTrainingLog = () => {
+export const UserTrainingLog = ({ match }) => {
 
   const classes = useStyles();
   const trainingLepsArray = repsPrepare();
@@ -37,6 +49,7 @@ export const UserTrainingLog = () => {
   const [rep, setRep] = useState("");
   const [set, setSet] = useState("");
   const [note, setNote] = useState("");
+  const [pastTrainingLogsArr, setPastTrainingLogsArr] = useState([]);
 
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -51,6 +64,19 @@ export const UserTrainingLog = () => {
       console.error(e);
     })
   }, []);
+
+  useEffect(() => {
+    const token = Cookies.get('access-token');
+    const client = Cookies.get('client');
+    const uid = Cookies.get('uid');
+    fetchUser(match.params.userId, token, client, uid)
+    .then((res) => {
+      setPastTrainingLogsArr(res.data.userTrainingLogs);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  },[])
 
   const hundleMenuChange = (e) => {
     setTrainingMenu(e.target.value);
@@ -86,14 +112,18 @@ export const UserTrainingLog = () => {
     })
   }
 
+  const apiConfirmation = () => {
+    console.log(pastTrainingLogsArr);
+  }
+
   return(
     <Fragment>
-      <Grid className={classes.inputTrainingWrapper} container item direction="column">
+      <Grid container item direction="column">
         <Typography className={classes.inputTrainingTitle} variant="h4">
           トレーニングを記録する
         </Typography>
-        <Grid container item spacing={3} direction="row" alignItems="center" >
-          <Grid item  className={classes.sample}  md={4} >
+        <Grid className={classes.inputTrainingLogWrapper} container item spacing={3} direction="row" alignItems="center" >
+          <Grid item md={4} >
             <FormControl variant="standard" fullWidth >
               <InputLabel>トレーニングメニュー</InputLabel>
               <Select 
@@ -192,6 +222,40 @@ export const UserTrainingLog = () => {
         </Grid>
         <Grid container item direction="column" >
           <Typography className={classes.pastTrainingLogTitle} variant="h4" >過去の記録</Typography>
+          <Grid item>
+          {/* <Button variant="contained" color="secondary" onClick={() => apiConfirmation()} >API確認</Button> */}
+          </Grid>
+            {
+              pastTrainingLogsArr.map((data, index) => {
+                return(
+                  <Grid className={classes.pastTrainingLogWrapper} container item spacing={4} direction="row" >
+                    <Grid item >
+                      <Typography variant="subtitle2" >日付</Typography>
+                      <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
+                    </Grid>
+                    <Grid item >
+                      <Typography variant="subtitle2" >メニュー</Typography>
+                      <Typography variant="h6" >{`${data.training_menu}`}</Typography>
+                    </Grid>
+                    <Grid item >
+                      <Typography variant="subtitle2" >ステップ</Typography>
+                      <Typography variant="h6" >{`${data.step}`}</Typography>
+                    </Grid>
+                    <Grid item >
+                      <Typography variant="subtitle2" >回数</Typography>
+                      <Typography variant="h6" >{`${data.repetition}回`}</Typography>
+                    </Grid>
+                    <Grid item >
+                      <Typography variant="subtitle2" >セット数</Typography>
+                      <Typography variant="h6" >{`${data.set}`}</Typography>
+                    </Grid>
+                    <Grid className={classes.trainingLogNotes} item md={12}>
+                      <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
+                    </Grid>
+                  </Grid>
+                );
+              })
+            }
         </Grid>
       </Grid>
     </Fragment>

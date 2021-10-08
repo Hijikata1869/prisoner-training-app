@@ -38,7 +38,7 @@ function App() {
                 <Users match={match} />
               </Route>
               <Route path={`${match.path}/training_logs`}>
-                <UsersContainer match={match} mainComponent={<UserTrainingLog />} />
+                <UsersContainer match={match} mainComponent={<UserTrainingLog match={match} />} />
               </Route>
               <Route path={`${match.path}/bookmarks`}>
                 <Bookmark />
