@@ -7,6 +7,11 @@ import moment from 'moment';
 // apis
 import { postTraining, fetchCurrentUser, fetchUser } from '../apis/users';
 
+// components
+import { SuccessModal } from '../components/SuccessModal';
+import { ReloadButton } from '../components/ReloadButton';
+import { FailedAlert } from '../components/FailedAlert';
+
 const useStyles = makeStyles(() => ({
   inputTrainingLogWrapper: {
     marginLeft: "1rem",
@@ -50,6 +55,8 @@ export const UserTrainingLog = ({ match }) => {
   const [set, setSet] = useState("");
   const [note, setNote] = useState("");
   const [pastTrainingLogsArr, setPastTrainingLogsArr] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -104,10 +111,11 @@ export const UserTrainingLog = ({ match }) => {
     result
     .then((res) => {
       if (res.status === 200) {
-        alert('登録成功')
+        setModalOpen(true);
       }
     })
     .catch((e) => {
+      setAlertOpen(true);
       console.error(e);
     })
   }
@@ -118,6 +126,16 @@ export const UserTrainingLog = ({ match }) => {
 
   return(
     <Fragment>
+      {
+        modalOpen ? 
+        <SuccessModal message="トレーニングを記録しました" button={<ReloadButton />} /> :
+        null
+      }
+      {
+        alertOpen ?
+        <FailedAlert message="トレーニングを記録できませんでした" /> :
+        null
+      }
       <Grid container item direction="column">
         <Typography className={classes.inputTrainingTitle} variant="h4">
           トレーニングを記録する
