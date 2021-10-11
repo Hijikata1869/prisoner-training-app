@@ -1,8 +1,19 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Grid, Typography, Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@material-ui/core';
+import { Grid, 
+  Typography, 
+  Button, 
+  FormControl, 
+  InputLabel, 
+  Select, 
+  MenuItem, 
+  TextField, 
+  CircularProgress 
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import moment from 'moment';
+import InfiniteScroll from 'react-infinite-scroller';
+
 
 // apis
 import { postTraining, fetchCurrentUser, fetchUser } from '../apis/users';
@@ -246,31 +257,36 @@ export const UserTrainingLog = ({ match }) => {
             {
               pastTrainingLogsArr.map((data, index) => {
                 return(
-                  <Grid className={classes.pastTrainingLogWrapper} container item spacing={4} direction="row" >
-                    <Grid item >
-                      <Typography variant="subtitle2" >日付</Typography>
-                      <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
+                  <InfiniteScroll 
+                    pageStart={0}
+                    loadMore={<CircularProgress />}
+                  >
+                    <Grid className={classes.pastTrainingLogWrapper} container item spacing={4} direction="row" >
+                      <Grid item >
+                        <Typography variant="subtitle2" >日付</Typography>
+                        <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >メニュー</Typography>
+                        <Typography variant="h6" >{`${data.training_menu}`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >ステップ</Typography>
+                        <Typography variant="h6" >{`${data.step}`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >回数</Typography>
+                        <Typography variant="h6" >{`${data.repetition}回`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >セット数</Typography>
+                        <Typography variant="h6" >{`${data.set}`}</Typography>
+                      </Grid>
+                      <Grid className={classes.trainingLogNotes} item md={12}>
+                        <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item >
-                      <Typography variant="subtitle2" >メニュー</Typography>
-                      <Typography variant="h6" >{`${data.training_menu}`}</Typography>
-                    </Grid>
-                    <Grid item >
-                      <Typography variant="subtitle2" >ステップ</Typography>
-                      <Typography variant="h6" >{`${data.step}`}</Typography>
-                    </Grid>
-                    <Grid item >
-                      <Typography variant="subtitle2" >回数</Typography>
-                      <Typography variant="h6" >{`${data.repetition}回`}</Typography>
-                    </Grid>
-                    <Grid item >
-                      <Typography variant="subtitle2" >セット数</Typography>
-                      <Typography variant="h6" >{`${data.set}`}</Typography>
-                    </Grid>
-                    <Grid className={classes.trainingLogNotes} item md={12}>
-                      <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
-                    </Grid>
-                  </Grid>
+                  </InfiniteScroll>
                 );
               })
             }
