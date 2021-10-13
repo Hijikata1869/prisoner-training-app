@@ -17,7 +17,7 @@ module Api
       def show
         user = User.find(params[:id])
         current_user = current_api_v1_user
-        user_training_logs = TrainingLog.where(user_id: user.id).order(id: "DESC")
+        user_training_logs = TrainingLog.where(user_id: user.id).order(id: "DESC").limit(6)
 
         render json: {
           user: user,

@@ -15,8 +15,6 @@ export const UsersContainer = ({ match, mainComponent }) => {
 
   const classes = useStyles();
 
-  console.log(match);
-
   return(
     <Fragment>
       <div>
