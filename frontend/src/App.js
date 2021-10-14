@@ -16,6 +16,7 @@ import { UserTrainingLog } from './containers/UserTrainingLog';
 import { Bookmark } from './containers/Bookmark';
 import { UserQuestions } from './containers/UserQuestions';
 import { UserAdvices } from './containers/UserAdvices';
+import { Questions } from './containers/Questions';
 
 // components
 import { Header } from './components/Header';
@@ -63,6 +64,9 @@ function App() {
         </Route>
         <Route exact path="/auth/password/edit">
           <PasswordUpdate />
+        </Route>
+        <Route exact path="/questions">
+          <Questions />
         </Route>
       </Switch>
     </Router>

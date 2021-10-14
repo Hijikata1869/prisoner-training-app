@@ -1,7 +1,7 @@
 class Question < ApplicationRecord
-  belongs_to :users
+  belongs_to :user
 
   has_many :advices
 
-  validates :question, presence: true
+  validates :question, :training_menu, :step, presence: true
 end

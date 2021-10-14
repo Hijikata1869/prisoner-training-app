@@ -11,3 +11,4 @@ export const showUserPage = (userId) => `${DEFAULT_API_LOCALHOST}/users/${userId
 export const userUpdate =  (userId) => `${DEFAULT_API_LOCALHOST}/users/${userId}`;
 export const passwordUpdatePage = `${DEFAULT_API_LOCALHOST}/auth/password`;
 export const postTrainingUrl = `${DEFAULT_API_LOCALHOST}/training_logs`;
+export const postQuestionUrl = `${DEFAULT_API_LOCALHOST}/questions`;

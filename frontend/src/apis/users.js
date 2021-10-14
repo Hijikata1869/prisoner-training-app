@@ -8,6 +8,7 @@ import {
   userEditPage, 
   passwordUpdatePage,
   postTrainingUrl,
+  postQuestionUrl
 
  } from '../urls/index';
 
@@ -154,5 +155,17 @@ export const postTraining = (userId, token, client, uid, trainingMenu, step, rep
   })
   .catch((e) => {
     console.error(e);
+  })
+}
+
+export const postQuestion = (token, client, uid, userId, trainingMenu, step, question) => {
+  return axios.post(postQuestionUrl, {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+    'user_id': userId,
+    'training_menu': trainingMenu,
+    'step': step,
+    'question': question,
   })
 }

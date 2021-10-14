@@ -1,0 +1,25 @@
+module Api
+  module V1
+    class QuestionsController < ApplicationController
+      before_action :authenticate_api_v1_user!, except: [:index]
+
+      def create
+        if Question.create!(post_params)
+          render json: {
+            message: "登録成功"
+          }, status: :ok
+        else
+          render json: {
+            message: "質問を投稿できませんでした"
+          }, status: :bad_request
+        end
+      end
+
+      private
+      def post_params
+        params.permit(:user_id, :question, :training_menu, :step)
+      end
+
+    end
+  end
+end
