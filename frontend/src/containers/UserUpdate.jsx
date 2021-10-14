@@ -4,9 +4,6 @@ import { Button, Container, Grid, TextField, Typography, Input, InputLabel } fro
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
-// components
-import { UserMenu } from '../components/UserMenu';
-
 // apis
 import { userUpdateAction, fetchCurrentUser } from '../apis/users';
 
@@ -25,7 +22,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const UserUpdate = () => {
+export const UserUpdate = ({ match }) => {
 
   const classes = useStyles();
   const history = useHistory();
@@ -34,9 +31,6 @@ export const UserUpdate = () => {
   const [nickname, setNickname] = useState(currentUser.nickname);
   const [email, setEmail] = useState(currentUser.email);
   const [introduction, setIntroduction] = useState(currentUser.introduction);
-  const [password, setPassword] = useState('');
-  const [confirmationPassword, setConfirmationPassword] = useState('');
-  const [image, setImage] = useState(currentUser.image);
   
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -88,11 +82,8 @@ export const UserUpdate = () => {
   return(
     <Fragment>
       {console.log(currentUser.nickname)}
-      <div>
         <Container className={classes.updateWrapper}>
-          <Grid container spacing={4}>
-            <UserMenu />
-            <Grid container item md={9} sm={9} direction="column" alignItems="center" justifyContent="center"  >
+            <Grid container item direction="column" alignItems="center" justifyContent="center"  >
               <Grid item>
                 <Typography variant="h3">登録情報を更新する</Typography>
               </Grid>
@@ -161,9 +152,7 @@ export const UserUpdate = () => {
                 </Button>
               </Grid>
             </Grid>
-          </Grid>
         </Container>
-      </div>
     </Fragment>
   )
 }

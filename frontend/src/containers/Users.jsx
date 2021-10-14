@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useRef, useEffect, useState } from 'react';
-import { Typography, Grid, Avatar, Container, Button, TextField, InputLabel } from '@material-ui/core';
+import { Typography, Grid, Avatar, Container, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -11,7 +11,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { fetchUser, imageUpdate } from '../apis/users';
 
 // components
-import { UserMenu } from '../components/UserMenu';
 import { SuccessModal } from '../components/SuccessModal';
 import { FailedAlert } from '../components/FailedAlert';
 import { ReloadButton } from '../components/ReloadButton';
@@ -204,11 +203,9 @@ export const Users = ({ match }) => {
         <FailedAlert message="画像を更新できませんでした" /> : 
         null
       }
-      <div>
         <Container className={classes.userWrapper}>
           <Grid container spacing={4}>
-            <UserMenu />
-            <Grid container item md={9} sm={9} direction="column" alignItems="center" justifyContent="center" >
+            <Grid container item direction="column" alignItems="center" >
               <Grid item>
                 <Typography variant="h3" gutterBottom >{`${user.nickname}のプロフィール`}</Typography>
               </Grid>
@@ -306,7 +303,9 @@ export const Users = ({ match }) => {
                     className={classes.updateButton} 
                     variant="contained" 
                     color="primary" 
-                    onClick={() => {history.push('/auth/edit')}}
+                    onClick={
+                      () => {history.push(`${match.url}/auth/edit`)}
+                    }
                   >
                     登録情報を更新する
                   </Button> : "" 
@@ -315,7 +314,6 @@ export const Users = ({ match }) => {
             </Grid>
           </Grid>
         </Container>
-      </div>
     </Fragment>
   )
 }

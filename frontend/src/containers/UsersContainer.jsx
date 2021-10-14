@@ -20,7 +20,7 @@ export const UsersContainer = ({ match, mainComponent }) => {
       <div>
         <Container className={classes.PageWrapper}>
           <Grid container spacing={4} >
-            <UserMenu />
+            <UserMenu match={match} />
             <Grid container item md={9} sm={9} >
               {/* このコンテナの中にコンポーネントとしてそれぞれのページを追加する */}
               {mainComponent}

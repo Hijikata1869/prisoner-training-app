@@ -7,7 +7,6 @@ import { Grid,
   Select, 
   MenuItem, 
   TextField, 
-  CircularProgress 
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';

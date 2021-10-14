@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import { Grid, Typography, Link, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -14,10 +13,13 @@ const useStyles = makeStyles(() => ({
   },
 }))
  
-export const UserMenu = () => {
+export const UserMenu = ({ match }) => {
 
   const classes = useStyles();
-  const match = useRouteMatch();
+
+  console.log({
+    "match" : match
+  })
 
   return(
     <Fragment>
@@ -43,7 +45,8 @@ export const UserMenu = () => {
             </Grid>
             <Grid item>
               <Typography variant="h5">
-                <Link className={classes.link} 
+                <Link 
+                  className={classes.link} 
                   href={`${match.url}/bookmarks`} 
                   color="textSecondary" 
                   underline="none" 

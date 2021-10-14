@@ -34,20 +34,23 @@ function App() {
           path="/users/:userId" 
           render={({ match }) => 
             <Switch>
-              <Route exact path={match.path}>
-                <Users match={match} />
-              </Route>
-              <Route path={`${match.path}/training_logs`}>
+              <Route exact path={`${match.path}/training_logs`}>
                 <UsersContainer match={match} mainComponent={<UserTrainingLog match={match} />} />
               </Route>
-              <Route path={`${match.path}/bookmarks`}>
+              <Route exact path={`${match.path}/bookmarks`}>
                 <Bookmark />
               </Route>
-              <Route path={`${match.path}/questions`}>
+              <Route exact path={`${match.path}`}>
+                <UsersContainer match={match} mainComponent={<Users match={match} />} />
+              </Route>
+              <Route exact path={`${match.path}/questions`}>
                 <UserQuestions />
               </Route>
-              <Route path={`${match.path}/advices`}>
+              <Route exact path={`${match.path}/advices`}>
                 <UserAdvices />
+              </Route>
+              <Route exaxt path={`${match.path}/auth/edit`}>
+                <UsersContainer match={match} mainComponent={<UserUpdate match={match} />} />
               </Route>
             </Switch>
           }
@@ -57,9 +60,6 @@ function App() {
         </Route>
         <Route exact path="/sign_up">
           <SignUp />
-        </Route>
-        <Route exaxt path="/auth/edit">
-          <UserUpdate />
         </Route>
         <Route exact path="/auth/password/edit">
           <PasswordUpdate />
