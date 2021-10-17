@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { Avatar, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 // api
-import { fetchCurrentUser, postQuestion } from '../apis/users';
+import { fetchCurrentUser, postQuestion, fetchQuestions, fetchUsers } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -29,6 +30,14 @@ const useStyles = makeStyles(() => ({
   },
   postQuestionButton: {
     margin: "0 auto"
+  },
+  questionContainer: {
+    backgroundColor: "#e8e8e8",
+    marginBottom: "2rem"
+  },
+  userImage: {
+    width: "56px",
+    height: "56px"
   }
 }));
 
@@ -46,6 +55,8 @@ export const Questions = () => {
   const [currentUser, setCurrentUser] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [questionsArr, setQuestionsArr] = useState([]);
+  const [usersArr, setUsersArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -56,6 +67,36 @@ export const Questions = () => {
       console.error(e);
     })
   }, []);
+
+  useEffect(() => {
+    fetchQuestions()
+    .then((res) => {
+      setQuestionsArr(res.data.questions);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  },[])
+
+  useEffect(() => {
+    fetchUsers()
+    .then((res) => {
+      setUsersArr(res.data.users);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  },[])
+
+  const showUserImage = (userId) => {
+    const user = usersArr.find((user) => user.id === userId);
+    return user.image.url;
+  }
+
+  const showUserName = (userId) => {
+    const user = usersArr.find((user) => user.id === userId);
+    return user.nickname;
+  }
 
   const hundleTrainingMenuChange = (e) => {
     setTrainingMenu(e.target.value);
@@ -143,7 +184,7 @@ export const Questions = () => {
               </FormControl>
             </Grid>
             <Grid className={classes.postQuestionItems} item>
-              <Typography variant="subtitle2">詰まっているポイント</Typography>
+              <Typography variant="subtitle2">詰まっているポイントや質問したいこと</Typography>
               <TextField 
                 variant="outlined" 
                 fullWidth 
@@ -168,6 +209,33 @@ export const Questions = () => {
             <Grid item>
               <Typography variant="h4">質問一覧</Typography>
             </Grid>
+            {
+              questionsArr.map((data, index) => {
+                return(
+                  <Grid className={classes.questionContainer} container item key={index} direction="column" >
+                    <Grid item>
+                      <Typography>{`${moment(data.created_at).format('YYYY-MM-DD')}`}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography>{`${data.training_menu}`}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography>{`${data.step}`}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography>{`${data.question}`}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Avatar 
+                        className={classes.userImage}
+                        alt={showUserName(data.user_id)} 
+                        src={showUserImage(data.user_id)} 
+                      />
+                    </Grid>
+                  </Grid>
+                );
+              })
+            }
           </Grid>
         </Grid>
     </Fragment>

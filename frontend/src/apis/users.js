@@ -169,3 +169,13 @@ export const postQuestion = (token, client, uid, userId, trainingMenu, step, que
     'question': question,
   })
 }
+
+export const fetchQuestions = () => {
+  return axios.get(postQuestionUrl)
+  .then(res => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}

@@ -3,6 +3,15 @@ module Api
     class QuestionsController < ApplicationController
       before_action :authenticate_api_v1_user!, except: [:index]
 
+      def index
+        users = User.all
+        questions = Question.all.order(id: "DESC")
+        render json: {
+          users: users,
+          questions: questions
+        }, status: :ok
+      end
+
       def create
         if Question.create!(post_params)
           render json: {
