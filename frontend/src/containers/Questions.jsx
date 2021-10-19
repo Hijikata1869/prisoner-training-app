@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Avatar, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import moment from 'moment';
 
@@ -21,6 +22,7 @@ const useStyles = makeStyles(() => ({
     paddingRight: "2rem"
   },
   showQuestionsWrapper: {
+    paddingRight: "2rem",
   },
   postQuestionTitle: {
     marginBottom: "2rem"
@@ -35,15 +37,27 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#e8e8e8",
     marginBottom: "2rem"
   },
+  questionCard: {
+    marginBottom: "2rem",
+    padding: "1rem",
+    marginLeft: "2rem"
+  },
   userImage: {
-    width: "56px",
-    height: "56px"
+    width: "60px",
+    height: "60px"
+  },
+  viewQuestionTitle: {
+    marginBottom: "2rem"
+  },
+  adviceButton: {
+    margin: "0 auto"
   }
 }));
 
 export const Questions = () => {
 
   const classes = useStyles();
+  const history = useHistory();
 
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -95,7 +109,8 @@ export const Questions = () => {
 
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
-    return user.nickname;
+
+    return user?.nickname;
   }
 
   const hundleTrainingMenuChange = (e) => {
@@ -207,9 +222,9 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.showQuestionsWrapper} container item md={7} direction="column">
             <Grid item>
-              <Typography variant="h4">質問一覧</Typography>
+              <Typography className={classes.viewQuestionTitle} variant="h4">質問一覧</Typography>
             </Grid>
-            {
+            {/* {
               questionsArr.map((data, index) => {
                 return(
                   <Grid className={classes.questionContainer} container item key={index} direction="column" >
@@ -230,9 +245,50 @@ export const Questions = () => {
                         className={classes.userImage}
                         alt={showUserName(data.user_id)} 
                         src={showUserImage(data.user_id)} 
+                        variant="rounded"
                       />
                     </Grid>
+                    <Grid item>
+                      <Typography>{showUserName(data.user_id)}</Typography>
+                    </Grid>
                   </Grid>
+                );
+              })
+            } */}
+            {
+              questionsArr.map((data, index) => {
+                return(
+                  <Card className={classes.questionCard} key={index} >
+                    <CardHeader 
+                      avatar={
+                        <ButtonBase 
+                          onClick={() => history.push(`/users/${data.user_id}`)}
+                        >
+                          <Avatar 
+                            className={classes.userImage} 
+                            alt={showUserName(data.user_id)} 
+                            src={showUserImage(data.user_id)} 
+                            variant="rounded"
+                          />
+                        </ButtonBase>
+                      }
+                      title={
+                        <Typography variant="h5">{`${showUserName(data.user_id)}`}</Typography>
+                      } 
+                      subheader={`投稿日：${moment(data.created_at).format('YYYY-MM-DD')}`}
+                    />
+                    <CardContent>
+                      <Typography variant="subtitle2" color="textSecondary">質問したいトレーニングメニュー及びステップ</Typography>
+                      <Typography>{`${data.training_menu}の${data.step}について`}</Typography>
+                    </CardContent>
+                    <CardContent>
+                      <Typography variant="subtitle2" color="textSecondary">困っていること、聞きたいこと</Typography>
+                      <Typography>{`${data.question}`}</Typography>
+                    </CardContent>
+                    <CardActions className={classes.adviceButtonArea}>
+                      <Button className={classes.adviceButton} variant="contained" color="primary" >アドバイスをする</Button>
+                    </CardActions>
+                  </Card>
                 );
               })
             }
