@@ -104,7 +104,7 @@ export const Questions = () => {
 
   const showUserImage = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
-    return user.image.url;
+    return user?.image.url;
   }
 
   const showUserName = (userId) => {
@@ -224,37 +224,6 @@ export const Questions = () => {
             <Grid item>
               <Typography className={classes.viewQuestionTitle} variant="h4">質問一覧</Typography>
             </Grid>
-            {/* {
-              questionsArr.map((data, index) => {
-                return(
-                  <Grid className={classes.questionContainer} container item key={index} direction="column" >
-                    <Grid item>
-                      <Typography>{`${moment(data.created_at).format('YYYY-MM-DD')}`}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{`${data.training_menu}`}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{`${data.step}`}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{`${data.question}`}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Avatar 
-                        className={classes.userImage}
-                        alt={showUserName(data.user_id)} 
-                        src={showUserImage(data.user_id)} 
-                        variant="rounded"
-                      />
-                    </Grid>
-                    <Grid item>
-                      <Typography>{showUserName(data.user_id)}</Typography>
-                    </Grid>
-                  </Grid>
-                );
-              })
-            } */}
             {
               questionsArr.map((data, index) => {
                 return(
