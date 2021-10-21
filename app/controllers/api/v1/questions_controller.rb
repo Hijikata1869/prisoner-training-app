@@ -24,6 +24,13 @@ module Api
         end
       end
 
+      def show
+        question = Question.find(params[:id])
+        render json: {
+          question: question
+        }, status: :ok
+      end
+
       private
       def post_params
         params.permit(:user_id, :question, :training_menu, :step)

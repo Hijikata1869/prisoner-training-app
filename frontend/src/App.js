@@ -17,6 +17,7 @@ import { Bookmark } from './containers/Bookmark';
 import { UserQuestions } from './containers/UserQuestions';
 import { UserAdvices } from './containers/UserAdvices';
 import { Questions } from './containers/Questions';
+import { Advices } from './containers/Advices';
 
 // components
 import { Header } from './components/Header';
@@ -68,6 +69,17 @@ function App() {
         <Route exact path="/questions">
           <Questions />
         </Route>
+        <Route 
+          path="/questions/:questionId" 
+          render={({ match }) => 
+            <Switch>
+              <Route exact path={`${match.path}/advices`} >
+                <Advices match={match} />
+              </Route>
+            </Switch>
+          }
+        />
+          <Questions />
       </Switch>
     </Router>
   );

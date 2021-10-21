@@ -8,8 +8,9 @@ import {
   userEditPage, 
   passwordUpdatePage,
   postTrainingUrl,
-  postQuestionUrl
-
+  postQuestionUrl,
+  showQuestionUrl,
+  postAdviceUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -173,6 +174,37 @@ export const postQuestion = (token, client, uid, userId, trainingMenu, step, que
 export const fetchQuestions = () => {
   return axios.get(postQuestionUrl)
   .then(res => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchQuestion = (questionId, token, client, uid) => {
+  return axios.get(showQuestionUrl(questionId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const postAdvice = (token, client, uid, currentUserId, questionId, advice) => {
+  return axios.post(postAdviceUrl, {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+    'user_id': currentUserId,
+    'question_id': questionId,
+    'advice': advice
+  })
+  .then((res) => {
     return res;
   })
   .catch((e) => {
