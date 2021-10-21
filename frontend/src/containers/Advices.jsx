@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
   adviceCardTitle: {
     marginBottom: "0.5rem"
+  },
+  nonAdviceTitle: {
+    textAlign: "center",
+    marginTop: "4rem",
+    marginBottom: "4rem"
   }
 }));
 
@@ -205,6 +210,7 @@ export const Advices = ({ match }) => {
           <Grid item className={classes.advicesCardWrapper} >
             <Typography className={classes.adviceCardTitle} variant="h5" >この質問への過去のアドバイス</Typography>
             {
+            advicesArr.length !== 0 ? 
             advicesArr.map((adviceData, index) => {
               return(
                 <Card className={classes.adviceCard} key={index} >
@@ -232,7 +238,8 @@ export const Advices = ({ match }) => {
                   </CardContent>
                 </Card>
               );
-            })
+            }) :
+            <Typography className={classes.nonAdviceTitle}>まだアドバイスがありません</Typography>
             }
           </Grid>
         </Grid>

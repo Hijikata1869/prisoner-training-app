@@ -255,7 +255,14 @@ export const Questions = () => {
                       <Typography>{`${data.question}`}</Typography>
                     </CardContent>
                     <CardActions className={classes.adviceButtonArea}>
-                      <Button className={classes.adviceButton} variant="contained" color="primary" >アドバイスをする</Button>
+                      <Button 
+                        className={classes.adviceButton} 
+                        variant="contained" 
+                        color="primary" 
+                        onClick={() => history.push(`${data.id}/advices`)}
+                      >
+                        アドバイスをする
+                      </Button>
                     </CardActions>
                   </Card>
                 );
