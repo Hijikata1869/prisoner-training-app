@@ -8,6 +8,11 @@ import moment from 'moment';
 // api 
 import { fetchQuestion, fetchUsers, fetchCurrentUser, postAdvice } from '../apis/users';
 
+// components
+import { SuccessModal } from '../components/SuccessModal';
+import { FailedAlert } from '../components/FailedAlert';
+import { ReloadButton } from '../components/ReloadButton';
+
 const useStyles = makeStyles((theme) => ({
   adviceContainer: {
     marginTop: "2rem"
@@ -44,6 +49,8 @@ export const Advices = ({ match }) => {
   const [usersArr, setUsersArr] = useState([]);
   const [advice, setAdvice] = useState("");
   const [currentUser, setCurrentUser] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     fetchQuestion(match.params.questionId, token, client, uid)
@@ -96,15 +103,28 @@ export const Advices = ({ match }) => {
     const questionId = questionData.id;
     postAdvice(token, client, uid, currentUserId, questionId, advice)
     .then((res) => {
-      console.log(res);
+      if (res.status === 200) {
+        setModalOpen(true);
+      }
     })
     .catch((e) => {
+      setAlertOpen(true);
       console.error(e);
     })
   }
 
   return(
     <Fragment>
+      {
+        modalOpen ? 
+        <SuccessModal message="アドバイスを投稿しました" button={<ReloadButton />} /> :
+        null
+      }
+      {
+        alertOpen ? 
+        <FailedAlert message="アドバイスが投稿できませんでした" /> :
+        null
+      }
       <Grid className={classes.adviceContainer} container>
         <Grid container item md={3}></Grid>
         <Grid container item md={9} direction="column" >
