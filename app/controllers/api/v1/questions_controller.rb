@@ -26,8 +26,10 @@ module Api
 
       def show
         question = Question.find(params[:id])
+        advices = Advice.where(question_id: params[:id])
         render json: {
-          question: question
+          question: question,
+          advices: advices
         }, status: :ok
       end
 
