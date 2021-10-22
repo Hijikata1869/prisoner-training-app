@@ -11,6 +11,7 @@ import {
   postQuestionUrl,
   showQuestionUrl,
   postAdviceUrl,
+  bookmarkCreateUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -203,6 +204,20 @@ export const postAdvice = (token, client, uid, currentUserId, questionId, advice
     'user_id': currentUserId,
     'question_id': questionId,
     'advice': advice
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const createBookmark = (adviceId, token, client, uid) => {
+  return axios.post(bookmarkCreateUrl(adviceId), {
+    'access-token': token,
+    'client': client,
+    'uid': uid
   })
   .then((res) => {
     return res;

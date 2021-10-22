@@ -1,5 +1,17 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
+import { 
+  Avatar, 
+  Button, 
+  ButtonBase, 
+  Card, 
+  CardActions, 
+  CardContent, 
+  CardHeader, 
+  Grid, 
+  IconButton, 
+  TextField, 
+  Typography 
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -9,7 +21,7 @@ import moment from 'moment';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 // api 
-import { fetchQuestion, fetchUsers, fetchCurrentUser, postAdvice } from '../apis/users';
+import { fetchQuestion, fetchUsers, fetchCurrentUser, postAdvice, createBookmark } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -141,6 +153,16 @@ export const Advices = ({ match }) => {
     })
   }
 
+  const hundleClick = (adviceId) => {
+    createBookmark(adviceId, token, client, uid)
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
   return(
     <Fragment>
       {
@@ -240,11 +262,16 @@ export const Advices = ({ match }) => {
                     subheader={`回答日：${moment(adviceData.created_at).format('YYYY-MM-DD')}`}
                   />
                   <CardContent>
+                    <Typography variant="h2">{`${adviceData.id}`}</Typography>
                     <Typography variant="subtitle2" color="textSecondary">アドバイス</Typography>
                     <Typography>{`${adviceData.advice}`}</Typography>
                   </CardContent>
                   <CardActions>
-                    <BookmarkBorderIcon fontSize="large" />
+                    <IconButton
+                      onClick={() => hundleClick(adviceData.id)}
+                    >
+                      <BookmarkBorderIcon fontSize="large" />
+                    </IconButton>
                   </CardActions>
                 </Card>
               );

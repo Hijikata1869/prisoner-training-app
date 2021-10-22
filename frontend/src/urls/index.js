@@ -14,3 +14,4 @@ export const postTrainingUrl = `${DEFAULT_API_LOCALHOST}/training_logs`;
 export const postQuestionUrl = `${DEFAULT_API_LOCALHOST}/questions`;
 export const showQuestionUrl = (questionId) => `${DEFAULT_API_LOCALHOST}/questions/${questionId}`;
 export const postAdviceUrl = `${DEFAULT_API_LOCALHOST}/advices`;
+export const bookmarkCreateUrl = (adviceId) => `${DEFAULT_API_LOCALHOST}/advices/${adviceId}/bookmarks`;
