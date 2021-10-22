@@ -1,9 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Avatar, Button, ButtonBase, Card, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
+import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import moment from 'moment';
+
+// icons
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 // api 
 import { fetchQuestion, fetchUsers, fetchCurrentUser, postAdvice } from '../apis/users';
@@ -53,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginTop: "4rem",
     marginBottom: "4rem"
+  },
+  adviceTextField: {
+    backgroundColor: theme.palette.background.paper
   }
 }));
 
@@ -188,6 +194,7 @@ export const Advices = ({ match }) => {
             <Typography className={classes.adviceTitle} variant="h5">回答する</Typography>
             <Grid item>
               <TextField 
+                className={classes.adviceTextField}
                 variant="outlined" 
                 fullWidth 
                 multiline 
@@ -236,6 +243,9 @@ export const Advices = ({ match }) => {
                     <Typography variant="subtitle2" color="textSecondary">アドバイス</Typography>
                     <Typography>{`${adviceData.advice}`}</Typography>
                   </CardContent>
+                  <CardActions>
+                    <BookmarkBorderIcon fontSize="large" />
+                  </CardActions>
                 </Card>
               );
             }) :

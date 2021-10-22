@@ -259,7 +259,7 @@ export const Questions = () => {
                         className={classes.adviceButton} 
                         variant="contained" 
                         color="primary" 
-                        onClick={() => history.push(`${data.id}/advices`)}
+                        onClick={() => history.push(`/questions/${data.id}/advices`)}
                       >
                         アドバイスをする
                       </Button>
