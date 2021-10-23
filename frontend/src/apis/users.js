@@ -11,7 +11,7 @@ import {
   postQuestionUrl,
   showQuestionUrl,
   postAdviceUrl,
-  bookmarkCreateUrl,
+  hundleBookmarkUrl,
   fetchAdvicesUrl,
  } from '../urls/index';
 
@@ -215,7 +215,7 @@ export const postAdvice = (token, client, uid, currentUserId, questionId, advice
 }
 
 export const createBookmark = (adviceId, token, client, uid) => {
-  return axios.post(bookmarkCreateUrl(adviceId), {
+  return axios.post(hundleBookmarkUrl(adviceId), {
     'access-token': token,
     'client': client,
     'uid': uid
@@ -230,6 +230,20 @@ export const createBookmark = (adviceId, token, client, uid) => {
 
 export const fetchAdvices = () => {
   return axios.get(fetchAdvicesUrl)
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const deleteBookmark = (adviceId, token, client, uid) => {
+  return axios.delete(hundleBookmarkUrl(adviceId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+  }})
   .then((res) => {
     return res;
   })

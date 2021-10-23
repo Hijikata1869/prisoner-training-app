@@ -1,13 +1,15 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, ButtonBase, Card, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
+import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
+// icons
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 
 // apis
-import { fetchAdvices, fetchUsers, fetchUser } from '../apis/users';
+import { fetchUsers, fetchUser, deleteBookmark } from '../apis/users';
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
@@ -68,6 +70,16 @@ export const UserBookmarks = ({ match }) => {
     return user?.image.url;
   }
 
+  const hundleClick = (adviceId) => {
+    deleteBookmark(adviceId, token, client, uid)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
   return(
     <Fragment>
       <Grid container item direction="column" >
@@ -100,6 +112,13 @@ export const UserBookmarks = ({ match }) => {
                   <CardContent>
                     <Typography>{`${adviceData.advice}`}</Typography>
                   </CardContent>
+                  <CardActions>
+                    <IconButton
+                      onClick={() => hundleClick(adviceData.id)}
+                    >
+                      <BookmarkIcon />
+                    </IconButton>
+                  </CardActions>
                 </Card>
               )
             })
