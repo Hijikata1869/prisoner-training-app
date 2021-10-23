@@ -17,10 +17,6 @@ export const UserMenu = ({ match }) => {
 
   const classes = useStyles();
 
-  console.log({
-    "match" : match
-  })
-
   return(
     <Fragment>
       <Hidden only="xs">

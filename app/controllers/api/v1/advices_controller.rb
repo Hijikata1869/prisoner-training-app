@@ -1,7 +1,15 @@
 module Api
   module V1
     class AdvicesController < ApplicationController
-      before_action :authenticate_api_v1_user!
+      before_action :authenticate_api_v1_user!, except: [:index]
+
+      def index
+        advices = Advice.all
+
+        render json: {
+          advices: advices
+        }, status: :ok
+      end
 
       def create
         if Advice.create!(post_params)

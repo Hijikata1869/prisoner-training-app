@@ -12,6 +12,7 @@ import {
   showQuestionUrl,
   postAdviceUrl,
   bookmarkCreateUrl,
+  fetchAdvicesUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -219,6 +220,16 @@ export const createBookmark = (adviceId, token, client, uid) => {
     'client': client,
     'uid': uid
   })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchAdvices = () => {
+  return axios.get(fetchAdvicesUrl)
   .then((res) => {
     return res;
   })

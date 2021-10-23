@@ -13,7 +13,7 @@ import { SignUp } from './containers/SignUp';
 import { UserUpdate } from './containers/UserUpdate';
 import { PasswordUpdate } from './containers/PasswordUpdate';
 import { UserTrainingLog } from './containers/UserTrainingLog';
-import { Bookmark } from './containers/Bookmark';
+import { UserBookmarks } from './containers/UserBookmarks';
 import { UserQuestions } from './containers/UserQuestions';
 import { UserAdvices } from './containers/UserAdvices';
 import { Questions } from './containers/Questions';
@@ -40,7 +40,7 @@ function App() {
                 <UsersContainer match={match} mainComponent={<UserTrainingLog match={match} />} />
               </Route>
               <Route exact path={`${match.path}/bookmarks`}>
-                <Bookmark />
+                <UsersContainer match={match} mainComponent={<UserBookmarks match={match} />} />
               </Route>
               <Route exact path={`${match.path}`}>
                 <UsersContainer match={match} mainComponent={<Users match={match} />} />
