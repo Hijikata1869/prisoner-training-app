@@ -73,8 +73,7 @@ export const fetchCurrentUser = (token, client, uid) => {
     'uid': uid
   }})
   .then((res) => {
-    const currentUser = res.data.currentUser;
-    return currentUser;
+    return res;
   })
   .catch((e) => {
     console.error(e);

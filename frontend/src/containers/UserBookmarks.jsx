@@ -7,9 +7,10 @@ import Cookies from 'js-cookie';
 
 // icons
 import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 // apis
-import { fetchUsers, fetchUser, deleteBookmark } from '../apis/users';
+import { fetchUsers, fetchUser, deleteBookmark, fetchCurrentUser } from '../apis/users';
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
@@ -39,6 +40,7 @@ export const UserBookmarks = ({ match }) => {
 
   const [usersArr, setUsersArr] = useState([]);
   const [bookmarkedAdvicesArr, setBookmaredkAdvicesArr] = useState([]);
+  const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
 
   useEffect(() => {
     fetchUsers()
@@ -60,6 +62,16 @@ export const UserBookmarks = ({ match }) => {
     })
   }, [])
 
+  useEffect(() => {
+    fetchCurrentUser(token, client, uid)
+    .then((res) => {
+      setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, []) 
+
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
     return user?.nickname;
@@ -70,14 +82,48 @@ export const UserBookmarks = ({ match }) => {
     return user?.image.url;
   }
 
-  const hundleClick = (adviceId) => {
-    deleteBookmark(adviceId, token, client, uid)
-    .then((res) => {
-      console.log(res);
+  const deleteBookmarkAction = (adviceId) => {
+    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
     })
-    .catch((e) => {
-      console.error(e);
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
     })
+    .catch((e) => console.error(e))
+  }
+
+  const createBookmarkAction = (adviceId) => {
+    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
   }
 
   return(
@@ -113,11 +159,26 @@ export const UserBookmarks = ({ match }) => {
                     <Typography>{`${adviceData.advice}`}</Typography>
                   </CardContent>
                   <CardActions>
-                    <IconButton
-                      onClick={() => hundleClick(adviceData.id)}
-                    >
-                      <BookmarkIcon />
-                    </IconButton>
+                    {
+                      currentUserBookmarksArr.find(element => element.advice_id === adviceData.id) ?
+                      <Fragment>
+                        <IconButton
+                          onClick={() => deleteBookmarkAction(adviceData.id)}
+                        >
+                          <BookmarkIcon />
+                        </IconButton>
+                        <Typography>ブックマーク済み</Typography>
+                      </Fragment>
+                      :
+                      <Fragment>
+                        <IconButton
+                          onClick={() => createBookmarkAction(adviceData.id)}
+                        >
+                          <BookmarkBorderIcon />
+                        </IconButton>
+                        <Typography>ブックマークする</Typography>
+                      </Fragment>
+                    }
                   </CardActions>
                 </Card>
               )

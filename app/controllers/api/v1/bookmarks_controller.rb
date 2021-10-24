@@ -5,10 +5,13 @@ module Api
 
       def create
         bookmark = current_api_v1_user.bookmarks.build(advice_id: params[:advice_id])
-        bookmark.save
-        render json: {
-          message: "ブックマーク完了"
-        }, status: :ok
+        if bookmark.save
+          user_bookmarks = current_api_v1_user.bookmarks
+          render json: {
+            message: "complete",
+            userBookmarks: user_bookmarks
+          }, status: :ok
+        end
       end
 
       def destroy

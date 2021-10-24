@@ -79,7 +79,6 @@ function App() {
             </Switch>
           }
         />
-          <Questions />
       </Switch>
     </Router>
   );
