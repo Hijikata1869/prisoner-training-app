@@ -11,6 +11,8 @@ import {
   postQuestionUrl,
   showQuestionUrl,
   postAdviceUrl,
+  hundleBookmarkUrl,
+  fetchAdvicesUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -71,8 +73,7 @@ export const fetchCurrentUser = (token, client, uid) => {
     'uid': uid
   }})
   .then((res) => {
-    const currentUser = res.data.currentUser;
-    return currentUser;
+    return res;
   })
   .catch((e) => {
     console.error(e);
@@ -204,6 +205,44 @@ export const postAdvice = (token, client, uid, currentUserId, questionId, advice
     'question_id': questionId,
     'advice': advice
   })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const createBookmark = (adviceId, token, client, uid) => {
+  return axios.post(hundleBookmarkUrl(adviceId), {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchAdvices = () => {
+  return axios.get(fetchAdvicesUrl)
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const deleteBookmark = (adviceId, token, client, uid) => {
+  return axios.delete(hundleBookmarkUrl(adviceId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+  }})
   .then((res) => {
     return res;
   })

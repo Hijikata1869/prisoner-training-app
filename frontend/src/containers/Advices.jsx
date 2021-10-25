@@ -1,17 +1,34 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Avatar, Button, ButtonBase, Card, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
+import { 
+  Avatar, 
+  Button, 
+  ButtonBase, 
+  Card, 
+  CardActions, 
+  CardContent, 
+  CardHeader, 
+  Grid, 
+  IconButton, 
+  TextField, 
+  Typography 
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import moment from 'moment';
 
+// icons
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+
 // api 
-import { fetchQuestion, fetchUsers, fetchCurrentUser, postAdvice } from '../apis/users';
+import { fetchQuestion, fetchUsers, fetchCurrentUser, postAdvice, createBookmark } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
 import { FailedAlert } from '../components/FailedAlert';
 import { ReloadButton } from '../components/ReloadButton';
+import { UserBookmarks } from './UserBookmarks';
 
 const useStyles = makeStyles((theme) => ({
   adviceContainer: {
@@ -53,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginTop: "4rem",
     marginBottom: "4rem"
+  },
+  adviceTextField: {
+    backgroundColor: theme.palette.background.paper
   }
 }));
 
@@ -72,6 +92,9 @@ export const Advices = ({ match }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [advicesArr, setAdvicesArr] = useState([]);
+  const [buildBookmarkIcon, setBuildBookmarkIcon] = useState(true);
+  const [deleteBookmarkIcon, setDeleteBookmarkIcon] = useState(false);
+  const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
 
   useEffect(() => {
     fetchQuestion(match.params.questionId, token, client, uid)
@@ -97,7 +120,8 @@ export const Advices = ({ match }) => {
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
-      setCurrentUser(res);
+      setCurrentUser(res.data.currentUser);
+      setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
     })
     .catch((e) => {
       console.error(e);
@@ -133,6 +157,50 @@ export const Advices = ({ match }) => {
       setAlertOpen(true);
       console.error(e);
     })
+  }
+
+  const createBookmarkAction = (adviceId) => {
+    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
+  }
+
+  const deleteBookmarkAction = (adviceId) => {
+    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
   }
 
   return(
@@ -188,6 +256,7 @@ export const Advices = ({ match }) => {
             <Typography className={classes.adviceTitle} variant="h5">回答する</Typography>
             <Grid item>
               <TextField 
+                className={classes.adviceTextField}
                 variant="outlined" 
                 fullWidth 
                 multiline 
@@ -236,6 +305,28 @@ export const Advices = ({ match }) => {
                     <Typography variant="subtitle2" color="textSecondary">アドバイス</Typography>
                     <Typography>{`${adviceData.advice}`}</Typography>
                   </CardContent>
+                  <CardActions>
+                    {
+                      currentUserBookmarksArr.find(element => element.advice_id === adviceData.id) ? 
+                      <Fragment>
+                        <IconButton
+                          onClick={() => deleteBookmarkAction(adviceData.id)}
+                        >
+                          <BookmarkIcon fontSize="large" />
+                        </IconButton>
+                        <Typography>ブックマーク済み</Typography>
+                      </Fragment>
+                      :
+                      <Fragment>
+                        <IconButton
+                          onClick={() => createBookmarkAction(adviceData.id)}
+                        >
+                          <BookmarkBorderIcon fontSize="large" />
+                        </IconButton>
+                        <Typography>ブックマークする</Typography>
+                      </Fragment>
+                    }
+                  </CardActions>
                 </Card>
               );
             }) :

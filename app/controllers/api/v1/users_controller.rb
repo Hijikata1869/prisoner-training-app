@@ -18,11 +18,13 @@ module Api
         user = User.find(params[:id])
         current_user = current_api_v1_user
         user_training_logs = TrainingLog.where(user_id: user.id).order(id: "DESC").limit(6)
+        bookmarked_advices = user.bookmark_advices
 
         render json: {
           user: user,
           currentUser: current_user,
-          userTrainingLogs: user_training_logs
+          userTrainingLogs: user_training_logs,
+          bookmarkedAdvices: bookmarked_advices
         }, status: :ok
       end
 
