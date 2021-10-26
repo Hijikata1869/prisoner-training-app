@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton  } from '@material-ui/core';
 import { ThumbUp } from '@material-ui/icons';
 
@@ -16,6 +17,7 @@ const trainingCards = [1, 2, 3, 4];
 export const Index = () => {
   
   const classes = useStyles();
+  const history = useHistory();
 
   return(
     <Fragment>
@@ -29,8 +31,13 @@ export const Index = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary" size="large">
-                  さっそく使ってみる
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  size="large" 
+                  onClick={() => history.push("/sign_up")}
+                >
+                  さっそく登録して使ってみる
                 </Button>
               </Grid>
             </Grid>
@@ -48,33 +55,81 @@ export const Index = () => {
             することを選ぶ
           </Typography>
           <Grid container spacing={4} className={classes.trainingCardContainer}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} md={4}>
-                <Card className={classes.card}>
-                  <CardActionArea className={classes.cardActionArea}>
-                    <CardMedia 
-                      component="img"
-                      className={classes.cardMedia}
-                      src={CardItem1}
-                      title="record"
-                    />
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
-                        記録する
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                        行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions className={classes.cardAction}>
-                    <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
-                      さっそく記録する
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+            <Grid item xs={12} md={4}>
+              <Card className={classes.card}>
+                <CardActionArea className={classes.cardActionArea}>
+                  <CardMedia 
+                    component="img"
+                    className={classes.cardMedia}
+                    src={CardItem1}
+                    title="record"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                      記録する
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions className={classes.cardAction}>
+                  <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
+                    さっそく記録する
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Card className={classes.card}>
+                <CardActionArea className={classes.cardActionArea}>
+                  <CardMedia 
+                    component="img"
+                    className={classes.cardMedia}
+                    src={CardItem1}
+                    title="record"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                      記録する
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions className={classes.cardAction}>
+                  <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
+                    さっそく記録する
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Card className={classes.card}>
+                <CardActionArea className={classes.cardActionArea}>
+                  <CardMedia 
+                    component="img"
+                    className={classes.cardMedia}
+                    src={CardItem1}
+                    title="record"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                      記録する
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions className={classes.cardAction}>
+                  <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
+                    さっそく記録する
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
           </Grid>
         </Container>
       </div>
