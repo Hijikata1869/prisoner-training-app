@@ -16,3 +16,4 @@ export const showQuestionUrl = (questionId) => `${DEFAULT_API_LOCALHOST}/questio
 export const postAdviceUrl = `${DEFAULT_API_LOCALHOST}/advices`;
 export const hundleBookmarkUrl = (adviceId) => `${DEFAULT_API_LOCALHOST}/advices/${adviceId}/bookmarks`;
 export const fetchAdvicesUrl = `${DEFAULT_API_LOCALHOST}/advices`;
+export const signOutUrl = `${DEFAULT_API_LOCALHOST}/auth/sign_out`;

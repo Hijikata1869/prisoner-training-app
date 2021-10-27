@@ -1,7 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton  } from '@material-ui/core';
 import { ThumbUp } from '@material-ui/icons';
+import Cookies from 'js-cookie';
+
+// apis
+import { fetchCurrentUser } from '../apis/users';
 
 // styles
 import { useStyles } from '../styles';
@@ -11,13 +15,29 @@ import MainLogo from '../images/MainLogo.png';
 import CardItem1 from '../images/record.png';
 import FourthWrapperLogo from '../images/whatIsPrisoner2.png';
 
-const cards = [1, 2, 3];
 const trainingCards = [1, 2, 3, 4];
 
 export const Index = () => {
   
   const classes = useStyles();
   const history = useHistory();
+
+  const token = Cookies.get('access-token');
+  const client = Cookies.get('client');
+  const uid = Cookies.get('uid');
+
+  const [currentUser, setCurrentUser] = useState([]);
+
+  useEffect(() => {
+    fetchCurrentUser(token, client, uid)
+    .then((res) => {
+      setCurrentUser(res.data.currentUser);
+      console.log(res);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, []);
 
   return(
     <Fragment>
@@ -26,8 +46,11 @@ export const Index = () => {
           <Grid container spacing={1} direction="row" >
             <Grid container item sm={6} justifyContent="center">
               <Grid item>
-                <Typography variant="h5" align="left" color="textPrimary" gutterBottom>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                <Typography variant="h6" color="textPrimary">
+                  プリズナートレーニングAppは、自分が行ったプリズナートレーニングを手軽に記録しておけるWebアプリです。
+                </Typography>
+                <Typography variant="h6" color="textPrimary" paragraph gutterBottom >
+                  トレーニングの難易度が上がり、壁にぶつかったときはその乗り越え方を質問することもできます。プリズナートレーニー同士で助け合い、「真の強さ」を身につけましょう！
                 </Typography>
               </Grid>
               <Grid item>
@@ -68,14 +91,26 @@ export const Index = () => {
                     <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
                       記録する
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="body1" component="p">
                       行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
                     </Typography>
+                    <Typography variant="subtitle2" color="textSecondary" >※ログインすると使える機能です</Typography>
                   </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.cardAction}>
-                  <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
-                    さっそく記録する
+                  <Button 
+                    variant="contained" 
+                    size="large" 
+                    color="primary" 
+                    className={classes.actionButton} 
+                    onClick={
+                      currentUser ?
+                      () => history.push(`/users/${currentUser.id}/training_logs`)
+                      :
+                      () => history.push("/sign_in")
+                    }
+                  >
+                    記録する
                   </Button>
                 </CardActions>
               </Card>
@@ -91,16 +126,28 @@ export const Index = () => {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
-                      記録する
+                      質問する
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                    <Typography variant="body1" component="p">
+                      トレーニングについて何か困ったことがあれば質問してアドバイスを求めることができます。
                     </Typography>
+                    <Typography variant="subtitle2" color="textSecondary" >※ログインすると使える機能です</Typography>
                   </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.cardAction}>
-                  <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
-                    さっそく記録する
+                  <Button 
+                    variant="contained" 
+                    size="large" 
+                    color="primary" 
+                    className={classes.actionButton} 
+                    onClick={
+                      currentUser ?
+                      () => history.push("/questions")
+                      :
+                      () => history.push("/sign_in")
+                    }
+                  >
+                    質問する
                   </Button>
                 </CardActions>
               </Card>
@@ -116,16 +163,17 @@ export const Index = () => {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
-                      記録する
+                      確認する
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      行ったトレーニングを記録します。過去のトレーニング内容を振り返ることもできます。
+                    <Typography variant="body1" component="p">
+                      マイページで自分のトレーニング記録やプロフィール、質問にアドバイスが来ていないかなどを確認してみましょう。
                     </Typography>
+                    <Typography variant="subtitle2" color="textSecondary" >※ログインすると使える機能です</Typography>
                   </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.cardAction}>
                   <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
-                    さっそく記録する
+                    マイページへ
                   </Button>
                 </CardActions>
               </Card>
@@ -136,7 +184,7 @@ export const Index = () => {
       <div className={classes.thirdWrapper}>
         <Container maxWidth="lg">
           <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
-            みんなの記録
+            みんなのトレーニング記録
           </Typography>
           <Grid container spacing={4} >
             {trainingCards.map((card) => (

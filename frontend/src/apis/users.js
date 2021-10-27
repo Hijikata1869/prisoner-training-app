@@ -13,6 +13,7 @@ import {
   postAdviceUrl,
   hundleBookmarkUrl,
   fetchAdvicesUrl,
+  signOutUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -242,6 +243,20 @@ export const deleteBookmark = (adviceId, token, client, uid) => {
     'access-token': token,
     'client': client,
     'uid': uid,
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const signOut = (token, client, uid) => {
+  return axios.delete(signOutUrl, {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
   }})
   .then((res) => {
     return res;
