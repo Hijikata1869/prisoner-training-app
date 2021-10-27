@@ -1,9 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, Button, Backdrop, Card, CardContent, CardActions, Collapse, IconButton } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Grid, Typography, TextField, Button} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import CloseIcon from '@material-ui/icons/Close';
 import Cookies from 'js-cookie';
 
 // images
@@ -11,6 +9,11 @@ import LoginLogo from '../images/loginLogo2.png';
 
 // apis
 import { userSignIn } from '../apis/users';
+
+// components
+import { SuccessModal } from '../components/SuccessModal';
+import { ToTopPageButton } from '../components/ToTopPageButton';
+import { FailedAlert } from '../components/FailedAlert';
 
 const useStyles = makeStyles((theme) => ({
   loginWrapper: {
@@ -51,9 +54,8 @@ export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [open, setOpen] = useState(false);
-  const [failedAlert, setFailedAlert] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(true);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -68,68 +70,35 @@ export const Login = () => {
     }
   }
 
-  const hundleToggle = () => {
-    setOpen(!open);
-  }
-
   const signInUsers = (email, password) => {
-    const result = userSignIn(email, password);
-    result
+    userSignIn(email, password)
     .then((res) => {
       if (res.status === 200) {
-        hundleToggle();
         Cookies.set('access-token', res.headers['access-token']);
         Cookies.set('client', res.headers['client']);
         Cookies.set('uid', res.headers['uid']);
+        setModalOpen(true);
       }
     })
     .catch((e) => {
       console.log(e);
-      setFailedAlert(true);
+      setAlertOpen(true);
     });
   }
 
   return(
     <Fragment>
-      <Backdrop className={classes.backdrop} open={open} >
-        <Card className={classes.backdropCard} >
-          <CardContent>
-            <Typography variant="h5" component="h2" >
-              ログインしました
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button 
-              variant="contained" 
-              color="primary" 
-              fullWidth 
-              onClick={() => history.push('/')} 
-            >
-              アプリに戻る
-            </Button>
-          </CardActions>
-        </Card>
-      </Backdrop>
       {
-        failedAlert ? 
-        <Collapse in={alertOpen}>
-        <Alert 
-          severity="error" 
-          action={
-            <IconButton 
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {setAlertOpen(false);}}
-            >
-              <CloseIcon />
-            </IconButton>
-          }
-        >
-          ログインできませんでした
-        </Alert>
-        </Collapse> : 
-        <></>
+        modalOpen ?
+        <SuccessModal message="ログインしました" button={<ToTopPageButton />} /> 
+        :
+        null
+      }
+      {
+        alertOpen ?
+        <FailedAlert message="ログインできませんでした" />
+        :
+        null
       }
       <div className={classes.wrapper}>
         <Grid container direction="row">
