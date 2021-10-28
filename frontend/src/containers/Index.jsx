@@ -12,8 +12,10 @@ import { useStyles } from '../styles';
 
 // images
 import MainLogo from '../images/MainLogo.png';
-import CardItem1 from '../images/record.png';
+import RecordImage from '../images/record.png';
 import FourthWrapperLogo from '../images/whatIsPrisoner2.png';
+import QuestionImage from '../images/questionCardImage.svg';
+import ConfirmationImage from '../images/confirmCardImage.svg';
 
 const trainingCards = [1, 2, 3, 4];
 
@@ -39,8 +41,23 @@ export const Index = () => {
     })
   }, []);
 
+  const hundleClick = () => {
+    if (currentUser.length === 0) {
+      console.log("ログインしてません")
+    } else {
+      console.log("ログイン済みです");
+    }
+  }
+
   return(
     <Fragment>
+      <Button 
+        variant="contained" 
+        color="secondary" 
+        onClick={hundleClick} 
+      >
+        api test
+      </Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
@@ -80,15 +97,23 @@ export const Index = () => {
           <Grid container spacing={4} className={classes.trainingCardContainer}>
             <Grid item xs={12} md={4}>
               <Card className={classes.card}>
-                <CardActionArea className={classes.cardActionArea}>
+                <CardActionArea 
+                  className={classes.cardActionArea} 
+                  onClick={
+                    currentUser.length !== 0 ?
+                    () => history.push(`/users/${currentUser.id}/training_logs`)
+                    :
+                    () => history.push("/sign_in")
+                  }
+                >
                   <CardMedia 
                     component="img"
                     className={classes.cardMedia}
-                    src={CardItem1}
+                    src={RecordImage}
                     title="record"
                   />
                   <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                    <Typography gutterBottom variant="h5" component="h5" className={classes.cardRecordTitle}>
                       記録する
                     </Typography>
                     <Typography variant="body1" component="p">
@@ -97,14 +122,14 @@ export const Index = () => {
                     <Typography variant="subtitle2" color="textSecondary" >※ログインすると使える機能です</Typography>
                   </CardContent>
                 </CardActionArea>
-                <CardActions className={classes.cardAction}>
+                <CardActions className={classes.cardAction} >
                   <Button 
                     variant="contained" 
                     size="large" 
                     color="primary" 
                     className={classes.actionButton} 
                     onClick={
-                      currentUser ?
+                      currentUser.length !== 0 ?
                       () => history.push(`/users/${currentUser.id}/training_logs`)
                       :
                       () => history.push("/sign_in")
@@ -117,15 +142,23 @@ export const Index = () => {
             </Grid>
             <Grid item xs={12} md={4}>
               <Card className={classes.card}>
-                <CardActionArea className={classes.cardActionArea}>
+                <CardActionArea 
+                  className={classes.cardActionArea} 
+                  onClick={
+                    currentUser.length !== 0 ?
+                    () => history.push("/questions")
+                    :
+                    () => history.push("/sign_in")
+                  }
+                >
                   <CardMedia 
                     component="img"
                     className={classes.cardMedia}
-                    src={CardItem1}
+                    src={QuestionImage}
                     title="record"
                   />
                   <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                    <Typography gutterBottom variant="h5" component="h5" className={classes.cardQuestionTitle}>
                       質問する
                     </Typography>
                     <Typography variant="body1" component="p">
@@ -141,7 +174,7 @@ export const Index = () => {
                     color="primary" 
                     className={classes.actionButton} 
                     onClick={
-                      currentUser ?
+                      currentUser.length !== 0 ?
                       () => history.push("/questions")
                       :
                       () => history.push("/sign_in")
@@ -154,15 +187,23 @@ export const Index = () => {
             </Grid>
             <Grid item xs={12} md={4}>
               <Card className={classes.card}>
-                <CardActionArea className={classes.cardActionArea}>
+                <CardActionArea 
+                  className={classes.cardActionArea} 
+                  onClick={
+                    currentUser.length !== 0 ?
+                    () => history.push(`/users/${currentUser.id}`)
+                    :
+                    () => history.push("/sign_in")
+                  }
+                >
                   <CardMedia 
                     component="img"
                     className={classes.cardMedia}
-                    src={CardItem1}
+                    src={ConfirmationImage}
                     title="record"
                   />
                   <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h5" className={classes.contentTitle}>
+                    <Typography gutterBottom variant="h5" component="h5" className={classes.cardConfirmationTitle}>
                       確認する
                     </Typography>
                     <Typography variant="body1" component="p">
@@ -172,7 +213,18 @@ export const Index = () => {
                   </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.cardAction}>
-                  <Button variant="contained" size="large" color="primary" className={classes.actionButton}>
+                  <Button 
+                    variant="contained" 
+                    size="large" 
+                    color="primary" 
+                    className={classes.actionButton} 
+                    onClick={
+                      currentUser.length !== 0 ?
+                      () => history.push(`/users/${currentUser.id}`)
+                      :
+                      () => history.push("/sign_in")
+                    }
+                  >
                     マイページへ
                   </Button>
                 </CardActions>

@@ -1,10 +1,11 @@
-import React, { Fragment, useState } from 'react';
-import { Typography, AppBar, CssBaseline, Toolbar, Button } from '@material-ui/core';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Typography, AppBar, CssBaseline, Toolbar, Button, ButtonBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
 // apis
-import { signOut } from '../apis/users';
+import { signOut, fetchCurrentUser } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -13,7 +14,7 @@ import { FailedAlert } from '../components/FailedAlert';
 
 
 const useStyles = makeStyles(() => ({
-  signOutButton: {
+  signInAndOutButton: {
     marginLeft: "auto"
   }
 }))
@@ -23,6 +24,7 @@ const useStyles = makeStyles(() => ({
 export const Header = () => {
 
   const classes = useStyles();
+  const history = useHistory();
 
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -30,6 +32,17 @@ export const Header = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState([]);
+
+  useEffect(() => {
+    fetchCurrentUser(token, client, uid)
+    .then((res) => {
+      setCurrentUser(res.data.currentUser);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
 
   const signOutAction = () => {
     signOut(token, client, uid)
@@ -57,13 +70,24 @@ export const Header = () => {
           <Typography variant="h6">
             Prisoner Training App
           </Typography>
-          <Button 
-            className={classes.signOutButton} 
-            color="inherit" 
-            onClick={signOutAction}
-          >
-            ログアウト
-          </Button>
+          {
+            currentUser.length === 0 ?
+            <Button 
+              className={classes.signInAndOutButton}
+              color="inherit" 
+              onClick={() => history.push('/sign_in')}
+            >
+              ログイン
+            </Button>
+            :
+            <Button 
+              className={classes.signInAndOutButton} 
+              color="inherit" 
+              onClick={signOutAction}
+            >
+              ログアウト
+            </Button>
+          }
         </Toolbar>
       </AppBar>
       {

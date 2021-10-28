@@ -28,8 +28,16 @@ import { makeStyles } from '@material-ui/core/styles';
   cardContent: {
     flexGrow: 1,
   },
-  contentTitle: {
+  cardRecordTitle: {
     textAlign: 'center',
+  },
+  cardQuestionTitle: {
+    textAlign: 'center',
+    marginTop: '2rem'
+  },
+  cardConfirmationTitle: {
+    textAlign: 'center',
+    marginTop: '2rem'
   },
   cardAction: {
     width: '100%',
