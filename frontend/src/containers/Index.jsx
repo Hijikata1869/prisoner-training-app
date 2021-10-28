@@ -1,11 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton  } from '@material-ui/core';
+import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton, ButtonBase  } from '@material-ui/core';
 import { ThumbUp } from '@material-ui/icons';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 // apis
 import { fetchCurrentUser } from '../apis/users';
+import { fetchHome } from '../apis/home';
 
 // styles
 import { useStyles } from '../styles';
@@ -17,7 +19,6 @@ import FourthWrapperLogo from '../images/whatIsPrisoner2.png';
 import QuestionImage from '../images/questionCardImage.svg';
 import ConfirmationImage from '../images/confirmCardImage.svg';
 
-const trainingCards = [1, 2, 3, 4];
 
 export const Index = () => {
   
@@ -29,24 +30,45 @@ export const Index = () => {
   const uid = Cookies.get('uid');
 
   const [currentUser, setCurrentUser] = useState([]);
+  const [usersArr, setUsersArr] = useState([]);
+  const [trainingLogsArr, setTrainingLogsArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
       setCurrentUser(res.data.currentUser);
-      console.log(res);
     })
     .catch((e) => {
       console.error(e);
     })
   }, []);
 
+  useEffect(() => {
+    fetchHome()
+    .then((res) => {
+      setUsersArr(res.data.users);
+      setTrainingLogsArr(res.data.trainingLogs);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
+
+  const showUserName = (userId) => {
+    const user = usersArr.find(user => user.id === userId);
+    return user?.nickname;
+  }
+
+  const showUserImage = (userId) => {
+    const user = usersArr.find(user => user.id === userId);
+    return user?.image.url;
+  }
+
   const hundleClick = () => {
-    if (currentUser.length === 0) {
-      console.log("ログインしてません")
-    } else {
-      console.log("ログイン済みです");
-    }
+    console.log({
+      "users": usersArr,
+      "trainingLogs": trainingLogsArr
+    });
   }
 
   return(
@@ -239,21 +261,35 @@ export const Index = () => {
             みんなのトレーニング記録
           </Typography>
           <Grid container spacing={4} >
-            {trainingCards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={3}>
+            {trainingLogsArr.map((trainingData, index) => (
+              <Grid item key={index} xs={12} sm={6} md={3}>
                 <Card className={classes.trainingCard}>
                   <CardHeader 
                     className={classes.cardHeader} 
-                    avatar={<Avatar></Avatar>} 
-                    title="ユーザー名" 
-                    subheader="2021-7-21"
+                    avatar={
+                      <ButtonBase 
+                        onClick={() => history.push(`/users/${trainingData.user_id}`)}
+                      >
+                        <Avatar 
+                          className={classes.userImage}
+                          alt={showUserName(trainingData.user_id)}
+                          src={showUserImage(trainingData.user_id)} 
+                        />
+                      </ButtonBase>
+                    } 
+                    title={`${showUserName(trainingData.user_id)}さんの記録`}
+                    subheader={`投稿日：${moment(trainingData.created_at).format('YYYY-MM-DD')}`}
                   />
                   <CardContent>
-                    <Typography variant="body1" >スクワット ステップ４ １０×２セット</Typography>
-                    <Typography variant="body1" >プルアップ ステップ２ １５×１セット</Typography>
+                    <Typography variant="subtitle2" color="textSecondary">トレーニングメニュー</Typography>
+                    <Typography variant="body1" gutterBottom >{`${trainingData.training_menu}`}</Typography>
+                    <Typography variant="subtitle2" color="textSecondary">ステップ</Typography>
+                    <Typography variant="body1" gutterBottom >{`${trainingData.step}`}</Typography>
+                    <Typography variant="subtitle2" color="textSecondary">回数</Typography>
+                    <Typography variant="body1" >{`${trainingData.repetition}回`}</Typography>
                   </CardContent>
                   <CardActions>
-                    <IconButton>
+                    <IconButton className={classes.likeButton}>
                       <ThumbUp/>
                     </IconButton>
                   </CardActions>

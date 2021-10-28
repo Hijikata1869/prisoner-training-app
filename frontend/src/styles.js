@@ -67,5 +67,8 @@ import { makeStyles } from '@material-ui/core/styles';
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: '50px 0',
+  },
+  likeButton: {
+    padding: "1rem"
   }
 }));
