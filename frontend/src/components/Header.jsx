@@ -67,9 +67,13 @@ export const Header = () => {
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <Typography variant="h6">
-            Prisoner Training App
-          </Typography>
+          <ButtonBase 
+            onClick={() => history.push('/')}
+          >
+            <Typography variant="h6">
+              Prisoner Training App
+            </Typography>
+          </ButtonBase>
           {
             currentUser.length === 0 ?
             <Button 

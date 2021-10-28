@@ -70,5 +70,8 @@ import { makeStyles } from '@material-ui/core/styles';
   },
   likeButton: {
     padding: "1rem"
+  },
+  footerWrapper: {
+    textAlign: "center"
   }
 }));

@@ -18,6 +18,7 @@ import { UserQuestions } from './containers/UserQuestions';
 import { UserAdvices } from './containers/UserAdvices';
 import { Questions } from './containers/Questions';
 import { Advices } from './containers/Advices';
+import { Contact } from './containers/Contact';
 
 // components
 import { Header } from './components/Header';
@@ -79,6 +80,9 @@ function App() {
             </Switch>
           }
         />
+        <Route exact path="/contact">
+          <Contact />
+        </Route>
       </Switch>
     </Router>
   );

@@ -323,12 +323,17 @@ export const Index = () => {
       </div>
       <div className={classes.footer}>
         <Container className={classes.footerWrapper}>
-          <Typography variant="h6" align="center" gutterBottom>
-            Prisoner Training App
+          <Typography variant="h6" gutterBottom>
+            &copy; 2021 Prisoner Training App
           </Typography>
-          <Typography variant="subtitle1" align="center" color="textSecondary">
-            ここにはフッターの説明文が入ります。
-          </Typography>
+          <ButtonBase 
+            className={classes.contactPageButton} 
+            onClick={() => history.push("/contact")}
+          >
+            <Typography variant="subtitle1" color="textSecondary">
+              お問い合わせはこちら
+            </Typography>
+          </ButtonBase>
         </Container>
       </div>
     </Fragment>
