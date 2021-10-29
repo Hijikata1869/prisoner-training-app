@@ -72,7 +72,7 @@ export const UserTrainingLog = ({ match }) => {
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
-      setCurrentUser(res);
+      setCurrentUser(res.data.currentUser);
     })
     .catch((e) => {
       console.error(e);
@@ -109,7 +109,7 @@ export const UserTrainingLog = ({ match }) => {
     setNote(e.target.value);
   }
 
-  const postTrainingAction = (token, client, uid, trainingMenu, step, rep, set, note) => {
+  const postTrainingAction = (trainingMenu, step, rep, set, note) => {
     const userId = currentUser.id;
     const result = postTraining(userId, token, client, uid, trainingMenu, step, rep, set, note);
     result
@@ -236,7 +236,7 @@ export const UserTrainingLog = ({ match }) => {
               color="primary" 
               variant="contained"
               size="medium" 
-              onClick={() => postTrainingAction(token, client, uid, trainingMenu, step, rep, set, note)}
+              onClick={() => postTrainingAction(trainingMenu, step, rep, set, note)}
             >
               記録する
             </Button>

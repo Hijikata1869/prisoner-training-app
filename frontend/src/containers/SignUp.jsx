@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
   backdropCard: {
     padding: '50px',
+  },
+  signInButton: {
+    width: "100%",
+    marin: "0 auto"
   }
 }));
 
@@ -208,6 +212,14 @@ export const SignUp = () => {
                 onClick={() => { }}
               >
                 ゲストログインして使ってみる
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button 
+                className={classes.signInButton}
+                onClick={() => history.push('/sign_in')}
+              >
+                ログインはこちら
               </Button>
             </Grid>
           </Grid>

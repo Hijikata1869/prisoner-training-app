@@ -11,7 +11,12 @@ export const ToTopPageButton = () => {
       variant="contained" 
       color="primary" 
       fullWidth 
-      onClick={() => history.push('/')} 
+      onClick={
+        () => {
+          history.push('/');
+          window.location.reload();
+        }
+      } 
     >
       アプリに戻る
     </Button>
