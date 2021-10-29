@@ -113,12 +113,6 @@ export const Index = () => {
 
   return(
     <Fragment>
-      <Button 
-        variant="contained" 
-        color="secondary" 
-      >
-        api test
-      </Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
@@ -196,7 +190,7 @@ export const Index = () => {
                       () => history.push("/sign_in")
                     }
                   >
-                    記録する
+                    トレーニング記録ページへ
                   </Button>
                 </CardActions>
               </Card>
@@ -220,7 +214,7 @@ export const Index = () => {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h5" className={classes.cardQuestionTitle}>
-                      質問する
+                      質問 / アドバイスする
                     </Typography>
                     <Typography variant="body1" component="p">
                       トレーニングについて何か困ったことがあれば質問してアドバイスを求めることができます。
@@ -241,7 +235,7 @@ export const Index = () => {
                       () => history.push("/sign_in")
                     }
                   >
-                    質問する
+                    質問・アドバイスページへ
                   </Button>
                 </CardActions>
               </Card>
@@ -371,8 +365,11 @@ export const Index = () => {
             </Grid>
             <Grid container item sm={6} alignItems="center" >
               <Grid item >
-                <Typography variant="h5" align="left" color="textPrimary" >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                <Typography variant="h6" align="left" color="textPrimary" paragraph >
+                  アメリカの元囚人にして、キャリステニクス（自分の体重を使い、体を極限まで開発する技術）の第一人者であるポール・ウェイドが彼の書籍、コンビクト・コンディショニング（邦題はプリズナートレーニング）で紹介している、見せかけの筋肉ではない、本物の強さを手に入れるためのトレーニングがプリズナートレーニングです。
+                </Typography>
+                <Typography variant="h6" align="left" color="textPrimary" paragraph >
+                  フィットネス産業の発展に伴いキャリステニクスは死に瀕していましたが、生き延びるために極限の強さとパワーが必要になるアメリカの監獄で秘密裏に伝承されていたことから、コンビクト・コンディショニング（囚人のコンディショニング）という題名がつけられました。
                 </Typography>
               </Grid>
             </Grid>

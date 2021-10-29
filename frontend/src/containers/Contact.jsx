@@ -37,11 +37,11 @@ export const Contact = () => {
           <Typography>アプリに関するお問い合わせや、何か気になることがございましたら下記のいずれかまでご連絡いただけますと幸いです。</Typography>
         </Grid>
         <Grid className={classes.mailAdressWrapper} item>
-          <Typography variant="subtitle2" color="textSecondary">メールアドレス</Typography>
+          <Typography variant="subtitle2" color="textSecondary">開発者メールアドレス</Typography>
           <Typography>liv.knk@gmail.com</Typography>
         </Grid>
         <Grid className={classes.twitterWrapper} item>
-          <Typography variant="subtitle2" color="textSecondary">Twitter</Typography>
+          <Typography variant="subtitle2" color="textSecondary">開発者Twitter</Typography>
           <Typography>@ehn1869</Typography>
         </Grid>
       </Grid>
