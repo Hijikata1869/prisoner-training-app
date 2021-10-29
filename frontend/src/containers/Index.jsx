@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton, ButtonBase  } from '@material-ui/core';
-import { ThumbUp } from '@material-ui/icons';
+import { ThumbUp, ThumbUpAltOutlined } from '@material-ui/icons';
 import Cookies from 'js-cookie';
 import moment from 'moment';
 
@@ -32,11 +32,13 @@ export const Index = () => {
   const [currentUser, setCurrentUser] = useState([]);
   const [usersArr, setUsersArr] = useState([]);
   const [trainingLogsArr, setTrainingLogsArr] = useState([]);
+  const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
       setCurrentUser(res.data.currentUser);
+      setCurrentUserLikesArr(res.data.currentUserLikes);
     })
     .catch((e) => {
       console.error(e);
@@ -64,19 +66,56 @@ export const Index = () => {
     return user?.image.url;
   }
 
-  const hundleClick = () => {
-    console.log({
-      "users": usersArr,
-      "trainingLogs": trainingLogsArr
-    });
+  const createLikeAction = (trainingLogId) => {
+    fetch(`http://localhost:3000/api/v1/training_logs/${trainingLogId}/likes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserLikesArr(res.data.currentUserLikes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
   }
+
+  const deleteLikekAction = (trainingLogId) => {
+    fetch(`http://localhost:3000/api/v1/training_logs/${trainingLogId}/likes`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserLikesArr(res.data.currentUserLikes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
+  }
+
 
   return(
     <Fragment>
       <Button 
         variant="contained" 
         color="secondary" 
-        onClick={hundleClick} 
       >
         api test
       </Button>
@@ -289,9 +328,28 @@ export const Index = () => {
                     <Typography variant="body1" >{`${trainingData.repetition}回`}</Typography>
                   </CardContent>
                   <CardActions>
-                    <IconButton className={classes.likeButton}>
-                      <ThumbUp/>
-                    </IconButton>
+                    {
+                      currentUserLikesArr.find(like => like.training_log_id === trainingData.id) ?
+                      <Fragment>
+                        <IconButton 
+                          className={classes.deleteLikeButton} 
+                          onClick={() =>deleteLikekAction(trainingData.id)}
+                        >
+                          <ThumbUp/>
+                        </IconButton>
+                        <Typography>いいね済み</Typography>
+                      </Fragment>
+                      :
+                      <Fragment>
+                        <IconButton
+                          className={classes.createLikeButton} 
+                          onClick={() => createLikeAction(trainingData.id)}
+                        >
+                          <ThumbUpAltOutlined />
+                        </IconButton>
+                        <Typography>いいねする</Typography>
+                      </Fragment>
+                    }
                   </CardActions>
                 </Card>
               </Grid>
