@@ -4,7 +4,12 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         registrations: 'api/v1/auth/registrations'
       }
-      resources :users
+      resources :users do
+        resource :relationships, only: [:create, :destroy]
+        get :follows, on: :member
+        get :followers, on: :member
+      end
+
       resources :questions
 
       resources :training_logs do
