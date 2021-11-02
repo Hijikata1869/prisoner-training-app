@@ -216,6 +216,9 @@ export const Users = ({ match }) => {
                 >
                 </Avatar>
               </Grid>
+              <Grid item>
+                <Button variant="contained" color="primary">フォローする</Button>
+              </Grid>
               {user.id === currentUser.id ?
                 <Grid container item direction="column" alignItems="center" justifyContent="center" >
                   <Grid item>
