@@ -43,6 +43,22 @@ module Api
 
       end
 
+      def follows
+        user = User.find(params[:id])
+        user_followings = user.followings
+        render json: {
+          userFollowings: user_followings
+        }, status: :ok
+      end
+
+      def followers
+        user = User.find(params[:id])
+        user_followers = user.followers
+        render json: {
+          userFollowers: user_followers
+        }, status: :ok
+      end
+
 
       private
       def update_params
