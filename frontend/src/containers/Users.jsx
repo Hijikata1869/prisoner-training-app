@@ -8,7 +8,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 
 // apis
-import { fetchUser, imageUpdate } from '../apis/users';
+import { fetchUser, imageUpdate, fetchCurrentUser } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -81,6 +81,10 @@ export const Users = ({ match }) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const token = Cookies.get('access-token');
+  const client = Cookies.get('client');
+  const uid = Cookies.get('uid');
+
   const [user, setUser] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [upImg, setUpImage] = useState();
@@ -97,11 +101,9 @@ export const Users = ({ match }) => {
   const [fileName, setFileName] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
 
   useEffect(() => {
-    const token = Cookies.get('access-token');
-    const client = Cookies.get('client');
-    const uid = Cookies.get('uid');
     fetchUser(match.params.userId, token, client, uid)
     .then((res) => {
       setUser(res.data.user);
@@ -111,6 +113,16 @@ export const Users = ({ match }) => {
     )
     .catch((e) => console.error(e));
   },[])
+
+  useEffect(() => {
+    fetchCurrentUser(token, client, uid)
+    .then((res) => {
+      setCurrentUserFollowingsArr(res.data.currentUserFollowings);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
   
   const onLoad = useCallback((img) => {
     imgRef.current = img;
@@ -191,6 +203,55 @@ export const Users = ({ match }) => {
     );
   }
 
+  const userFollowAction = (userId) => {
+    fetch(`http://localhost:3000/api/v1/users/${userId}/relationships`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserFollowingsArr(res.data.currentUserFollowings);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
+  const userUnFollowAction = (userId) => {
+    fetch(`http://localhost:3000/api/v1/users/${userId}/relationships`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserFollowingsArr(res.data.currentUserFollowings);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
+
   return(
     <Fragment>
       {
@@ -217,7 +278,24 @@ export const Users = ({ match }) => {
                 </Avatar>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary">フォローする</Button>
+                {
+                  currentUserFollowingsArr.find((following) => following.id === user.id ) ?
+                  <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => userUnFollowAction(match.params.userId)}
+                  >
+                    フォロー中
+                  </Button>
+                  :
+                  <Button 
+                    variant="outlined" 
+                    color="primary" 
+                    onClick={() => userFollowAction(match.params.userId)}
+                  >
+                    フォローする
+                  </Button>
+                }
               </Grid>
               {user.id === currentUser.id ?
                 <Grid container item direction="column" alignItems="center" justifyContent="center" >

@@ -14,6 +14,9 @@ import {
   hundleBookmarkUrl,
   fetchAdvicesUrl,
   signOutUrl,
+  hundleFollowUrl,
+  showFollowingsUrl,
+  showFollowersUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -258,6 +261,54 @@ export const signOut = (token, client, uid) => {
     'client': client,
     'uid': uid
   }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const userFollow = (token, client, uid, userId) => {
+  return axios.post(hundleFollowUrl(userId), {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const userUnFollow = (token, client, uid, userId) => {
+  return axios.delete(hundleFollowUrl(userId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchFollowings = (id) => {
+  return axios.get(showFollowingsUrl(id))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchFollowers = (id) => {
+  return axios.get(showFollowersUrl(id))
   .then((res) => {
     return res;
   })

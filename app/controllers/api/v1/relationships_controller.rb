@@ -4,11 +4,13 @@ module Api
       before_action :authenticate_api_v1_user!
 
       def create 
-        follow = current_api_v1_user.active_relationships.build(follower_id: params[:user_id])
-        follow.save
-        render json: {
-          message: "completed"
-        }, status: :ok
+        unless current_api_v1_user.id == params[:user_id]
+          follow = current_api_v1_user.active_relationships.build(follower_id: params[:user_id])
+          follow.save
+          render json: {
+            message: "completed"
+          }, status: :ok
+        end
 
       end
 
