@@ -27,12 +27,8 @@ export const fetchUsers = () => {
   .catch((e) => console.error(e))
 }
 
-export const fetchUser = (userId, token, client, uid) => {
-  return axios.get(showUserPage(userId), {headers: {
-    'access-token': token,
-    'client': client,
-    'uid': uid
-  }})
+export const fetchUser = (userId) => {
+  return axios.get(showUserPage(userId))
   .then(res => {
     return res
   })

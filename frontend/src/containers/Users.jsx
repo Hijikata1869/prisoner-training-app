@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useRef, useEffect, useState } from 'react';
-import { Typography, Grid, Avatar, Container, Button } from '@material-ui/core';
+import { Typography, Grid, Avatar, Container, Button, ButtonBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -18,6 +18,7 @@ import { ReloadButton } from '../components/ReloadButton';
 const useStyles = makeStyles((theme) => ({
   userWrapper: {
     paddingTop: '2rem',
+    paddingBottom: '2rem'
   },
   largeAvatar: {
     width: theme.spacing(20),
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   introduce: {
     fontSize: '20px',
+    marginTop: "2rem"
   },
   updateButton: {
     marginTop: '2rem',
@@ -73,6 +75,15 @@ const useStyles = makeStyles((theme) => ({
   },
   imageUpdateButton: {
     marginBottom: "1rem"
+  },
+  followButton: {
+    marginTop: "1rem"
+  },
+  toFollowingButton: {
+    marginRight: "0.5rem"
+  },
+  toFollowerButton: {
+    marginLeft: "0.5rem"
   }
 }))
 
@@ -102,13 +113,16 @@ export const Users = ({ match }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
+  const [userFollowingsArr, setUserFollowingsArr] = useState([]);
+  const [userFollowersArr, setUserFollowersArr] = useState([]);
 
   useEffect(() => {
     fetchUser(match.params.userId, token, client, uid)
     .then((res) => {
       setUser(res.data.user);
-      setCurrentUser(res.data.currentUser);
       setUserImage(res.data.user.image.url);
+      setUserFollowingsArr(res.data.userFollowings);
+      setUserFollowersArr(res.data.userFollowers);
     }
     )
     .catch((e) => console.error(e));
@@ -117,6 +131,7 @@ export const Users = ({ match }) => {
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
+      setCurrentUser(res.data.currentUser);
       setCurrentUserFollowingsArr(res.data.currentUserFollowings);
     })
     .catch((e) => {
@@ -278,6 +293,20 @@ export const Users = ({ match }) => {
                 </Avatar>
               </Grid>
               <Grid item>
+                <ButtonBase 
+                  className={classes.toFollowingButton} 
+                  onClick={() => history.push(`/users/${user.id}/followings`)}
+                >
+                  <Typography>{`${userFollowingsArr.length}フォロー`}</Typography>
+                </ButtonBase>
+                <ButtonBase 
+                  className={classes.toFollowerButton} 
+                  onClick={() => history.push(`/users/${user.id}/followers`)}
+                >
+                  <Typography>{`${userFollowersArr.length}フォロワー`}</Typography>
+                </ButtonBase>
+              </Grid>
+              <Grid item className={classes.followButton}>
                 {
                   currentUserFollowingsArr.find((following) => following.id === user.id ) ?
                   <Button 
@@ -288,13 +317,21 @@ export const Users = ({ match }) => {
                     フォロー中
                   </Button>
                   :
-                  <Button 
-                    variant="outlined" 
-                    color="primary" 
-                    onClick={() => userFollowAction(match.params.userId)}
-                  >
-                    フォローする
-                  </Button>
+                  currentUser.length !== 0 ?
+                  <Fragment>
+                    {
+                      user.id !== currentUser.id && 
+                      <Button 
+                        variant="outlined" 
+                        color="primary" 
+                        onClick={() => userFollowAction(match.params.userId)}
+                      >
+                        フォローする
+                      </Button>
+                    }
+                  </Fragment>
+                  :
+                  null
                 }
               </Grid>
               {user.id === currentUser.id ?
@@ -367,9 +404,6 @@ export const Users = ({ match }) => {
                 </Grid> :
                 null
               }
-              <Grid item>
-                <Typography variant="h3" gutterBottom >{`${user.nickname}`}</Typography>
-              </Grid>
               <Grid item className={classes.introduce}>
                 {user.introduction ? 
                 <Typography variant="h5" gutterBottom paragraph >
