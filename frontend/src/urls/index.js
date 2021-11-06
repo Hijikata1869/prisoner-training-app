@@ -20,3 +20,4 @@ export const signOutUrl = `${DEFAULT_API_LOCALHOST}/auth/sign_out`;
 export const hundleFollowUrl = (userId) => `${DEFAULT_API_LOCALHOST}/users/${userId}/relationships`;
 export const showFollowingsUrl = (id) => `${DEFAULT_API_LOCALHOST}/users/${id}/follows`;
 export const showFollowersUrl = (id) => `${DEFAULT_API_LOCALHOST}/users/${id}/followers`;
+export const getTrainingLogsUrl = `${DEFAULT_API_LOCALHOST}/training_logs`;

@@ -8,7 +8,7 @@ module Api
         training_logs = TrainingLog.all
 
         render json: {
-          training_logs: training_logs
+          trainingLogs: training_logs
         }, status: :ok
       end
 

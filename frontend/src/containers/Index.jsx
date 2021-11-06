@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import moment from 'moment';
 
 // apis
-import { fetchCurrentUser } from '../apis/users';
+import { fetchCurrentUser, fetchTrainingLogs } from '../apis/users';
 import { fetchHome } from '../apis/home';
 
 // styles
@@ -33,12 +33,15 @@ export const Index = () => {
   const [usersArr, setUsersArr] = useState([]);
   const [trainingLogsArr, setTrainingLogsArr] = useState([]);
   const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
+  const [allTrainingLogsArr, setAllTrainingLogsArr] = useState([]);
+  const [currentUserFollowings, setCurrentUserFollowings] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
       setCurrentUser(res.data.currentUser);
       setCurrentUserLikesArr(res.data.currentUserLikes);
+      setCurrentUserFollowings(res.data.currentUserFollowings);
     })
     .catch((e) => {
       console.error(e);
@@ -50,6 +53,16 @@ export const Index = () => {
     .then((res) => {
       setUsersArr(res.data.users);
       setTrainingLogsArr(res.data.trainingLogs);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchTrainingLogs()
+    .then((res) => {
+      setAllTrainingLogsArr(res.data.trainingLogs);
     })
     .catch((e) => {
       console.error(e);
@@ -113,6 +126,7 @@ export const Index = () => {
 
   return(
     <Fragment>
+      <Button variant="contained" color="primary" onClick={() => console.log(currentUserFollowings)}>test</Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >

@@ -17,6 +17,7 @@ import {
   hundleFollowUrl,
   showFollowingsUrl,
   showFollowersUrl,
+  getTrainingLogsUrl
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -305,6 +306,16 @@ export const fetchFollowings = (id) => {
 
 export const fetchFollowers = (id) => {
   return axios.get(showFollowersUrl(id))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchTrainingLogs = () => {
+  return axios.get(getTrainingLogsUrl)
   .then((res) => {
     return res;
   })
