@@ -34,14 +34,14 @@ export const Index = () => {
   const [trainingLogsArr, setTrainingLogsArr] = useState([]);
   const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
   const [allTrainingLogsArr, setAllTrainingLogsArr] = useState([]);
-  const [currentUserFollowings, setCurrentUserFollowings] = useState([]);
+  const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
       setCurrentUser(res.data.currentUser);
       setCurrentUserLikesArr(res.data.currentUserLikes);
-      setCurrentUserFollowings(res.data.currentUserFollowings);
+      setCurrentUserFollowingsArr(res.data.currentUserFollowings);
     })
     .catch((e) => {
       console.error(e);
@@ -126,7 +126,7 @@ export const Index = () => {
 
   return(
     <Fragment>
-      <Button variant="contained" color="primary" onClick={() => console.log(currentUserFollowings)}>test</Button>
+      <Button variant="contained" color="primary" onClick={() => console.log('sample')}>test</Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
@@ -308,7 +308,12 @@ export const Index = () => {
             みんなのトレーニング記録
           </Typography>
           <Grid container spacing={4} >
-            {trainingLogsArr.map((trainingData, index) => (
+            {
+              currentUserFollowingsArr.map((followings, index) => {
+                console.log(followings);
+              })
+            }
+            {/* {trainingLogsArr.map((trainingData, index) => (
               <Grid item key={index} xs={12} sm={6} md={3}>
                 <Card className={classes.trainingCard}>
                   <CardHeader 
@@ -361,7 +366,7 @@ export const Index = () => {
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))} */}
           </Grid>
           <Button variant="text" className={classes.toTrainingLogButton}>トレーニング記録一覧はこちら</Button>
         </Container>
