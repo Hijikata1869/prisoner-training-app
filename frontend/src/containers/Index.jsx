@@ -126,7 +126,7 @@ export const Index = () => {
 
   return(
     <Fragment>
-      <Button variant="contained" color="primary" onClick={() => console.log('sample')}>test</Button>
+      <Button variant="contained" color="primary" onClick={() => console.log(allTrainingLogsArr)}>test</Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
@@ -309,8 +309,35 @@ export const Index = () => {
           </Typography>
           <Grid container spacing={4} >
             {
-              currentUserFollowingsArr.map((followings, index) => {
-                console.log(followings);
+              allTrainingLogsArr.map((trainingData, index) => {
+                return(
+                  currentUserFollowingsArr.map((followings) => {
+                      {
+                        return(
+                          trainingData.user_id === followings.id ? 
+                          <Grid item key={index}>
+                            <Card>
+                              <CardHeader 
+                                avatar={
+                                  <ButtonBase>
+                                    <Avatar 
+                                      src={showUserImage(trainingData.user_id)}
+                                    />
+                                  </ButtonBase>
+                                }
+                                title={`${showUserName(trainingData.user_id)}`}
+                                />
+                              <CardContent>
+                                <Typography>{`${trainingData.created_at}`}</Typography>
+                              </CardContent>
+                            </Card>
+                          </Grid>
+                          :
+                          null
+                        )
+                      }
+                  })
+                )
               })
             }
             {/* {trainingLogsArr.map((trainingData, index) => (

@@ -5,7 +5,7 @@ module Api
       before_action :authenticate_api_v1_user!, except: [:index, :show]
 
       def index
-        training_logs = TrainingLog.all
+        training_logs = TrainingLog.all.order(id: "DESC")
 
         render json: {
           trainingLogs: training_logs

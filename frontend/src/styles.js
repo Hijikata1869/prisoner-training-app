@@ -73,5 +73,9 @@ import { makeStyles } from '@material-ui/core/styles';
   },
   footerWrapper: {
     textAlign: "center"
+  },
+  trainingCardUserImage: {
+    height: "75px",
+    width: "75px"
   }
 }));
