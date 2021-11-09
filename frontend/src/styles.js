@@ -50,7 +50,8 @@ import { makeStyles } from '@material-ui/core/styles';
     margin: '0 auto',
   },
   trainingCard: {
-    borderRadius: '1rem',
+    width: "50px",
+    height: "50px"
   },
   toTrainingLogButton: {
     display: 'block',

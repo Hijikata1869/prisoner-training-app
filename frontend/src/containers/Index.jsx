@@ -126,7 +126,6 @@ export const Index = () => {
 
   return(
     <Fragment>
-      <Button variant="contained" color="primary" onClick={() => console.log(allTrainingLogsArr)}>test</Button>
       <div className={classes.topWrapper}>
         <Container>
           <Grid container spacing={1} direction="row" >
@@ -304,97 +303,149 @@ export const Index = () => {
       </div>
       <div className={classes.thirdWrapper}>
         <Container maxWidth="lg">
-          <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
-            みんなのトレーニング記録
-          </Typography>
-          <Grid container spacing={4} >
-            {
-              allTrainingLogsArr.map((trainingData, index) => {
+          {
+            currentUser.length !== 0 ?
+            <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
+              フォローしているユーザーのトレーニング記録
+            </Typography>
+            :
+            <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
+              みんなのトレーニング記録
+            </Typography>
+          }
+          {
+            currentUser.length !== 0 ?
+            <Grid container spacing={4} >
+              {
+                allTrainingLogsArr.map((trainingData, index) => {
+                  return(
+                    currentUserFollowingsArr.map((followings) => {
+                        {
+                          return(
+                            trainingData.user_id === followings.id && index < 4 ? 
+                            <Grid item md={3} key={index}>
+                              <Card>
+                                <CardHeader 
+                                  avatar={
+                                    <ButtonBase
+                                      onClick={() => history.push(`/users/${trainingData.user_id}`)}
+                                    >
+                                      <Avatar 
+                                        variant="rounded"
+                                        className={classes.trainingCard}
+                                        src={showUserImage(trainingData.user_id)}
+                                      />
+                                    </ButtonBase>
+                                  }
+                                  title={
+                                    <Typography variant="h5">
+                                      {`${showUserName(trainingData.user_id)}`}
+                                    </Typography>
+                                  }
+                                  />
+                                <CardContent>
+                                  <Typography variant="subtitle2" color="textSecondary">トレーニングメニュー</Typography>
+                                  <Typography variant="body1" gutterBottom >{`${trainingData.training_menu}`}</Typography>
+                                  <Typography variant="subtitle2" color="textSecondary">ステップ</Typography>
+                                  <Typography variant="body1" gutterBottom >{`${trainingData.step}`}</Typography>
+                                  <Typography variant="subtitle2" color="textSecondary">回数</Typography>
+                                  <Typography variant="body1" >{`${trainingData.repetition}回`}</Typography>
+                                </CardContent>
+                                <CardActions>
+                                  {
+                                    currentUserLikesArr.find(like => like.training_log_id === trainingData.id) ?
+                                    <Fragment>
+                                      <IconButton 
+                                        className={classes.deleteLikeButton} 
+                                        onClick={() =>deleteLikekAction(trainingData.id)}
+                                      >
+                                        <ThumbUp/>
+                                      </IconButton>
+                                      <Typography>いいね済み</Typography>
+                                    </Fragment>
+                                    :
+                                    <Fragment>
+                                      <IconButton
+                                        className={classes.createLikeButton} 
+                                        onClick={() => createLikeAction(trainingData.id)}
+                                      >
+                                        <ThumbUpAltOutlined />
+                                      </IconButton>
+                                      <Typography>いいねする</Typography>
+                                    </Fragment>
+                                  }
+                                </CardActions>
+                              </Card>
+                            </Grid>
+                            :
+                            null
+                          )
+                        }
+                    })
+                  )
+                })
+              }
+            </Grid>
+            :
+            <Grid container spacing={4}>
+              {trainingLogsArr.map((trainingData, index) => {
                 return(
-                  currentUserFollowingsArr.map((followings) => {
-                      {
-                        return(
-                          trainingData.user_id === followings.id ? 
-                          <Grid item key={index}>
-                            <Card>
-                              <CardHeader 
-                                avatar={
-                                  <ButtonBase>
-                                    <Avatar 
-                                      src={showUserImage(trainingData.user_id)}
-                                    />
-                                  </ButtonBase>
-                                }
-                                title={`${showUserName(trainingData.user_id)}`}
-                                />
-                              <CardContent>
-                                <Typography>{`${trainingData.created_at}`}</Typography>
-                              </CardContent>
-                            </Card>
-                          </Grid>
+                  <Grid item key={index} xs={12} sm={6} md={3}>
+                    <Card className={classes.trainingCard}>
+                      <CardHeader 
+                        className={classes.cardHeader} 
+                        avatar={
+                          <ButtonBase 
+                            onClick={() => history.push(`/users/${trainingData.user_id}`)}
+                          >
+                            <Avatar 
+                              className={classes.userImage}
+                              alt={showUserName(trainingData.user_id)}
+                              src={showUserImage(trainingData.user_id)} 
+                            />
+                          </ButtonBase>
+                        } 
+                        title={`${showUserName(trainingData.user_id)}さんの記録`}
+                        subheader={`投稿日：${moment(trainingData.created_at).format('YYYY-MM-DD')}`}
+                      />
+                      <CardContent>
+                        <Typography variant="subtitle2" color="textSecondary">トレーニングメニュー</Typography>
+                        <Typography variant="body1" gutterBottom >{`${trainingData.training_menu}`}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary">ステップ</Typography>
+                        <Typography variant="body1" gutterBottom >{`${trainingData.step}`}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary">回数</Typography>
+                        <Typography variant="body1" >{`${trainingData.repetition}回`}</Typography>
+                      </CardContent>
+                      <CardActions>
+                        {
+                          currentUserLikesArr.find(like => like.training_log_id === trainingData.id) ?
+                          <Fragment>
+                            <IconButton 
+                              className={classes.deleteLikeButton} 
+                              onClick={() =>deleteLikekAction(trainingData.id)}
+                            >
+                              <ThumbUp/>
+                            </IconButton>
+                            <Typography>いいね済み</Typography>
+                          </Fragment>
                           :
-                          null
-                        )
-                      }
-                  })
-                )
-              })
-            }
-            {/* {trainingLogsArr.map((trainingData, index) => (
-              <Grid item key={index} xs={12} sm={6} md={3}>
-                <Card className={classes.trainingCard}>
-                  <CardHeader 
-                    className={classes.cardHeader} 
-                    avatar={
-                      <ButtonBase 
-                        onClick={() => history.push(`/users/${trainingData.user_id}`)}
-                      >
-                        <Avatar 
-                          className={classes.userImage}
-                          alt={showUserName(trainingData.user_id)}
-                          src={showUserImage(trainingData.user_id)} 
-                        />
-                      </ButtonBase>
-                    } 
-                    title={`${showUserName(trainingData.user_id)}さんの記録`}
-                    subheader={`投稿日：${moment(trainingData.created_at).format('YYYY-MM-DD')}`}
-                  />
-                  <CardContent>
-                    <Typography variant="subtitle2" color="textSecondary">トレーニングメニュー</Typography>
-                    <Typography variant="body1" gutterBottom >{`${trainingData.training_menu}`}</Typography>
-                    <Typography variant="subtitle2" color="textSecondary">ステップ</Typography>
-                    <Typography variant="body1" gutterBottom >{`${trainingData.step}`}</Typography>
-                    <Typography variant="subtitle2" color="textSecondary">回数</Typography>
-                    <Typography variant="body1" >{`${trainingData.repetition}回`}</Typography>
-                  </CardContent>
-                  <CardActions>
-                    {
-                      currentUserLikesArr.find(like => like.training_log_id === trainingData.id) ?
-                      <Fragment>
-                        <IconButton 
-                          className={classes.deleteLikeButton} 
-                          onClick={() =>deleteLikekAction(trainingData.id)}
-                        >
-                          <ThumbUp/>
-                        </IconButton>
-                        <Typography>いいね済み</Typography>
-                      </Fragment>
-                      :
-                      <Fragment>
-                        <IconButton
-                          className={classes.createLikeButton} 
-                          onClick={() => createLikeAction(trainingData.id)}
-                        >
-                          <ThumbUpAltOutlined />
-                        </IconButton>
-                        <Typography>いいねする</Typography>
-                      </Fragment>
-                    }
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))} */}
-          </Grid>
+                          <Fragment>
+                            <IconButton
+                              className={classes.createLikeButton} 
+                              onClick={() => createLikeAction(trainingData.id)}
+                            >
+                              <ThumbUpAltOutlined />
+                            </IconButton>
+                            <Typography>いいねする</Typography>
+                          </Fragment>
+                        }
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          }
           <Button variant="text" className={classes.toTrainingLogButton}>トレーニング記録一覧はこちら</Button>
         </Container>
       </div>
