@@ -19,6 +19,8 @@ import { UserAdvices } from './containers/UserAdvices';
 import { Questions } from './containers/Questions';
 import { Advices } from './containers/Advices';
 import { Contact } from './containers/Contact';
+import { UserFollowings } from './containers/UserFollowings';
+import { UserFollowers } from './containers/UserFollowers';
 
 // components
 import { Header } from './components/Header';
@@ -54,6 +56,12 @@ function App() {
               </Route>
               <Route exaxt path={`${match.path}/auth/edit`}>
                 <UsersContainer match={match} mainComponent={<UserUpdate match={match} />} />
+              </Route>
+              <Route exact path={`${match.path}/followings`}>
+                <UsersContainer match={match} mainComponent={<UserFollowings match={match} />} />
+              </Route>
+              <Route exact path={`${match.path}/followers`}>
+                <UsersContainer match={match} mainComponent={<UserFollowers match={match} />} />
               </Route>
             </Switch>
           }

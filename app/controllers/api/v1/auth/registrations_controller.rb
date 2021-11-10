@@ -6,11 +6,13 @@ class Api::V1::Auth::RegistrationsController < DeviseTokenAuth::RegistrationsCon
     current_user = current_api_v1_user
     current_user_bookmarks = current_api_v1_user.bookmarks
     current_user_likes = current_api_v1_user.likes
+    current_user_followings = current_api_v1_user.followings
 
     render json: {
       currentUser: current_user,
       currentUserBookmarks: current_user_bookmarks,
-      currentUserLikes: current_user_likes
+      currentUserLikes: current_user_likes,
+      currentUserFollowings: current_user_followings
     }, status: :ok
   end
 

@@ -14,6 +14,10 @@ import {
   hundleBookmarkUrl,
   fetchAdvicesUrl,
   signOutUrl,
+  hundleFollowUrl,
+  showFollowingsUrl,
+  showFollowersUrl,
+  getTrainingLogsUrl
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -24,12 +28,8 @@ export const fetchUsers = () => {
   .catch((e) => console.error(e))
 }
 
-export const fetchUser = (userId, token, client, uid) => {
-  return axios.get(showUserPage(userId), {headers: {
-    'access-token': token,
-    'client': client,
-    'uid': uid
-  }})
+export const fetchUser = (userId) => {
+  return axios.get(showUserPage(userId))
   .then(res => {
     return res
   })
@@ -258,6 +258,64 @@ export const signOut = (token, client, uid) => {
     'client': client,
     'uid': uid
   }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const userFollow = (token, client, uid, userId) => {
+  return axios.post(hundleFollowUrl(userId), {
+    'access-token': token,
+    'client': client,
+    'uid': uid,
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const userUnFollow = (token, client, uid, userId) => {
+  return axios.delete(hundleFollowUrl(userId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchFollowings = (id) => {
+  return axios.get(showFollowingsUrl(id))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchFollowers = (id) => {
+  return axios.get(showFollowersUrl(id))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchTrainingLogs = () => {
+  return axios.get(getTrainingLogsUrl)
   .then((res) => {
     return res;
   })
