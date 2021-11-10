@@ -25,11 +25,10 @@ const useStyles = makeStyles(() => ({
     marginLeft: "1rem",
   },
   inputTrainingTitle: {
-    marginBottom: "1rem",
   },
   pastTrainingLogTitle: {
-    marginTop: "4rem",
-    marginBottom: "3rem",
+    marginTop: "3rem",
+    marginBottom: "2rem",
   },
   pastTrainingLogWrapper: {
     marginBottom: "3rem",
@@ -68,6 +67,7 @@ export const UserTrainingLog = ({ match }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [pastTrainingLogsArr, setPastTrainingLogsArr] = useState([]);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -83,6 +83,7 @@ export const UserTrainingLog = ({ match }) => {
     fetchUser(match.params.userId, token, client, uid)
     .then((res) => {
       setPastTrainingLogsArr(res.data.userTrainingLogs);
+      setUser(res.data.user);
     })
     .catch((e) => {
       console.error(e);
@@ -124,9 +125,6 @@ export const UserTrainingLog = ({ match }) => {
     })
   }
 
-  const apiConfirmation = () => {
-    console.log(pastTrainingLogsArr);
-  }
 
   return(
     <Fragment>
@@ -142,111 +140,113 @@ export const UserTrainingLog = ({ match }) => {
       }
       <Grid container item direction="column">
         <Typography className={classes.inputTrainingTitle} variant="h4">
-          トレーニングを記録する
+          {`${user.nickname}さんのトレーニング記録`}
         </Typography>
-        <Grid className={classes.inputTrainingLogWrapper} container item spacing={3} direction="row" alignItems="center" >
-          <Grid item md={4} >
-            <FormControl variant="standard" fullWidth >
-              <InputLabel>トレーニングメニュー</InputLabel>
-              <Select 
-                label="trainingMenu" 
-                value={trainingMenu} 
-                onChange={hundleMenuChange} 
+        {
+          currentUser.id == match.params.userId ?
+          <Grid className={classes.inputTrainingLogWrapper} container item spacing={3} direction="row" alignItems="center" >
+            <Grid item md={4} >
+              <FormControl variant="standard" fullWidth >
+                <InputLabel>トレーニングメニュー</InputLabel>
+                <Select 
+                  label="trainingMenu" 
+                  value={trainingMenu} 
+                  onChange={hundleMenuChange} 
+                >
+                  <MenuItem value="プッシュアップ">プッシュアップ</MenuItem>
+                  <MenuItem value="スクワット">スクワット</MenuItem>
+                  <MenuItem value="プルアップ">プルアップ</MenuItem>
+                  <MenuItem value="レッグレイズ">レッグレイズ</MenuItem>
+                  <MenuItem value="ブリッジ">ブリッジ</MenuItem>
+                  <MenuItem value="ハンドスタンドプッシュアップ">ハンドスタンドプッシュアップ</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={3}>
+              <FormControl variant="standard" fullWidth >
+                <InputLabel>ステップ</InputLabel>
+                <Select
+                  label="step" 
+                  value={step} 
+                  onChange={hundleStepChange}
+                >
+                  <MenuItem value="ステップ１">ステップ１</MenuItem>
+                  <MenuItem value="ステップ２">ステップ２</MenuItem>
+                  <MenuItem value="ステップ３">ステップ３</MenuItem>
+                  <MenuItem value="ステップ４">ステップ４</MenuItem>
+                  <MenuItem value="ステップ５">ステップ５</MenuItem>
+                  <MenuItem value="ステップ６">ステップ６</MenuItem>
+                  <MenuItem value="ステップ７">ステップ７</MenuItem>
+                  <MenuItem value="ステップ８">ステップ８</MenuItem>
+                  <MenuItem value="ステップ９">ステップ９</MenuItem>
+                  <MenuItem value="ステップ１０">ステップ１０</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={2}>
+              <FormControl variant="standard" fullWidth>
+                <InputLabel>回数</InputLabel>
+                <Select
+                  label="rep" 
+                  value={rep} 
+                  onChange={hundleRepsChange}
+                >
+                  {
+                    trainingLepsArray.map((rep, index) => {
+                      return(
+                        <MenuItem key={index} value={rep}>{`${rep}回`}</MenuItem>
+                      )
+                    })
+                  }
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={3}>
+              <FormControl variant="standard" fullWidth >
+                <InputLabel>セット数</InputLabel>
+                <Select
+                  label="set" 
+                  value={set} 
+                  onChange={hundleSetChange}
+                >
+                  <MenuItem value="１セット">１セット</MenuItem>
+                  <MenuItem value="２セット">２セット</MenuItem>
+                  <MenuItem value="３セット">３セット</MenuItem>
+                  <MenuItem value="４セット">４セット</MenuItem>
+                  <MenuItem value="５セット">５セット</MenuItem>
+                  <MenuItem value="６セット">６セット</MenuItem>
+                  <MenuItem value="７セット">７セット</MenuItem>
+                  <MenuItem value="８セット">８セット</MenuItem>
+                  <MenuItem value="９セット">９セット</MenuItem>
+                  <MenuItem value="１０セット">１０セット</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={10} >
+              <FormControl variant="standard" fullWidth >
+                <TextField 
+                  label="一言メモ" 
+                  value={note}
+                  onChange={hundleNoteChange}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item md={2}>
+              <Button 
+                color="primary" 
+                variant="contained"
+                size="medium" 
+                onClick={() => postTrainingAction(trainingMenu, step, rep, set, note)}
               >
-                <MenuItem value="プッシュアップ">プッシュアップ</MenuItem>
-                <MenuItem value="スクワット">スクワット</MenuItem>
-                <MenuItem value="プルアップ">プルアップ</MenuItem>
-                <MenuItem value="レッグレイズ">レッグレイズ</MenuItem>
-                <MenuItem value="ブリッジ">ブリッジ</MenuItem>
-                <MenuItem value="ハンドスタンドプッシュアップ">ハンドスタンドプッシュアップ</MenuItem>
-              </Select>
-            </FormControl>
+                記録する
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item md={3}>
-            <FormControl variant="standard" fullWidth >
-              <InputLabel>ステップ</InputLabel>
-              <Select
-                label="step" 
-                value={step} 
-                onChange={hundleStepChange}
-              >
-                <MenuItem value="ステップ１">ステップ１</MenuItem>
-                <MenuItem value="ステップ２">ステップ２</MenuItem>
-                <MenuItem value="ステップ３">ステップ３</MenuItem>
-                <MenuItem value="ステップ４">ステップ４</MenuItem>
-                <MenuItem value="ステップ５">ステップ５</MenuItem>
-                <MenuItem value="ステップ６">ステップ６</MenuItem>
-                <MenuItem value="ステップ７">ステップ７</MenuItem>
-                <MenuItem value="ステップ８">ステップ８</MenuItem>
-                <MenuItem value="ステップ９">ステップ９</MenuItem>
-                <MenuItem value="ステップ１０">ステップ１０</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item md={2}>
-            <FormControl variant="standard" fullWidth>
-              <InputLabel>回数</InputLabel>
-              <Select
-                label="rep" 
-                value={rep} 
-                onChange={hundleRepsChange}
-              >
-                {
-                  trainingLepsArray.map((rep, index) => {
-                    return(
-                      <MenuItem key={index} value={rep}>{`${rep}回`}</MenuItem>
-                    )
-                  })
-                }
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item md={3}>
-            <FormControl variant="standard" fullWidth >
-              <InputLabel>セット数</InputLabel>
-              <Select
-                label="set" 
-                value={set} 
-                onChange={hundleSetChange}
-              >
-                <MenuItem value="１セット">１セット</MenuItem>
-                <MenuItem value="２セット">２セット</MenuItem>
-                <MenuItem value="３セット">３セット</MenuItem>
-                <MenuItem value="４セット">４セット</MenuItem>
-                <MenuItem value="５セット">５セット</MenuItem>
-                <MenuItem value="６セット">６セット</MenuItem>
-                <MenuItem value="７セット">７セット</MenuItem>
-                <MenuItem value="８セット">８セット</MenuItem>
-                <MenuItem value="９セット">９セット</MenuItem>
-                <MenuItem value="１０セット">１０セット</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item md={10} >
-            <FormControl variant="standard" fullWidth >
-              <TextField 
-                label="一言メモ" 
-                value={note}
-                onChange={hundleNoteChange}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item md={2}>
-            <Button 
-              color="primary" 
-              variant="contained"
-              size="medium" 
-              onClick={() => postTrainingAction(trainingMenu, step, rep, set, note)}
-            >
-              記録する
-            </Button>
-          </Grid>
-        </Grid>
+          :
+          null
+        }
         <Grid container item direction="column" >
-          <Typography className={classes.pastTrainingLogTitle} variant="h4" >過去の記録</Typography>
-          <Grid item>
-          {/* <Button variant="contained" color="secondary" onClick={() => apiConfirmation()} >API確認</Button> */}
-          </Grid>
+          <Typography className={classes.pastTrainingLogTitle} variant="h4" >これまでの記録</Typography>
           {
             pastTrainingLogsArr.map((data, index) => {
               return(
