@@ -32,6 +32,14 @@ module Api
         end
       end
 
+      def destroy
+        training_log = TrainingLog.find(params[:id])
+        training_log.destroy
+        render json: {
+          message: "削除完了"
+        }, status: :ok
+      end
+
       private
       def post_params
         params.permit(:user_id, :training_menu, :step, :repetition, :set, :memo)

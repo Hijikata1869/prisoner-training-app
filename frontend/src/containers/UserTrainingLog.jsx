@@ -13,12 +13,14 @@ import Cookies from 'js-cookie';
 import moment from 'moment';
 
 // apis
-import { postTraining, fetchCurrentUser, fetchUser } from '../apis/users';
+import { postTraining, fetchCurrentUser, fetchUser, deleteTrainingLog } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
 import { ReloadButton } from '../components/ReloadButton';
 import { FailedAlert } from '../components/FailedAlert';
+import { DeleteDialog } from '../components/DeleteDialog';
+import { SuccessAlert } from '../components/SuccessAlert';
 
 const useStyles = makeStyles(() => ({
   inputTrainingLogWrapper: {
@@ -35,9 +37,13 @@ const useStyles = makeStyles(() => ({
     marginLeft: "1rem",
     border: "1px solid gray",
     borderRadius: "10px",
+    paddingRight: "1rem"
   },
   trainingLogNotes: {
     borderTop: "1px solid gray"
+  },
+  deleteButton: {
+    margin: "0 0 0 auto"
   }
 }));
 
@@ -68,6 +74,9 @@ export const UserTrainingLog = ({ match }) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [pastTrainingLogsArr, setPastTrainingLogsArr] = useState([]);
   const [user, setUser] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+  const [targetTrainingLogId, setTargetTrainingLogId] = useState();
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -125,6 +134,25 @@ export const UserTrainingLog = ({ match }) => {
     })
   }
 
+  const dialogOpenAction = (trainingLogId) => {
+    setTargetTrainingLogId(trainingLogId);
+    setDialogOpen(true);
+  }
+
+  const trainingLogDeleteAction = () => {
+    const trainingLogId = targetTrainingLogId;
+    deleteTrainingLog(token, client, uid, trainingLogId)
+    .then((res) => {
+      if (res.status == 200){
+        setDialogOpen(false);
+        setSuccessAlertOpen(true);
+      }
+    })
+    .catch((e) => {
+      console.errror(e);
+    })
+  }
+
 
   return(
     <Fragment>
@@ -136,6 +164,18 @@ export const UserTrainingLog = ({ match }) => {
       {
         alertOpen ?
         <FailedAlert message="トレーニングを記録できませんでした" /> :
+        null
+      }
+      {
+        dialogOpen ?
+        <DeleteDialog deleteAction={trainingLogDeleteAction} />
+        :
+        null
+      }
+      {
+        successAlertOpen ?
+        <SuccessAlert message="記録を１件削除しました" />
+        :
         null
       }
       <Grid container item direction="column">
@@ -271,6 +311,15 @@ export const UserTrainingLog = ({ match }) => {
                     <Typography variant="subtitle2" >セット数</Typography>
                     <Typography variant="h6" >{`${data.set}`}</Typography>
                   </Grid>
+                  <Button 
+                    className={classes.deleteButton} 
+                    variant="text" 
+                    color="secondary" 
+                    size="small" 
+                    onClick={() => dialogOpenAction(data.id)}
+                  >
+                    この記録を削除する
+                  </Button>
                   <Grid className={classes.trainingLogNotes} item md={12}>
                     <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
                   </Grid>
