@@ -24,7 +24,7 @@ import {
 export const fetchUsers = () => {
   return axios.get(usersIndexPage)
   .then(res => {
-    return res
+    return res;
   })
   .catch((e) => console.error(e))
 }
@@ -174,8 +174,12 @@ export const postQuestion = (token, client, uid, userId, trainingMenu, step, que
   })
 }
 
-export const fetchQuestions = () => {
-  return axios.get(postQuestionUrl)
+export const fetchQuestions = (token, client, uid) => {
+  return axios.get(postQuestionUrl, {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
   .then(res => {
     return res;
   })

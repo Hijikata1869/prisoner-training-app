@@ -75,7 +75,7 @@ export const Questions = () => {
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
-      setCurrentUser(res);
+      setCurrentUser(res.data.currentUser);
     })
     .catch((e) => {
       console.error(e);
@@ -83,7 +83,7 @@ export const Questions = () => {
   }, []);
 
   useEffect(() => {
-    fetchQuestions()
+    fetchQuestions(token, client, uid)
     .then((res) => {
       setQuestionsArr(res.data.questions);
     })

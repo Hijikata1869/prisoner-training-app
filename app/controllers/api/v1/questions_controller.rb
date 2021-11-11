@@ -1,7 +1,7 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: [:index]
+      before_action :authenticate_api_v1_user!
 
       def index
         users = User.all
