@@ -19,6 +19,7 @@ import {
   showFollowersUrl,
   getTrainingLogsUrl,
   hundleTrainingLogsUrl,
+  hundleQuestionsUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -331,6 +332,20 @@ export const fetchTrainingLogs = () => {
 
 export const deleteTrainingLog = (token, client, uid, trainingLogId) => {
   return axios.delete(hundleTrainingLogsUrl(trainingLogId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const deleteQuestion = (token, client, uid, questionId) => {
+  return axios.delete(hundleQuestionsUrl(questionId),{headers: {
     'access-token': token,
     'client': client,
     'uid': uid

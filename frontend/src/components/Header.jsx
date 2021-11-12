@@ -9,8 +9,8 @@ import { signOut, fetchCurrentUser } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
-import { ReloadButton } from '../components/ReloadButton';
 import { FailedAlert } from '../components/FailedAlert';
+import { ToTopPageButton } from './ToTopPageButton';
 
 
 const useStyles = makeStyles(() => ({
@@ -96,7 +96,7 @@ export const Header = () => {
       </AppBar>
       {
         modalOpen ?
-        <SuccessModal message="ログアウトしました" button={<ReloadButton />} />
+        <SuccessModal message="ログアウトしました" button={<ToTopPageButton />} />
         :
         null
       }

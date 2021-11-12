@@ -33,6 +33,20 @@ module Api
         }, status: :ok
       end
 
+      def destroy
+        question = Question.find(params[:id])
+        if current_api_v1_user.id == question.user_id
+          question.destroy
+          render json: {
+            message: "completed"
+          }, status: :ok
+        else
+          render json: {
+            message: "failed"
+          }, status: :bad_request
+        end
+      end
+
       private
       def post_params
         params.permit(:user_id, :question, :training_menu, :step)

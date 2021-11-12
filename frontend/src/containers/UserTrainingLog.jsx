@@ -37,14 +37,15 @@ const useStyles = makeStyles(() => ({
     marginLeft: "1rem",
     border: "1px solid gray",
     borderRadius: "10px",
-    paddingRight: "1rem"
   },
   trainingLogNotes: {
     borderTop: "1px solid gray"
   },
+  deleteButtonWrapper: {
+    margin: "0 0 0 auto",
+  },
   deleteButton: {
-    margin: "0 0 0 auto"
-  }
+  },
 }));
 
 const repsPrepare = () => {
@@ -149,7 +150,7 @@ export const UserTrainingLog = ({ match }) => {
       }
     })
     .catch((e) => {
-      console.errror(e);
+      console.error(e);
     })
   }
 
@@ -290,7 +291,15 @@ export const UserTrainingLog = ({ match }) => {
           {
             pastTrainingLogsArr.map((data, index) => {
               return(
-                <Grid key={index} className={classes.pastTrainingLogWrapper} container item spacing={4} direction="row" >
+                <Grid 
+                  key={index} 
+                  className={classes.pastTrainingLogWrapper} 
+                  container 
+                  item 
+                  spacing={4} 
+                  direction="row" 
+                  alignItems="center"
+                >
                   <Grid item >
                     <Typography variant="subtitle2" >日付</Typography>
                     <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
@@ -311,15 +320,22 @@ export const UserTrainingLog = ({ match }) => {
                     <Typography variant="subtitle2" >セット数</Typography>
                     <Typography variant="h6" >{`${data.set}`}</Typography>
                   </Grid>
-                  <Button 
-                    className={classes.deleteButton} 
-                    variant="text" 
-                    color="secondary" 
-                    size="small" 
-                    onClick={() => dialogOpenAction(data.id)}
-                  >
-                    この記録を削除する
-                  </Button>
+                  <Grid className={classes.deleteButtonWrapper} item>
+                    {
+                      currentUser.id === data.user_id ?
+                      <Button 
+                        className={classes.deleteButton} 
+                        variant="text" 
+                        color="secondary" 
+                        size="small" 
+                        onClick={() => dialogOpenAction(data.id)}
+                      >
+                        削除する
+                      </Button>
+                      :
+                      null
+                    }
+                  </Grid>
                   <Grid className={classes.trainingLogNotes} item md={12}>
                     <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
                   </Grid>

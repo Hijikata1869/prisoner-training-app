@@ -34,10 +34,16 @@ module Api
 
       def destroy
         training_log = TrainingLog.find(params[:id])
-        training_log.destroy
-        render json: {
-          message: "削除完了"
-        }, status: :ok
+        if current_api_v1_user.id == training_log.user_id
+          training_log.destroy
+          render json: {
+            message: "削除完了"
+          }, status: :ok
+        else
+          render json: {
+            message: "削除できませんでした"
+          }, status: :bad_request
+        end
       end
 
       private

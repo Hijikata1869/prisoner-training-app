@@ -6,7 +6,11 @@ import Cookies from 'js-cookie';
 import moment from 'moment';
 
 // apis
-import { fetchCurrentUser, fetchUser, fetchUsers } from '../apis/users';
+import { fetchCurrentUser, fetchUser, fetchUsers, deleteQuestion } from '../apis/users';
+
+// components
+import { DeleteDialog } from '../components/DeleteDialog';
+import { SuccessAlert } from '../components/SuccessAlert';
 
 const useStyles = makeStyles(() => ({
   userAvatar: {
@@ -29,6 +33,9 @@ const useStyles = makeStyles(() => ({
   },
   toQuestionPageButton: {
     marginTop: "2rem"
+  },
+  deleteButton: {
+    margin: "0 0 0 auto"
   }
 }))
 
@@ -45,6 +52,9 @@ export const UserQuestions = ({ match }) => {
   const [currentUser, setCurrentUser] = useState([]);
   const [userQuestions, setUserQuestions] = useState([]);
   const [usersArr, setUsersArr] = useState([]);
+  const [targetQuestionId, setTargetQuestionId] = useState();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
 
   useEffect(() => {
     fetchUser(match.params.userId)
@@ -87,9 +97,45 @@ export const UserQuestions = ({ match }) => {
     return user?.nickname;
   }
 
+  const dialogOpenAction = (questionId) => {
+    setTargetQuestionId(questionId);
+    setDialogOpen(true);
+  }
+
+  const questionDeleteAction = () => {
+    const questionId = targetQuestionId;
+    deleteQuestion(token, client, uid, questionId)
+    .then((res) => {
+      if(res.status == 200) {
+        setDialogOpen(false);
+        setSuccessAlertOpen(true);
+      }
+    })
+    .then(() => {
+      window.scroll({
+        top: 0
+      })
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
 
   return(
     <Fragment>
+      {
+        dialogOpen ?
+        <DeleteDialog deleteAction={questionDeleteAction} />
+        :
+        null
+      }
+      {
+        successAlertOpen ?
+        <SuccessAlert message="削除しました" />
+        :
+        null
+      }
       <Grid container item direction="column" >
         <Typography className={classes.pageTitle} variant="h4">{`${user.nickname}さんの質問一覧`}</Typography>
         {
@@ -133,6 +179,19 @@ export const UserQuestions = ({ match }) => {
                       アドバイスをする
                     </Button>
                   </CardActions>
+                  {
+                    currentUser.id === questionData.user_id ?
+                    <CardActions className={classes.deleteButtonWrapper}>
+                      <Button 
+                        className={classes.deleteButton} 
+                        onClick={() => dialogOpenAction(questionData.id)}
+                      >
+                        削除する
+                      </Button>
+                    </CardActions>
+                    :
+                    null
+                  }
                 </Card>
               </Grid>
             );
