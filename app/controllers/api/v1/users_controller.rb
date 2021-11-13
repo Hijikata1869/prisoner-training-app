@@ -21,6 +21,7 @@ module Api
         user_followings = user.followings
         user_followers = user.followers
         user_questions = user.questions.order(id: "DESC")
+        user_advices = user.advices
 
         render json: {
           user: user,
@@ -28,7 +29,8 @@ module Api
           bookmarkedAdvices: bookmarked_advices,
           userFollowings: user_followings,
           userFollowers: user_followers,
-          userQuestions: user_questions
+          userQuestions: user_questions,
+          userAdvices: user_advices
         }, status: :ok
       end
 

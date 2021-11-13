@@ -1,13 +1,11 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-      before_action :authenticate_api_v1_user!
+      before_action :authenticate_api_v1_user!, except: [:index]
 
       def index
-        users = User.all
         questions = Question.all.order(id: "DESC")
         render json: {
-          users: users,
           questions: questions
         }, status: :ok
       end

@@ -52,7 +52,7 @@ function App() {
                 <UsersContainer match={match} mainComponent={<UserQuestions match={match} />} />
               </Route>
               <Route exact path={`${match.path}/advices`}>
-                <UserAdvices />
+                <UsersContainer match={match} mainComponent={<UserAdvices match={match} />} />
               </Route>
               <Route exaxt path={`${match.path}/auth/edit`}>
                 <UsersContainer match={match} mainComponent={<UserUpdate match={match} />} />

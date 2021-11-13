@@ -175,12 +175,8 @@ export const postQuestion = (token, client, uid, userId, trainingMenu, step, que
   })
 }
 
-export const fetchQuestions = (token, client, uid) => {
-  return axios.get(postQuestionUrl, {headers: {
-    'access-token': token,
-    'client': client,
-    'uid': uid
-  }})
+export const fetchQuestions = () => {
+  return axios.get(postQuestionUrl)
   .then(res => {
     return res;
   })
