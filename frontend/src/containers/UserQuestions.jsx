@@ -169,16 +169,21 @@ export const UserQuestions = ({ match }) => {
                     <Typography variant="subtitle2" color="textSecondary" >困っていること、聞きたいこと</Typography>
                     <Typography>{`${questionData.question}`}</Typography>
                   </CardContent>
-                  <CardActions className={classes.adviceButtonWrapper}>
-                    <Button 
-                      className={classes.adviceButton} 
-                      variant="contained" 
-                      color="primary" 
-                      onClick={() => history.push(`/questions/${questionData.id}/advices`)}
-                    >
-                      アドバイスをする
-                    </Button>
-                  </CardActions>
+                  {
+                    currentUser.length !== 0 ?
+                    <CardActions className={classes.adviceButtonWrapper}>
+                      <Button 
+                        className={classes.adviceButton} 
+                        variant="contained" 
+                        color="primary" 
+                        onClick={() => history.push(`/questions/${questionData.id}/advices`)}
+                      >
+                        アドバイスをする
+                      </Button>
+                    </CardActions>
+                    :
+                    null
+                  }
                   {
                     currentUser.id === questionData.user_id ?
                     <CardActions className={classes.deleteButtonWrapper}>

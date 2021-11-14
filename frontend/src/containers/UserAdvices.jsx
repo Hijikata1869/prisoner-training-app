@@ -1,13 +1,17 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
+import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
+// icons
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 // apis
 import { fetchUser, fetchUsers, fetchQuestions, fetchCurrentUser } from '../apis/users';
+
 
 const useStyles = makeStyles(() => ({
   adviceCardWrapper: {
@@ -106,6 +110,50 @@ export const UserAdvices = ({ match }) => {
     return targetQuestion?.question;
   }
 
+  const deleteBookmarkAction = (adviceId) => {
+    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
+  }
+
+  const createBookmarkAction = (adviceId) => {
+    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-token': token,
+        'client': client,
+        'uid': uid
+      }
+    })
+    .then(() => {
+      fetchCurrentUser(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
+    .catch((e) => console.error(e))
+  }
+
   return(
     <Fragment>
       <Grid container item direction="column">
@@ -137,25 +185,46 @@ export const UserAdvices = ({ match }) => {
                     }
                    />
                   <CardContent>
-                    <Typography variant="subtitle1">元の質問</Typography>
+                    <Typography variant="subtitle2" gutterBottom>元の質問</Typography>
                     <Typography variant="subtitle2" color="textSecondary">
                       {`${showQuestion(data.question_id)}`}
                     </Typography>
                   </CardContent>
                   <CardContent>
-                    <Typography variant="subtitle1">{`${showUserName(data.user_id)}さんのアドバイス`}</Typography>
+                    <Typography variant="subtitle2" gutterBottom>{`${showUserName(data.user_id)}さんのアドバイス`}</Typography>
                     <Typography>{`${data.advice}`}</Typography>
                   </CardContent>
-                  <CardActions>
                     {
                       currentUser.length !== 0 ?
-                      <Typography>ブックマークの表示</Typography>
+                      <CardActions>
+                        {
+                          currentUserBookmarksArr.find(bookmark => bookmark.advice_id == data.id) ?
+                          <Fragment>
+                            <IconButton
+                              onClick={() => deleteBookmarkAction(data.id)}
+                            >
+                              <BookmarkIcon />
+                            </IconButton>
+                            <Typography>ブックマーク済み</Typography>
+                          </Fragment>
+                          :
+                          <Fragment>
+                            <IconButton
+                              onClick={() => createBookmarkAction(data.id)}
+                            >
+                              <BookmarkBorderIcon />
+                            </IconButton>
+                            <Typography>ブックマークする</Typography>
+                          </Fragment>
+                        }
+                      </CardActions>
                       :
-                      <Typography className={classes.cardActionText} color="textSecondary" >
-                        ログインするとアドバイスをブックマークすることができます
-                      </Typography>
+                      <CardActions>
+                        <Typography className={classes.cardActionText} color="textSecondary" >
+                          ログインするとアドバイスをブックマークすることができます
+                        </Typography>
+                      </CardActions>
                     }
-                  </CardActions>
                 </Card>
               );
             })

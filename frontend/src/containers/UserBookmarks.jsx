@@ -10,7 +10,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 // apis
-import { fetchUsers, fetchUser, deleteBookmark, fetchCurrentUser } from '../apis/users';
+import { fetchUsers, fetchUser, fetchCurrentUser, fetchQuestions } from '../apis/users';
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
@@ -41,6 +41,7 @@ export const UserBookmarks = ({ match }) => {
   const [usersArr, setUsersArr] = useState([]);
   const [bookmarkedAdvicesArr, setBookmaredkAdvicesArr] = useState([]);
   const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
+  const [allQuestionsArr, setAllQuestionsArr] = useState([]);
 
   useEffect(() => {
     fetchUsers()
@@ -70,7 +71,17 @@ export const UserBookmarks = ({ match }) => {
     .catch((e) => {
       console.error(e);
     })
-  }, []) 
+  }, [])
+
+  useEffect(() => {
+    fetchQuestions()
+    .then((res) => {
+      setAllQuestionsArr(res.data.questions);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
 
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
@@ -126,6 +137,11 @@ export const UserBookmarks = ({ match }) => {
     .catch((e) => console.error(e))
   }
 
+  const showQuestion = (questionId) => {
+    const targetQuestion = allQuestionsArr.find(question => question.id == questionId);
+    return targetQuestion?.question;
+  }
+
   return(
     <Fragment>
       <Grid container item direction="column" >
@@ -156,6 +172,13 @@ export const UserBookmarks = ({ match }) => {
                     subheader={`投稿日：${moment(adviceData.created_at).format('YYYY-MM-DD')}`}
                   />
                   <CardContent>
+                    <Typography variant="subtitle2" gutterBottom>元の質問</Typography>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      {`${showQuestion(adviceData.question_id)}`}
+                    </Typography>
+                  </CardContent>
+                  <CardContent>
+                    <Typography variant="subtitle2" gutterBottom>アドバイス</Typography>
                     <Typography>{`${adviceData.advice}`}</Typography>
                   </CardContent>
                   <CardActions>
