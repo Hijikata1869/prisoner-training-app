@@ -196,28 +196,28 @@ export const UserAdvices = ({ match }) => {
                   </CardContent>
                     {
                       currentUser.length !== 0 ?
-                      <CardActions>
+                      <Fragment>
                         {
                           currentUserBookmarksArr.find(bookmark => bookmark.advice_id == data.id) ?
-                          <Fragment>
+                          <CardActions>
                             <IconButton
                               onClick={() => deleteBookmarkAction(data.id)}
                             >
                               <BookmarkIcon />
                             </IconButton>
                             <Typography>ブックマーク済み</Typography>
-                          </Fragment>
+                          </CardActions>
                           :
-                          <Fragment>
+                          <CardActions>
                             <IconButton
                               onClick={() => createBookmarkAction(data.id)}
                             >
                               <BookmarkBorderIcon />
                             </IconButton>
                             <Typography>ブックマークする</Typography>
-                          </Fragment>
+                          </CardActions>
                         }
-                      </CardActions>
+                      </Fragment>
                       :
                       <CardActions>
                         <Typography className={classes.cardActionText} color="textSecondary" >

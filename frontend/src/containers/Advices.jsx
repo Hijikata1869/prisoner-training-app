@@ -30,6 +30,9 @@ import { FailedAlert } from '../components/FailedAlert';
 import { ReloadButton } from '../components/ReloadButton';
 import { UserBookmarks } from './UserBookmarks';
 
+// images
+import mainLogo from '../images/answerAdviceImage.svg';
+
 const useStyles = makeStyles((theme) => ({
   adviceContainer: {
     marginTop: "2rem"
@@ -73,6 +76,13 @@ const useStyles = makeStyles((theme) => ({
   },
   adviceTextField: {
     backgroundColor: theme.palette.background.paper
+  },
+  mainLogoImage: {
+    width: "100%",
+    height: "100%"
+  },
+  mainLogoWrapper: {
+    height: "85vh"
   }
 }));
 
@@ -216,7 +226,12 @@ export const Advices = ({ match }) => {
         null
       }
       <Grid className={classes.adviceContainer} container>
-        <Grid container item md={3}></Grid>
+        <Grid className={classes.mainLogoWrapper} container item md={3}>
+          {/* このコンテナに画像を入れる */}
+          <Grid item>
+            <img className={classes.mainLogoImage} src={mainLogo} />
+          </Grid>
+        </Grid>
         <Grid container item md={9} direction="column" >
           <Typography className={classes.pageTitle} variant="h3" >アドバイスする</Typography>
           <Grid item>
