@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
+import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Cookies from 'js-cookie';
@@ -10,7 +10,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 // apis
-import { fetchUser, fetchUsers, fetchQuestions, fetchCurrentUser } from '../apis/users';
+import { fetchUser, fetchUsers, fetchQuestions, fetchCurrentUser, deleteAdvice } from '../apis/users';
 
 
 const useStyles = makeStyles(() => ({
@@ -194,37 +194,45 @@ export const UserAdvices = ({ match }) => {
                     <Typography variant="subtitle2" gutterBottom>{`${showUserName(data.user_id)}さんのアドバイス`}</Typography>
                     <Typography>{`${data.advice}`}</Typography>
                   </CardContent>
-                    {
-                      currentUser.length !== 0 ?
-                      <Fragment>
-                        {
-                          currentUserBookmarksArr.find(bookmark => bookmark.advice_id == data.id) ?
-                          <CardActions>
-                            <IconButton
-                              onClick={() => deleteBookmarkAction(data.id)}
-                            >
-                              <BookmarkIcon />
-                            </IconButton>
-                            <Typography>ブックマーク済み</Typography>
-                          </CardActions>
-                          :
-                          <CardActions>
-                            <IconButton
-                              onClick={() => createBookmarkAction(data.id)}
-                            >
-                              <BookmarkBorderIcon />
-                            </IconButton>
-                            <Typography>ブックマークする</Typography>
-                          </CardActions>
-                        }
-                      </Fragment>
-                      :
-                      <CardActions>
-                        <Typography className={classes.cardActionText} color="textSecondary" >
-                          ログインするとアドバイスをブックマークすることができます
-                        </Typography>
-                      </CardActions>
-                    }
+                  {
+                    currentUser.length !== 0 ?
+                    <Fragment>
+                      {
+                        currentUserBookmarksArr.find(bookmark => bookmark.advice_id == data.id) ?
+                        <CardActions>
+                          <IconButton
+                            onClick={() => deleteBookmarkAction(data.id)}
+                          >
+                            <BookmarkIcon />
+                          </IconButton>
+                          <Typography>ブックマーク済み</Typography>
+                        </CardActions>
+                        :
+                        <CardActions>
+                          <IconButton
+                            onClick={() => createBookmarkAction(data.id)}
+                          >
+                            <BookmarkBorderIcon />
+                          </IconButton>
+                          <Typography>ブックマークする</Typography>
+                        </CardActions>
+                      }
+                    </Fragment>
+                    :
+                    <CardActions>
+                      <Typography className={classes.cardActionText} color="textSecondary" >
+                        ログインするとアドバイスをブックマークすることができます
+                      </Typography>
+                    </CardActions>
+                  }
+                  {
+                    currentUser.id == data.user_id ?
+                    <CardActions>
+                      <Button>削除する</Button>
+                    </CardActions>
+                    :
+                    null
+                  }
                 </Card>
               );
             })

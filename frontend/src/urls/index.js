@@ -23,3 +23,4 @@ export const showFollowersUrl = (id) => `${DEFAULT_API_LOCALHOST}/users/${id}/fo
 export const getTrainingLogsUrl = `${DEFAULT_API_LOCALHOST}/training_logs`;
 export const hundleTrainingLogsUrl = (id) => `${DEFAULT_API_LOCALHOST}/training_logs/${id}`;
 export const hundleQuestionsUrl = (id) => `${DEFAULT_API_LOCALHOST}/questions/${id}`;
+export const hundleAdivceUrl = (id) => `${DEFAULT_API_LOCALHOST}/advices/${id}`;
