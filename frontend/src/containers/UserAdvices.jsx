@@ -12,6 +12,10 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 // apis
 import { fetchUser, fetchUsers, fetchQuestions, fetchCurrentUser, deleteAdvice } from '../apis/users';
 
+// components
+import { DeleteDialog } from '../components/DeleteDialog';
+import { SuccessAlert } from '../components/SuccessAlert';
+
 
 const useStyles = makeStyles(() => ({
   adviceCardWrapper: {
@@ -23,7 +27,7 @@ const useStyles = makeStyles(() => ({
   },
   adviceCard: {
     marginBottom: "1rem",
-    paddingBottom: "1rem"
+    padding: "1rem"
   },
   userAvatar: {
     height: "75px",
@@ -32,6 +36,9 @@ const useStyles = makeStyles(() => ({
   },
   cardActionText: {
     margin: "0 auto"
+  },
+  deleteAdviceButton: {
+    margin: "0 0 0 auto"
   }
 }))
 
@@ -51,6 +58,9 @@ export const UserAdvices = ({ match }) => {
   const [allQuestionsArr, setAllQuestionsArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [targetAdviceId, setTargetAdviceId] = useState();
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     fetchUser(match.params.userId)
@@ -154,8 +164,44 @@ export const UserAdvices = ({ match }) => {
     .catch((e) => console.error(e))
   }
 
+  const dialogOpenAction = (adviceId) => {
+    setTargetAdviceId(adviceId);
+    setDialogOpen(true);
+  }
+
+  const deleteAdviceAction = () => {
+    deleteAdvice(token, client, uid, targetAdviceId)
+    .then((res) => {
+      if (res.status == 200) {
+        setDialogOpen(false);
+        setAlertOpen(true);
+      }
+    })
+    .then(() => {
+      window.scroll({
+        top: 0
+      })
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
+
   return(
     <Fragment>
+      {
+        dialogOpen ?
+        <DeleteDialog deleteAction={deleteAdviceAction} />
+        :
+        null
+      }
+      {
+        alertOpen ?
+        <SuccessAlert message="アドバイスを一件削除しました" />
+        :
+        null
+      }
       <Grid container item direction="column">
         <Typography className={classes.pageTitle} variant="h4">{`${user.nickname}さんのアドバイス一覧`}</Typography>
         <Grid className={classes.adviceCardWrapper} item>
@@ -228,7 +274,12 @@ export const UserAdvices = ({ match }) => {
                   {
                     currentUser.id == data.user_id ?
                     <CardActions>
-                      <Button>削除する</Button>
+                      <Button 
+                        className={classes.deleteAdviceButton}
+                        onClick={() => dialogOpenAction(data.id)}
+                      >
+                        削除する
+                      </Button>
                     </CardActions>
                     :
                     null

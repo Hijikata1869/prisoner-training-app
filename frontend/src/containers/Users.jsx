@@ -283,7 +283,7 @@ export const Users = ({ match }) => {
           <Grid container spacing={4}>
             <Grid container item direction="column" alignItems="center" >
               <Grid item>
-                <Typography variant="h3" gutterBottom >{`${user.nickname}のプロフィール`}</Typography>
+                <Typography variant="h3" gutterBottom >{`${user.nickname}さんのプロフィール`}</Typography>
               </Grid>
               <Grid item>
                 <Avatar 

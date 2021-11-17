@@ -42,6 +42,7 @@ export const UserBookmarks = ({ match }) => {
   const [bookmarkedAdvicesArr, setBookmaredkAdvicesArr] = useState([]);
   const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
   const [allQuestionsArr, setAllQuestionsArr] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
 
   useEffect(() => {
     fetchUsers()
@@ -66,6 +67,7 @@ export const UserBookmarks = ({ match }) => {
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
+      setCurrentUser(res.data.currentUser);
       setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
     })
     .catch((e) => {
@@ -146,7 +148,7 @@ export const UserBookmarks = ({ match }) => {
     <Fragment>
       <Grid container item direction="column" >
         <Typography className={classes.pageTitle} variant="h4">
-          {`${showUserName(Number(match.params.userId))}のブックマークしたアドバイス`}
+          {`${showUserName(Number(match.params.userId))}さんのブックマークしたアドバイス`}
         </Typography>
         <Grid className={classes.adviceCardWrapper} item>
           {
@@ -183,6 +185,7 @@ export const UserBookmarks = ({ match }) => {
                   </CardContent>
                   <CardActions>
                     {
+                      currentUser.length !== 0 ?
                       currentUserBookmarksArr.find(element => element.advice_id === adviceData.id) ?
                       <Fragment>
                         <IconButton
@@ -201,6 +204,8 @@ export const UserBookmarks = ({ match }) => {
                         </IconButton>
                         <Typography>ブックマークする</Typography>
                       </Fragment>
+                      :
+                      null
                     }
                   </CardActions>
                 </Card>
