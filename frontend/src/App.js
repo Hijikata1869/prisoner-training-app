@@ -21,6 +21,7 @@ import { Advices } from './containers/Advices';
 import { Contact } from './containers/Contact';
 import { UserFollowings } from './containers/UserFollowings';
 import { UserFollowers } from './containers/UserFollowers';
+import { TrainingLogs } from './containers/TrainingLogs';
 
 // components
 import { Header } from './components/Header';
@@ -90,6 +91,9 @@ function App() {
         />
         <Route exact path="/contact">
           <Contact />
+        </Route>
+        <Route exact path="/training_logs">
+          <TrainingLogs />
         </Route>
       </Switch>
     </Router>

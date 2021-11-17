@@ -14,9 +14,11 @@ module Api
 
       def show
         training_log = TrainingLog.find(params[:id])
+        training_log_likes = training_log.likes
 
         render json: {
-          training_log: training_log
+          training_log: training_log,
+          trianing_log_likes: training_log_likes
         }, status: :ok
       end
 

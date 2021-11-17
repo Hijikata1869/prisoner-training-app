@@ -318,11 +318,11 @@ export const Index = () => {
           {
             currentUser.length !== 0 && currentUserFollowingsArr.length !== 0 ?
             <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
-              フォローしているユーザーのトレーニング記録
+              フォローしているユーザーの最新トレーニング記録
             </Typography>
             :
             <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
-              みんなのトレーニング記録
+              みんなの最新トレーニング記録
             </Typography>
           }
           {
@@ -435,7 +435,13 @@ export const Index = () => {
               }
             </Grid>
           }
-          <Button variant="text" className={classes.toTrainingLogButton}>トレーニング記録一覧はこちら</Button>
+          <Button 
+            variant="text" 
+            className={classes.toTrainingLogButton}
+            onClick={() => history.push("/training_logs")}
+          >
+            トレーニング記録一覧はこちら
+          </Button>
         </Container>
       </div>
       <div className={classes.fourthWrapper}>

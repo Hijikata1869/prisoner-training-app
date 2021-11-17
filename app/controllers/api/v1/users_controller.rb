@@ -6,11 +6,8 @@ module Api
 
       def index
         users = User.all
-        current_user = current_api_v1_user
-
         render json: {
-          users: users,
-          currentUser: current_user
+          users: users
         }, status: :ok
       end
 
