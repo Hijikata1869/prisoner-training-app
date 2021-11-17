@@ -20,7 +20,9 @@ import {
   getTrainingLogsUrl,
   hundleTrainingLogsUrl,
   hundleQuestionsUrl,
-  hundleAdivceUrl
+  hundleAdivceUrl,
+  showTrainingLogUrl,
+  hundleLikesUrl,
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -361,6 +363,26 @@ export const deleteAdvice = (token, client, uid, adviceId) => {
     'client': client,
     'uid': uid
   }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchTrainingLog = (trainingLogId) => {
+  return axios.get(showTrainingLogUrl(trainingLogId))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchLikes = () => {
+  return axios.get(hundleLikesUrl)
   .then((res) => {
     return res;
   })

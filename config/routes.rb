@@ -19,6 +19,8 @@ Rails.application.routes.draw do
         resource :bookmarks, only: [:create, :destroy]
       end
 
+      get '/likes', to: 'likes#index'
+
       root to: "homes#index"
     end
   end

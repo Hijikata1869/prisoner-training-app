@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { ThumbUp, ThumbUpAltOutlined } from '@material-ui/icons';
 
 // apis
-import { fetchTrainingLogs, fetchUsers, fetchCurrentUser } from '../apis/users';
+import { fetchTrainingLogs, fetchUsers, fetchCurrentUser, fetchLikes } from '../apis/users';
 
 
 const useStyles = makeStyles(() => ({
@@ -43,6 +43,7 @@ export const TrainingLogs = () => {
   const [usersArr, setUsersArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
+  const [allLikesArr, setAllLikesArr] = useState([]);
 
   useEffect(() => {
     fetchTrainingLogs()
@@ -58,7 +59,6 @@ export const TrainingLogs = () => {
     fetchUsers()
     .then((res) => {
       setUsersArr(res.data.users);
-      console.log(res);
     })
     .catch((e) => {
       console.error(e);
@@ -70,6 +70,16 @@ export const TrainingLogs = () => {
     .then((res) => {
       setCurrentUser(res.data.currentUser);
       setCurrentUserLikesArr(res.data.currentUserLikes);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchLikes()
+    .then((res) => {
+      setAllLikesArr(res.data.likes);
     })
     .catch((e) => {
       console.error(e);
@@ -105,6 +115,15 @@ export const TrainingLogs = () => {
         console.error(e);
       })
     })
+    .then(() => {
+      fetchLikes()
+      .then((res) => {
+        setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
     .catch((e) => console.error(e))
   }
 
@@ -127,7 +146,21 @@ export const TrainingLogs = () => {
         console.error(e);
       })
     })
+    .then(() => {
+      fetchLikes()
+      .then((res) => {
+        setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
     .catch((e) => console.error(e))
+  }
+
+  const numberOfLikes = (trainingLogId) => {
+    const targetLikes = allLikesArr.filter(like => like.training_log_id == trainingLogId);
+    return targetLikes?.length;
   }
 
 
@@ -178,7 +211,7 @@ export const TrainingLogs = () => {
                               >
                                 <ThumbUp/>
                               </IconButton>
-                              <Typography>いいね済み</Typography>
+                              <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
                             </Fragment>
                             :
                             <Fragment>
@@ -188,12 +221,14 @@ export const TrainingLogs = () => {
                               >
                                 <ThumbUpAltOutlined />
                               </IconButton>
-                              <Typography>いいねする</Typography>
+                              <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
                             </Fragment>
                           }
                         </Fragment>
                         :
-                        null
+                        <Typography color="textSecondary">
+                          {`${numberOfLikes(trainingData.id)}件のいいね`}
+                        </Typography>
                       }
                     </CardActions>
                   </Card> 

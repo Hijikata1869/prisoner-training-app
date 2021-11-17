@@ -1,7 +1,14 @@
 module Api
   module V1
     class LikesController < ApplicationController
-      before_action :authenticate_api_v1_user!
+      before_action :authenticate_api_v1_user!, except: [:index]
+
+      def index
+        likes = Like.all
+        render json: {
+          likes: likes
+        }, status: :ok
+      end
 
       def create
         like = current_api_v1_user.likes.build(training_log_id: params[:training_log_id])
