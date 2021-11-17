@@ -152,65 +152,72 @@ export const UserBookmarks = ({ match }) => {
         </Typography>
         <Grid className={classes.adviceCardWrapper} item>
           {
-            bookmarkedAdvicesArr.map((adviceData, index) => {
-              return(
-                <Card className={classes.adviceCard} key={index}>
-                  <CardHeader 
-                    avatar={
-                      <ButtonBase 
-                        onClick={() => history.push(`/users/${adviceData.user_id}`)}
-                      >
-                        <Avatar 
-                          className={classes.userImage}
-                          alt={showUserName(adviceData.user_id)}
-                          src={showUserImage(adviceData.user_id)} 
-                          variant="rounded"
-                        />
-                      </ButtonBase>
-                    }
-                    title={
-                      <Typography variant="h5" >{`${showUserName(adviceData.user_id)}さんのアドバイス`}</Typography>
-                    }
-                    subheader={`投稿日：${moment(adviceData.created_at).format('YYYY-MM-DD')}`}
-                  />
-                  <CardContent>
-                    <Typography variant="subtitle2" gutterBottom>元の質問</Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      {`${showQuestion(adviceData.question_id)}`}
-                    </Typography>
-                  </CardContent>
-                  <CardContent>
-                    <Typography variant="subtitle2" gutterBottom>アドバイス</Typography>
-                    <Typography>{`${adviceData.advice}`}</Typography>
-                  </CardContent>
-                  <CardActions>
-                    {
-                      currentUser.length !== 0 ?
-                      currentUserBookmarksArr.find(element => element.advice_id === adviceData.id) ?
-                      <Fragment>
-                        <IconButton
-                          onClick={() => deleteBookmarkAction(adviceData.id)}
-                        >
-                          <BookmarkIcon />
-                        </IconButton>
-                        <Typography>ブックマーク済み</Typography>
-                      </Fragment>
-                      :
-                      <Fragment>
-                        <IconButton
-                          onClick={() => createBookmarkAction(adviceData.id)}
-                        >
-                          <BookmarkBorderIcon />
-                        </IconButton>
-                        <Typography>ブックマークする</Typography>
-                      </Fragment>
-                      :
-                      null
-                    }
-                  </CardActions>
-                </Card>
-              )
-            })
+            bookmarkedAdvicesArr.length !== 0 ?
+            <Fragment>
+              {
+                bookmarkedAdvicesArr.map((adviceData, index) => {
+                  return(
+                    <Card className={classes.adviceCard} key={index}>
+                      <CardHeader 
+                        avatar={
+                          <ButtonBase 
+                            onClick={() => history.push(`/users/${adviceData.user_id}`)}
+                          >
+                            <Avatar 
+                              className={classes.userImage}
+                              alt={showUserName(adviceData.user_id)}
+                              src={showUserImage(adviceData.user_id)} 
+                              variant="rounded"
+                            />
+                          </ButtonBase>
+                        }
+                        title={
+                          <Typography variant="h5" >{`${showUserName(adviceData.user_id)}さんのアドバイス`}</Typography>
+                        }
+                        subheader={`投稿日：${moment(adviceData.created_at).format('YYYY-MM-DD')}`}
+                      />
+                      <CardContent>
+                        <Typography variant="subtitle2" gutterBottom>元の質問</Typography>
+                        <Typography variant="subtitle2" color="textSecondary">
+                          {`${showQuestion(adviceData.question_id)}`}
+                        </Typography>
+                      </CardContent>
+                      <CardContent>
+                        <Typography variant="subtitle2" gutterBottom>アドバイス</Typography>
+                        <Typography>{`${adviceData.advice}`}</Typography>
+                      </CardContent>
+                      <CardActions>
+                        {
+                          currentUser.length !== 0 ?
+                          currentUserBookmarksArr.find(element => element.advice_id === adviceData.id) ?
+                          <Fragment>
+                            <IconButton
+                              onClick={() => deleteBookmarkAction(adviceData.id)}
+                            >
+                              <BookmarkIcon />
+                            </IconButton>
+                            <Typography>ブックマーク済み</Typography>
+                          </Fragment>
+                          :
+                          <Fragment>
+                            <IconButton
+                              onClick={() => createBookmarkAction(adviceData.id)}
+                            >
+                              <BookmarkBorderIcon />
+                            </IconButton>
+                            <Typography>ブックマークする</Typography>
+                          </Fragment>
+                          :
+                          null
+                        }
+                      </CardActions>
+                    </Card>
+                  )
+                })
+              }
+            </Fragment>
+            :
+            <Typography>まだブックマークしたアドバイスがありません</Typography>
           }
         </Grid>
       </Grid>

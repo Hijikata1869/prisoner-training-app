@@ -289,59 +289,66 @@ export const UserTrainingLog = ({ match }) => {
         <Grid container item direction="column" >
           <Typography className={classes.pastTrainingLogTitle} variant="h4" >これまでの記録</Typography>
           {
-            pastTrainingLogsArr.map((data, index) => {
-              return(
-                <Grid 
-                  key={index} 
-                  className={classes.pastTrainingLogWrapper} 
-                  container 
-                  item 
-                  spacing={4} 
-                  direction="row" 
-                  alignItems="center"
-                >
-                  <Grid item >
-                    <Typography variant="subtitle2" >日付</Typography>
-                    <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >メニュー</Typography>
-                    <Typography variant="h6" >{`${data.training_menu}`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >ステップ</Typography>
-                    <Typography variant="h6" >{`${data.step}`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >回数</Typography>
-                    <Typography variant="h6" >{`${data.repetition}回`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >セット数</Typography>
-                    <Typography variant="h6" >{`${data.set}`}</Typography>
-                  </Grid>
-                  <Grid className={classes.deleteButtonWrapper} item>
-                    {
-                      currentUser.id === data.user_id ?
-                      <Button 
-                        className={classes.deleteButton} 
-                        variant="text" 
-                        color="secondary" 
-                        size="small" 
-                        onClick={() => dialogOpenAction(data.id)}
-                      >
-                        削除する
-                      </Button>
-                      :
-                      null
-                    }
-                  </Grid>
-                  <Grid className={classes.trainingLogNotes} item md={12}>
-                    <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
-                  </Grid>
-                </Grid>
-              );
-            })
+            pastTrainingLogsArr.length !== 0 ?
+            <Fragment>
+              {
+                pastTrainingLogsArr.map((data, index) => {
+                  return(
+                    <Grid 
+                      key={index} 
+                      className={classes.pastTrainingLogWrapper} 
+                      container 
+                      item 
+                      spacing={4} 
+                      direction="row" 
+                      alignItems="center"
+                    >
+                      <Grid item >
+                        <Typography variant="subtitle2" >日付</Typography>
+                        <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >メニュー</Typography>
+                        <Typography variant="h6" >{`${data.training_menu}`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >ステップ</Typography>
+                        <Typography variant="h6" >{`${data.step}`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >回数</Typography>
+                        <Typography variant="h6" >{`${data.repetition}回`}</Typography>
+                      </Grid>
+                      <Grid item >
+                        <Typography variant="subtitle2" >セット数</Typography>
+                        <Typography variant="h6" >{`${data.set}`}</Typography>
+                      </Grid>
+                      <Grid className={classes.deleteButtonWrapper} item>
+                        {
+                          currentUser.id === data.user_id ?
+                          <Button 
+                            className={classes.deleteButton} 
+                            variant="text" 
+                            color="secondary" 
+                            size="small" 
+                            onClick={() => dialogOpenAction(data.id)}
+                          >
+                            削除する
+                          </Button>
+                          :
+                          null
+                        }
+                      </Grid>
+                      <Grid className={classes.trainingLogNotes} item md={12}>
+                        <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
+                      </Grid>
+                    </Grid>
+                  );
+                })
+              }
+            </Fragment>
+            :
+            <Typography>まだトレーニング記録がありません</Typography>
           }
         </Grid>
       </Grid>
