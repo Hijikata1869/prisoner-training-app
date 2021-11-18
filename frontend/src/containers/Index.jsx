@@ -3,10 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton, ButtonBase  } from '@material-ui/core';
 import { ThumbUp, ThumbUpAltOutlined } from '@material-ui/icons';
 import Cookies from 'js-cookie';
-import moment from 'moment';
 
 // apis
-import { fetchCurrentUser, fetchTrainingLogs } from '../apis/users';
+import { fetchCurrentUser, fetchTrainingLogs, fetchLikes } from '../apis/users';
 import { fetchHome } from '../apis/home';
 
 // styles
@@ -35,6 +34,7 @@ export const Index = () => {
   const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
   const [allTrainingLogsArr, setAllTrainingLogsArr] = useState([]);
   const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
+  const [allLikesArr, setAllLikesArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -63,6 +63,16 @@ export const Index = () => {
     fetchTrainingLogs()
     .then((res) => {
       setAllTrainingLogsArr(res.data.trainingLogs);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchLikes()
+    .then((res) => {
+      setAllLikesArr(res.data.likes);
     })
     .catch((e) => {
       console.error(e);
@@ -98,6 +108,15 @@ export const Index = () => {
         console.error(e);
       })
     })
+    .then(() => {
+      fetchLikes()
+      .then((res) => {
+        setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
     .catch((e) => console.error(e))
   }
 
@@ -120,7 +139,21 @@ export const Index = () => {
         console.error(e);
       })
     })
+    .then(() => {
+      fetchLikes()
+      .then((res) => {
+        setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
     .catch((e) => console.error(e))
+  }
+
+  const numberOfLikes = (trainingLogId) => {
+    const targetLikes = allLikesArr.filter(like => like.training_log_id == trainingLogId);
+    return targetLikes?.length;
   }
 
 
@@ -373,7 +406,7 @@ export const Index = () => {
                                       >
                                         <ThumbUp/>
                                       </IconButton>
-                                      <Typography>いいね済み</Typography>
+                                      <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
                                     </Fragment>
                                     :
                                     <Fragment>
@@ -383,7 +416,7 @@ export const Index = () => {
                                       >
                                         <ThumbUpAltOutlined />
                                       </IconButton>
-                                      <Typography>いいねする</Typography>
+                                      <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
                                     </Fragment>
                                   }
                                 </CardActions>
@@ -427,6 +460,9 @@ export const Index = () => {
                           <Typography variant="body1" gutterBottom >{`${data.step}`}</Typography>
                           <Typography variant="subtitle2" color="textSecondary">回数</Typography>
                           <Typography variant="body1" >{`${data.repetition}回`}</Typography>
+                        </CardContent>
+                        <CardContent>
+                          <Typography color="textSecondary">{`${numberOfLikes(data.id)}件のいいね`}</Typography>
                         </CardContent>
                       </Card>
                     </Grid>
