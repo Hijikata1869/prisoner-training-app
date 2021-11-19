@@ -367,7 +367,7 @@ export const Index = () => {
                     currentUserFollowingsArr.map((followings) => {
                         {
                           return(
-                            trainingData.user_id === followings.id && index < 4 ? 
+                            trainingData.user_id === followings.id && index < 5 ? 
                             <Grid item md={3} key={index}>
                               <Card>
                                 <CardHeader 

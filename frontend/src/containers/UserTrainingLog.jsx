@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 import moment from 'moment';
 
 // apis
-import { postTraining, fetchCurrentUser, fetchUser, deleteTrainingLog } from '../apis/users';
+import { postTraining, fetchCurrentUser, fetchUser, deleteTrainingLog, fetchLikes } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -46,6 +46,12 @@ const useStyles = makeStyles(() => ({
   },
   deleteButton: {
   },
+  numberOfLikes: {
+    margin: "0 0 0 auto",
+  },
+  likesWrapper: {
+    textAlign: "center"
+  }
 }));
 
 const repsPrepare = () => {
@@ -78,6 +84,7 @@ export const UserTrainingLog = ({ match }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
   const [targetTrainingLogId, setTargetTrainingLogId] = useState();
+  const [allLikesArr, setAllLikesArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -99,6 +106,16 @@ export const UserTrainingLog = ({ match }) => {
       console.error(e);
     })
   },[])
+
+  useEffect(() => {
+    fetchLikes()
+    .then((res) => {
+      setAllLikesArr(res.data.likes);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
 
   const hundleMenuChange = (e) => {
     setTrainingMenu(e.target.value);
@@ -152,6 +169,11 @@ export const UserTrainingLog = ({ match }) => {
     .catch((e) => {
       console.error(e);
     })
+  }
+
+  const numberOfLikes = (trainingLogId) => {
+    const targetLikes = allLikesArr.filter(like => like.trainingLogId == trainingLogId);
+    return targetLikes?.length;
   }
 
 
@@ -339,8 +361,15 @@ export const UserTrainingLog = ({ match }) => {
                           null
                         }
                       </Grid>
-                      <Grid className={classes.trainingLogNotes} item md={12}>
-                        <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
+                      <Grid className={classes.trainingLogNotes} container item alignItems="center">
+                        <Grid className={classes.trianingLogNotes} item md={10}>
+                          <Typography variant="body1">{`一言メモ：${data.memo}`}</Typography>
+                        </Grid>
+                        <Grid className={classes.likesWrapper} item md={2}>
+                          <Typography className={classes.likesNumber} color="textSecondary">
+                            {numberOfLikes(data.id)}
+                          </Typography>
+                        </Grid>
                       </Grid>
                     </Grid>
                   );
