@@ -12,6 +12,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import moment from 'moment';
 
+// icons
+import { ThumbUp } from '@material-ui/icons';
+
 // apis
 import { postTraining, fetchCurrentUser, fetchUser, deleteTrainingLog, fetchLikes } from '../apis/users';
 
@@ -49,8 +52,13 @@ const useStyles = makeStyles(() => ({
   numberOfLikes: {
     margin: "0 0 0 auto",
   },
-  likesWrapper: {
-    textAlign: "center"
+  likeWrapper: {
+  },
+  likeIconWrapper: {
+    textAlign: "right"
+  },
+  likeNumber: {
+    marginLeft: "0.5rem"
   }
 }));
 
@@ -172,7 +180,7 @@ export const UserTrainingLog = ({ match }) => {
   }
 
   const numberOfLikes = (trainingLogId) => {
-    const targetLikes = allLikesArr.filter(like => like.trainingLogId == trainingLogId);
+    const targetLikes = allLikesArr.filter(like => like.training_log_id == trainingLogId);
     return targetLikes?.length;
   }
 
@@ -365,8 +373,11 @@ export const UserTrainingLog = ({ match }) => {
                         <Grid className={classes.trianingLogNotes} item md={10}>
                           <Typography variant="body1">{`一言メモ：${data.memo}`}</Typography>
                         </Grid>
-                        <Grid className={classes.likesWrapper} item md={2}>
-                          <Typography className={classes.likesNumber} color="textSecondary">
+                        <Grid className={classes.likeIconWrapper} item md={1}>
+                          <ThumbUp className={classes.likeIcon} />
+                        </Grid>
+                        <Grid className={classes.likeWrapper} item md={1}>
+                          <Typography className={classes.likeNumber} color="textSecondary">
                             {numberOfLikes(data.id)}
                           </Typography>
                         </Grid>
