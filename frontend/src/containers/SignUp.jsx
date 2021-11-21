@@ -1,15 +1,18 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, Button, IconButton, Collapse, Backdrop, CardContent, Card, CardActions } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, IconButton, Collapse, Backdrop, CardContent, Card, CardActions, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
-import CloseIcon from '@material-ui/icons/Close';
 
 // images
 import LoginLogo from '../images/loginLogo2.png';
 
 // apis
 import { postUser } from '../apis/users';
+
+// components
+import { SuccessModal } from '../components/SuccessModal';
+import { ToTopPageButton } from '../components/ToTopPageButton';
+import { FailedAlert } from '../components/FailedAlert';
 
 const useStyles = makeStyles((theme) => ({
   loginWrapper: {
@@ -33,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   loginButton: {
     width: '100%',
     margin: '0 auto',
+    marginBottom: '1rem'
+  },
+  guestLoginButton: {
+    width: "100%",
+    margin: '0 auto',
+    marginBottom: "1rem"
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -44,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
   signInButton: {
     width: "100%",
     marin: "0 auto"
-  }
+  },
+  
 }));
 
 export const SignUp = () => {
@@ -56,17 +66,8 @@ export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmationPassword, setConfirmationPassword] = useState("");
-  const [failedAlert, setFailedAlert] = useState(false);
-  const [open, setOpen] = useState(true);
-  const [toggleOpen, setToggleOpen] = useState(false);
-
-  const hundleClose = () => {
-    setToggleOpen(false);
-  }
-
-  const hundleToggle = () => {
-    setToggleOpen(!toggleOpen);
-  }
+  const [modalOpen, setModalOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -92,49 +93,28 @@ export const SignUp = () => {
     result
     .then((res) => {
       if (res.status === "success") {
-        hundleToggle();
+        setModalOpen(true);
       }
     })
     .catch((e) => {
       console.log(e);
-      setFailedAlert(true);
+      setAlertOpen(true);
     });
   }
 
   return(
     <Fragment>
-      <Backdrop className={classes.backdrop} open={toggleOpen}>
-        <Card className={classes.backdropCard}>
-          <CardContent>
-            <Typography variant="h5" component="h2" >登録が完了しました</Typography>
-          </CardContent>
-          <CardActions>
-            <Button variant="contained" color="primary" fullWidth onClick={() => {history.push('/')}} >
-              アプリに戻る
-            </Button>
-          </CardActions>
-        </Card>
-      </Backdrop>
       {
-        failedAlert ? 
-        <Collapse in={open}>
-        <Alert 
-          severity="error" 
-          action={
-                    <IconButton 
-                      aria-label="close"
-                      color="inherit"
-                      size="small"
-                      onClick={() => {setOpen(false);}}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  }
-        >
-          登録できませんでした
-        </Alert>
-        </Collapse> : 
-        <></>
+        modalOpen ?
+        <SuccessModal message="登録が完了しました" button={<ToTopPageButton />} />
+        :
+        null
+      }
+      {
+        alertOpen ?
+        <FailedAlert message="登録ができませんでした" />
+        :
+        null
       }
       <div className={classes.wrapper}>
         <Grid container direction="row">
@@ -206,7 +186,7 @@ export const SignUp = () => {
             </Grid>
             <Grid item>
               <Button 
-                className={classes.loginButton} 
+                className={classes.guestLoginButton} 
                 variant="contained" 
                 color="secondary" 
                 onClick={() => { }}
@@ -223,9 +203,16 @@ export const SignUp = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
-            <img className={classes.loginIcon} src={LoginLogo} />
-          </Grid>
+          <Hidden only={['sm', 'xs']}>
+            <Grid 
+              className={classes.loginIconWrappr} 
+              container 
+              item md={9} 
+              justifyContent="space-between"
+            >
+              <img className={classes.loginIcon} src={LoginLogo} />
+            </Grid>
+          </Hidden>
         </Grid>
       </div>
     </Fragment>

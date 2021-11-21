@@ -216,7 +216,7 @@ export const UserTrainingLog = ({ match }) => {
         {
           currentUser.id == match.params.userId ?
           <Grid className={classes.inputTrainingLogWrapper} container item spacing={3} direction="row" alignItems="center" >
-            <Grid item md={4} >
+            <Grid item md={4} sm={12} >
               <FormControl variant="standard" fullWidth >
                 <InputLabel>トレーニングメニュー</InputLabel>
                 <Select 
@@ -233,7 +233,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3}>
+            <Grid item md={3} sm={12}>
               <FormControl variant="standard" fullWidth >
                 <InputLabel>ステップ</InputLabel>
                 <Select
@@ -254,7 +254,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={2}>
+            <Grid item md={2} sm={12}>
               <FormControl variant="standard" fullWidth>
                 <InputLabel>回数</InputLabel>
                 <Select
@@ -272,7 +272,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3}>
+            <Grid item md={3} sm={12}>
               <FormControl variant="standard" fullWidth >
                 <InputLabel>セット数</InputLabel>
                 <Select
@@ -293,7 +293,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={10} >
+            <Grid item md={10} sm={12} >
               <FormControl variant="standard" fullWidth >
                 <TextField 
                   label="一言メモ" 
@@ -302,11 +302,12 @@ export const UserTrainingLog = ({ match }) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item md={2}>
+            <Grid item md={2} sm={12}>
               <Button 
                 color="primary" 
                 variant="contained"
                 size="medium" 
+                fullWidth
                 onClick={() => postTrainingAction(trainingMenu, step, rep, set, note)}
               >
                 記録する
@@ -370,13 +371,13 @@ export const UserTrainingLog = ({ match }) => {
                         }
                       </Grid>
                       <Grid className={classes.trainingLogNotes} container item alignItems="center">
-                        <Grid className={classes.trianingLogNotes} item md={10}>
+                        <Grid className={classes.trianingLogNotes} item md={10} sm={10}>
                           <Typography variant="body1">{`一言メモ：${data.memo}`}</Typography>
                         </Grid>
-                        <Grid className={classes.likeIconWrapper} item md={1}>
+                        <Grid className={classes.likeIconWrapper} item md={1} sm={1}>
                           <ThumbUp className={classes.likeIcon} />
                         </Grid>
-                        <Grid className={classes.likeWrapper} item md={1}>
+                        <Grid className={classes.likeWrapper} item md={1} sm={1}>
                           <Typography className={classes.likeNumber} color="textSecondary">
                             {numberOfLikes(data.id)}
                           </Typography>

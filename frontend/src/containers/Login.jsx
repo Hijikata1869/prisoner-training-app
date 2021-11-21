@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, Button} from '@material-ui/core';
+import { Grid, Typography, TextField, Button, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -37,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
   loginButton: {
     width: '100%',
     margin: '0 auto',
+    marginBottom: '1rem'
+  },
+  guestLoginButton: {
+    width: "100%",
+    margin: "0 auto"
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -148,12 +153,14 @@ export const Login = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button className={classes.loginButton} variant="contained" color="secondary">ゲストログインして使ってみる</Button>
+              <Button className={classes.guestLoginButton} variant="contained" color="secondary">ゲストログインして使ってみる</Button>
             </Grid>
           </Grid>
-          <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
-            <img className={classes.loginIcon} src={LoginLogo} />
-          </Grid>
+          <Hidden only={['sm', 'xs']}>
+            <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
+              <img className={classes.loginIcon} src={LoginLogo} />
+            </Grid>
+          </Hidden>
         </Grid>
       </div>
     </Fragment>

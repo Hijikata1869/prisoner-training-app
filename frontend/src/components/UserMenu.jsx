@@ -19,7 +19,7 @@ export const UserMenu = ({ match }) => {
 
   return(
     <Fragment>
-      <Hidden only="xs">
+      <Hidden only={["sm", "xs"]}>
         <Grid className={classes.menuWrapper} container item md={3} sm={3}>
           <Grid container item direction="column" justifyContent="space-evenly" >
             <Grid item >

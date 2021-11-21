@@ -368,7 +368,7 @@ export const Index = () => {
                         {
                           return(
                             trainingData.user_id === followings.id && index < 5 ? 
-                            <Grid item md={3} key={index}>
+                            <Grid item md={3} sm={6} xs={12} key={index}>
                               <Card>
                                 <CardHeader 
                                   avatar={
