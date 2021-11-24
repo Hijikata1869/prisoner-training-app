@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Typography, AppBar, CssBaseline, Toolbar, Button, ButtonBase, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Divider } from '@material-ui/core';
+import { useHistory, useRouteMatch, useLocation, useParams } from 'react-router-dom';
+import { Typography, AppBar, CssBaseline, Toolbar, Button, ButtonBase, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Divider, ListItemAvatar, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import MenuIcon from '@material-ui/icons/Menu';
 
 // apis
-import { signOut, fetchCurrentUser } from '../apis/users';
+import { signOut, fetchCurrentUser, fetchUsers } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -31,6 +31,8 @@ export const Header = () => {
 
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
+  const params = useParams();
 
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -40,11 +42,22 @@ export const Header = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [allUsersArr, setAllUsersArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
       setCurrentUser(res.data.currentUser);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchUsers()
+    .then((res) => {
+      setAllUsersArr(res.data.users);
     })
     .catch((e) => {
       console.error(e);
@@ -73,11 +86,36 @@ export const Header = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const showUserName = (userId) => {
+    const targetUser = allUsersArr.find(user => user.id == userId);
+    return targetUser?.nickname;
+  }
+
+  const showUserImage = (userId) => {
+    const targetUser = allUsersArr.find(user => user.id == userId);
+    return targetUser?.image.url;
+  }
+
+
   const logedInUserDrawer = (
     <div>
       <List>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar 
+              src={showUserImage(currentUser.id)}
+            />
+          </ListItemAvatar>
+          <ListItemText>{`${showUserName(currentUser.id)}`}</ListItemText>
+        </ListItem>
         <ListItem 
           button
+          onClick={
+            () => {
+              history.push(`/users/${currentUser.id}/training_logs`);
+              hundleDrawerToggle();
+            }
+          }
         >
           <ListItemText>
             トレーニング記録
@@ -86,6 +124,12 @@ export const Header = () => {
         <Divider />
         <ListItem 
           button
+          onClick={
+            () => {
+              history.push(`/users/${currentUser.id}/bookmarks`);
+              hundleDrawerToggle();
+            }
+          }
         >
           <ListItemText>
             ブックマーク
@@ -94,6 +138,12 @@ export const Header = () => {
         <Divider />
         <ListItem 
           button
+          onClick={
+            () => {
+              history.push(`/users/${currentUser.id}`);
+              hundleDrawerToggle();
+            }
+          }
         >
           <ListItemText>
             プロフィール
@@ -102,6 +152,12 @@ export const Header = () => {
         <Divider />
         <ListItem 
           button
+          onClick={
+            () => {
+              history.push(`/users/${currentUser.id}/questions`);
+              hundleDrawerToggle();
+            }
+          }
         >
           <ListItemText>
             過去の質問
@@ -110,6 +166,12 @@ export const Header = () => {
         <Divider />
         <ListItem 
           button
+          onClick={
+            () => {
+              history.push(`/users/${currentUser.id}/advices`);
+              hundleDrawerToggle();
+            }
+          }
         >
           <ListItemText>
             過去のアドバイス
@@ -118,6 +180,10 @@ export const Header = () => {
         <Divider />
         <ListItem
           button
+          onClick={() => {
+            signOutAction();
+            hundleDrawerToggle();
+          }}
         >
           <ListItemText>
             ログアウト
@@ -130,12 +196,24 @@ export const Header = () => {
   const drawer = (
     <div>
       <List>
-        <ListItem>
+        <ListItem 
+          button
+          onClick={() => {
+            history.push('/sign_up');
+            hundleDrawerToggle();
+          }}
+        >
           <ListItemText>
             新規会員登録
           </ListItemText>
         </ListItem>
-        <ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/sign_in');
+            hundleDrawerToggle();
+        }}
+        >
           <ListItemText>
             ログイン
           </ListItemText>
@@ -156,6 +234,7 @@ export const Header = () => {
               Prisoner Training App
             </Typography>
           </ButtonBase>
+          <Button variant="contained" color="secondary" onClick={() => console.log(currentUser)}>test</Button>
           <Hidden only="xs">
             {
               currentUser.length === 0 ?
