@@ -6,7 +6,8 @@ import { Grid,
   InputLabel, 
   Select, 
   MenuItem, 
-  TextField, 
+  TextField,
+  Hidden, 
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
@@ -26,8 +27,11 @@ import { DeleteDialog } from '../components/DeleteDialog';
 import { SuccessAlert } from '../components/SuccessAlert';
 
 const useStyles = makeStyles(() => ({
+  pageWrapper: {
+    paddingRight: "1rem",
+    paddingLeft: "1rem"
+  },
   inputTrainingLogWrapper: {
-    marginLeft: "1rem",
   },
   inputTrainingTitle: {
   },
@@ -37,7 +41,6 @@ const useStyles = makeStyles(() => ({
   },
   pastTrainingLogWrapper: {
     marginBottom: "3rem",
-    marginLeft: "1rem",
     border: "1px solid gray",
     borderRadius: "10px",
   },
@@ -209,14 +212,21 @@ export const UserTrainingLog = ({ match }) => {
         :
         null
       }
-      <Grid container item direction="column">
-        <Typography className={classes.inputTrainingTitle} variant="h4">
-          {`${user.nickname}さんのトレーニング記録`}
-        </Typography>
+      <Grid className={classes.pageWrapper} container item direction="column">
+        <Hidden smDown>
+          <Typography className={classes.inputTrainingTitle} variant="h4">
+            {`${user.nickname}さんのトレーニング記録`}
+          </Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.inputTrainingTitle} variant="h6">
+            {`${user.nickname}さんのトレーニング記録`}
+          </Typography>
+        </Hidden>
         {
           currentUser.id == match.params.userId ?
           <Grid className={classes.inputTrainingLogWrapper} container item spacing={3} direction="row" alignItems="center" >
-            <Grid item md={4} sm={12} >
+            <Grid item md={4} sm={12} xs={12} >
               <FormControl variant="standard" fullWidth >
                 <InputLabel>トレーニングメニュー</InputLabel>
                 <Select 
@@ -233,7 +243,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3} sm={12}>
+            <Grid item md={3} sm={12} xs={12}>
               <FormControl variant="standard" fullWidth >
                 <InputLabel>ステップ</InputLabel>
                 <Select
@@ -254,7 +264,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={2} sm={12}>
+            <Grid item md={2} sm={12} xs={12}>
               <FormControl variant="standard" fullWidth>
                 <InputLabel>回数</InputLabel>
                 <Select
@@ -272,7 +282,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3} sm={12}>
+            <Grid item md={3} sm={12} xs={12}>
               <FormControl variant="standard" fullWidth >
                 <InputLabel>セット数</InputLabel>
                 <Select
@@ -293,7 +303,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={10} sm={12} >
+            <Grid item md={10} sm={12} xs={12} >
               <FormControl variant="standard" fullWidth >
                 <TextField 
                   label="一言メモ" 
@@ -302,7 +312,7 @@ export const UserTrainingLog = ({ match }) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item md={2} sm={12}>
+            <Grid item md={2} sm={12} xs={12}>
               <Button 
                 color="primary" 
                 variant="contained"
@@ -334,23 +344,23 @@ export const UserTrainingLog = ({ match }) => {
                       direction="row" 
                       alignItems="center"
                     >
-                      <Grid item >
+                      <Grid item md="auto" xs={12}>
                         <Typography variant="subtitle2" >日付</Typography>
                         <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
                       </Grid>
-                      <Grid item >
+                      <Grid item md="auto"  xs={12} >
                         <Typography variant="subtitle2" >メニュー</Typography>
                         <Typography variant="h6" >{`${data.training_menu}`}</Typography>
                       </Grid>
-                      <Grid item >
+                      <Grid item md="auto"  xs={12} >
                         <Typography variant="subtitle2" >ステップ</Typography>
                         <Typography variant="h6" >{`${data.step}`}</Typography>
                       </Grid>
-                      <Grid item >
+                      <Grid item md="auto"  xs={12} >
                         <Typography variant="subtitle2" >回数</Typography>
                         <Typography variant="h6" >{`${data.repetition}回`}</Typography>
                       </Grid>
-                      <Grid item >
+                      <Grid item md="auto" xs={12} >
                         <Typography variant="subtitle2" >セット数</Typography>
                         <Typography variant="h6" >{`${data.set}`}</Typography>
                       </Grid>
@@ -371,7 +381,7 @@ export const UserTrainingLog = ({ match }) => {
                         }
                       </Grid>
                       <Grid className={classes.trainingLogNotes} container item alignItems="center">
-                        <Grid className={classes.trianingLogNotes} item md={10} sm={10}>
+                        <Grid className={classes.trianingLogNotes} item md={10} sm={10} xs={12}>
                           <Typography variant="body1">{`一言メモ：${data.memo}`}</Typography>
                         </Grid>
                         <Grid className={classes.likeIconWrapper} item md={1} sm={1}>

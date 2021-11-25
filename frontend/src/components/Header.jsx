@@ -1,11 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useHistory, useRouteMatch, useLocation, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Typography, AppBar, CssBaseline, Toolbar, Button, ButtonBase, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Divider, ListItemAvatar, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
 // icons
 import MenuIcon from '@material-ui/icons/Menu';
+import FitnessCenterOutlinedIcon from '@material-ui/icons/FitnessCenterOutlined';
+import BookmarkOutlinedIcon from '@material-ui/icons/BookmarkOutlined';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
+import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 
 // apis
 import { signOut, fetchCurrentUser, fetchUsers } from '../apis/users';
@@ -15,6 +22,10 @@ import { SuccessModal } from '../components/SuccessModal';
 import { FailedAlert } from '../components/FailedAlert';
 import { ToTopPageButton } from './ToTopPageButton';
 
+// images
+import NotLoggedInDrawerImage from '../images/notLoggedInDrawerImage.svg';
+import NotLoggedInDrawerWelcomeImage from '../images/notLoggedInDrawerWelcomeImage.svg';
+
 
 const useStyles = makeStyles(() => ({
   signInAndOutButton: {
@@ -23,6 +34,44 @@ const useStyles = makeStyles(() => ({
   menuIcon: {
     marginLeft: "auto"
   },
+  drawerAvatar: {
+    margin: "0 auto",
+    marginTop: "3rem",
+    height: "75px",
+    width: "75px"
+  },
+  drawerNickname: {
+    textAlign: "center",
+    marginTop: "0.5rem",
+    marginBottom: "3rem"
+  },
+  drawerWrapper: {
+    width: "300px"
+  },
+  drawerLogOutText: {
+    textAlign: "center",
+    marginTop: "2rem"
+  },
+  notLoggedInDrawerWrapper: {
+    width: "300px",
+    margin: "0 auto",
+    textAlign: "center"
+  },
+  notLoggedInDrawerImage: {
+    height: "100%",
+    width: "100%",
+    marginTop: "2rem"
+  },
+  notLoggedInDrawerWelcomeImageWrapper: {
+    width: "300px"
+  },
+  notLoggedInDrawerWelcomeImage: {
+    height: "50%",
+    width: "50%",
+    marginTop: "5rem",
+    marginBottom: "2rem",
+  },
+
 }))
 
 
@@ -31,8 +80,6 @@ export const Header = () => {
 
   const classes = useStyles();
   const history = useHistory();
-  const location = useLocation();
-  const params = useParams();
 
   const token = Cookies.get('access-token');
   const client = Cookies.get('client');
@@ -98,16 +145,20 @@ export const Header = () => {
 
 
   const logedInUserDrawer = (
-    <div>
+    <div className={classes.drawerWrapper}>
       <List>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar 
-              src={showUserImage(currentUser.id)}
-            />
-          </ListItemAvatar>
-          <ListItemText>{`${showUserName(currentUser.id)}`}</ListItemText>
-        </ListItem>
+        <Avatar 
+          className={classes.drawerAvatar}
+          src={showUserImage(currentUser.id)}
+          variant="rounded"
+        />
+        <Typography 
+          className={classes.drawerNickname}
+          variant="h6"
+        >
+          {`${showUserName(currentUser.id)}`}
+        </Typography>
+        <Divider />
         <ListItem 
           button
           onClick={
@@ -117,11 +168,13 @@ export const Header = () => {
             }
           }
         >
+          <ListItemAvatar>
+            <FitnessCenterOutlinedIcon />
+          </ListItemAvatar>
           <ListItemText>
             トレーニング記録
           </ListItemText>
         </ListItem>
-        <Divider />
         <ListItem 
           button
           onClick={
@@ -131,11 +184,13 @@ export const Header = () => {
             }
           }
         >
+          <ListItemAvatar>
+            <BookmarkOutlinedIcon />
+          </ListItemAvatar>
           <ListItemText>
             ブックマーク
           </ListItemText>
         </ListItem>
-        <Divider />
         <ListItem 
           button
           onClick={
@@ -145,11 +200,13 @@ export const Header = () => {
             }
           }
         >
+          <ListItemAvatar>
+            <AccountCircleOutlinedIcon />
+          </ListItemAvatar>
           <ListItemText>
             プロフィール
           </ListItemText>
         </ListItem>
-        <Divider />
         <ListItem 
           button
           onClick={
@@ -159,11 +216,13 @@ export const Header = () => {
             }
           }
         >
+          <ListItemAvatar>
+            <HelpOutlineOutlinedIcon />
+          </ListItemAvatar>
           <ListItemText>
             過去の質問
           </ListItemText>
         </ListItem>
-        <Divider />
         <ListItem 
           button
           onClick={
@@ -173,12 +232,16 @@ export const Header = () => {
             }
           }
         >
+          <ListItemAvatar>
+            <MessageOutlinedIcon />
+          </ListItemAvatar>
           <ListItemText>
             過去のアドバイス
           </ListItemText>
         </ListItem>
         <Divider />
         <ListItem
+          className={classes.drawerLogOutText}
           button
           onClick={() => {
             signOutAction();
@@ -194,30 +257,40 @@ export const Header = () => {
   );
 
   const drawer = (
-    <div>
+    <div className={classes.notLoggedInDrawerWrapper}>
       <List>
+        <img className={classes.notLoggedInDrawerWelcomeImage} src={NotLoggedInDrawerWelcomeImage} />
         <ListItem 
+          className={classes.notLoggedInDrawerItems}
           button
           onClick={() => {
             history.push('/sign_up');
             hundleDrawerToggle();
           }}
         >
+          <ListItemAvatar>
+            <PermIdentityIcon />
+          </ListItemAvatar>
           <ListItemText>
             新規会員登録
           </ListItemText>
         </ListItem>
         <ListItem
+          className={classes.notLoggedInDrawerItems}
           button
           onClick={() => {
             history.push('/sign_in');
             hundleDrawerToggle();
         }}
         >
+          <ListItemAvatar>
+            <LockOpenIcon />
+          </ListItemAvatar>
           <ListItemText>
             ログイン
           </ListItemText>
         </ListItem>
+        <img className={classes.notLoggedInDrawerImage} src={NotLoggedInDrawerImage} />
       </List>
     </div>
   )
@@ -234,7 +307,6 @@ export const Header = () => {
               Prisoner Training App
             </Typography>
           </ButtonBase>
-          <Button variant="contained" color="secondary" onClick={() => console.log(currentUser)}>test</Button>
           <Hidden only="xs">
             {
               currentUser.length === 0 ?
