@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
+import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Hidden, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Cookies from 'js-cookie';
@@ -23,7 +23,8 @@ const useStyles = makeStyles(() => ({
     paddingRight: "2rem"
   },
   pageTitle: {
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    marginLeft: "2rem"
   },
   adviceCard: {
     marginBottom: "1rem",
@@ -203,7 +204,12 @@ export const UserAdvices = ({ match }) => {
         null
       }
       <Grid container item direction="column">
-        <Typography className={classes.pageTitle} variant="h4">{`${user.nickname}さんのアドバイス一覧`}</Typography>
+        <Hidden only="xs">
+          <Typography className={classes.pageTitle} variant="h4">{`${user.nickname}さんのアドバイス一覧`}</Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.pageTitle} variant="h6">{`${user.nickname}さんのアドバイス一覧`}</Typography>
+        </Hidden>
         <Grid className={classes.adviceCardWrapper} item>
           {
             userAdvicesArr.length !== 0 ?

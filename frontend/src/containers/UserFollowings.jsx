@@ -9,7 +9,8 @@ import { fetchUser } from '../apis/users';
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    marginLeft: "1rem"
   },
   followingUserCard: {
     marginBottom: "2rem"

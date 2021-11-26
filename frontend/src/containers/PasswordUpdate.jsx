@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, InputLabel, Button } from '@material-ui/core';
+import { Grid, Typography, TextField, InputLabel, Button, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
@@ -25,6 +25,19 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
     paddingBottom: '2rem',
   },
+  pageTitle: {
+    marginTop: "2rem",
+    marginBottom: "3rem"
+  },
+  newPasswordWrapper: {
+    marginBottom: "2rem"
+  },
+  confirmationPasswordWrapper: {
+    marginBottom: "4rem"
+  },
+  submitButtonWrapper: {
+    margin: "0 auto"
+  }
 }));
 
 export const PasswordUpdate = () => {
@@ -62,56 +75,58 @@ export const PasswordUpdate = () => {
 
   return(
     <Fragment>
-        <Grid container>
-          <Grid className={classes.textFieldWrapper} 
-            container 
-            item 
-            md={3} 
-            direction="column" 
-            justifyContent="space-around" 
-          >
-            <Grid item>
-              <Typography className={classes.title} variant="h5" component="h2" gutterBottom >パスワードを変更する</Typography>
-            </Grid>
-            <Grid item>
-              <InputLabel>新しいパスワード</InputLabel>
-              <TextField 
-                name="password" 
-                type="password" 
-                fullWidth  
-                value={password} 
-                onChange={hundleChange}
-               />
-            </Grid>
-            <Grid item>
-              <InputLabel>パスワード（確認用）</InputLabel>
-              <TextField 
-                name="confirmationPassword" 
-                type="password" 
-                fullWidth 
-                value={confirmationPassword}
-                onChange={hundleChange} 
-                helperText={confirmationPassword ? 
-                  password != confirmationPassword ? "パスワードが一致してません" : "" :
-                  ""
-                }
-              />
-            </Grid>
-            <Grid item>
-              <Button 
-                variant="contained" 
-                color="primary" 
-                disabled={password && password === confirmationPassword ? false : true}
-                onClick={() => hundleUpdate(password, confirmationPassword)} 
-              >
-                パスワードを変更する
-              </Button>
-            </Grid>
+      <Grid container>
+        <Grid className={classes.textFieldWrapper} 
+          container 
+          item 
+          md={3} 
+          sm={12}
+          direction="column" 
+        >
+          <Grid item className={classes.pageTitle}>
+            <Typography className={classes.title} variant="h5" component="h2" >パスワードを変更する</Typography>
           </Grid>
-          <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
-            <img className={classes.loginIcon} src={LoginLogo} />
-          </Grid>        
+          <Grid item className={classes.newPasswordWrapper}>
+            <InputLabel>新しいパスワード</InputLabel>
+            <TextField 
+              name="password" 
+              type="password" 
+              fullWidth  
+              value={password} 
+              onChange={hundleChange}
+              />
+          </Grid>
+          <Grid item className={classes.confirmationPasswordWrapper}>
+            <InputLabel>パスワード（確認用）</InputLabel>
+            <TextField 
+              name="confirmationPassword" 
+              type="password" 
+              fullWidth 
+              value={confirmationPassword}
+              onChange={hundleChange} 
+              helperText={confirmationPassword ? 
+                password != confirmationPassword ? "パスワードが一致してません" : "" :
+                ""
+              }
+            />
+          </Grid>
+          <Grid item className={classes.submitButtonWrapper}>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              disabled={password && password === confirmationPassword ? false : true}
+              onClick={() => hundleUpdate(password, confirmationPassword)} 
+            >
+              パスワードを変更する
+            </Button>
+          </Grid>
         </Grid>
+        <Hidden smDown>
+          <Grid className={classes.loginIconWrappr} container item md={9} sm={12} justifyContent="space-between">
+            <img className={classes.loginIcon} src={LoginLogo} />
+          </Grid>
+        </Hidden>
+      </Grid>
     </Fragment>
   );
 }

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
+import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Hidden, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Cookies from 'js-cookie';
@@ -14,6 +14,7 @@ import { fetchUsers, fetchUser, fetchCurrentUser, fetchQuestions } from '../apis
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
+    margin: "0 2rem"
   },
   adviceCardWrapper: {
     margin: "2rem"
@@ -147,9 +148,16 @@ export const UserBookmarks = ({ match }) => {
   return(
     <Fragment>
       <Grid container item direction="column" >
-        <Typography className={classes.pageTitle} variant="h4">
-          {`${showUserName(Number(match.params.userId))}さんのブックマークしたアドバイス`}
-        </Typography>
+        <Hidden only="xs">
+          <Typography className={classes.pageTitle} variant="h4">
+            {`${showUserName(Number(match.params.userId))}さんのブックマークしたアドバイス`}
+          </Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.pageTitle} variant="h6">
+            {`${showUserName(Number(match.params.userId))}さんのブックマークしたアドバイス`}
+          </Typography>
+        </Hidden>
         <Grid className={classes.adviceCardWrapper} item>
           {
             bookmarkedAdvicesArr.length !== 0 ?

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Container, Grid, TextField, Typography, Input, InputLabel } from '@material-ui/core';
+import { Button, Container, Grid, TextField, Typography, Input, InputLabel, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
@@ -105,7 +105,12 @@ export const UserUpdate = ({ match }) => {
       <Container className={classes.updateWrapper}>
           <Grid container item direction="column" alignItems="center" justifyContent="center"  >
             <Grid item>
-              <Typography variant="h3">登録情報を更新する</Typography>
+              <Hidden only="xs">
+                <Typography variant="h3">登録情報を更新する</Typography>
+              </Hidden>
+              <Hidden smUp>
+                <Typography variant="h5">登録情報を更新する</Typography>
+              </Hidden>
             </Grid>
             <Grid container item direction="column" justifyContent="space-evenly">
               <Grid item>

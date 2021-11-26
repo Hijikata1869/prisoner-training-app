@@ -19,6 +19,6 @@ class Api::V1::Auth::RegistrationsController < DeviseTokenAuth::RegistrationsCon
   private
 
   def sign_up_params
-    params.require(:registration).permit(:email, :password, :nickname, :introduction)
+    params.permit(:nickname, :email, :password)
   end
 end

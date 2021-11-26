@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
+import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Hidden, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import moment from 'moment';
@@ -26,7 +26,8 @@ const useStyles = makeStyles(() => ({
     paddingRight: "2rem"
   },
   pageTitle: {
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    marginLeft: "2rem"
   },
   adviceButton: {
     margin: "0 auto"
@@ -137,7 +138,12 @@ export const UserQuestions = ({ match }) => {
         null
       }
       <Grid container item direction="column" >
-        <Typography className={classes.pageTitle} variant="h4">{`${user.nickname}さんの質問一覧`}</Typography>
+        <Hidden only="xs">
+          <Typography className={classes.pageTitle} variant="h4">{`${user.nickname}さんの質問一覧`}</Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.pageTitle} variant="h6">{`${user.nickname}さんの質問一覧`}</Typography>
+        </Hidden>
         {
           userQuestions.length !== 0 ?
           userQuestions.map((questionData, index) => {

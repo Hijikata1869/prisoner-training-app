@@ -50,7 +50,7 @@ export const postUser = (nickname, email, password) => {
     },
   )
   .then(res => {
-    return res.data;
+    return res;
   })
   .catch((e) => console.error(e))
 }

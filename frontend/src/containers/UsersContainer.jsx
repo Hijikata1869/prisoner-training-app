@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Grid, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 // components
@@ -17,16 +17,18 @@ export const UsersContainer = ({ match, mainComponent }) => {
 
   return(
     <Fragment>
-      <div>
-        <Container className={classes.PageWrapper}>
-          <Grid container spacing={4} >
-            <UserMenu match={match} />
-            <Grid container item md={9} sm={9} >
-              {/* このコンテナの中にコンポーネントとしてそれぞれのページを追加する */}
-              {mainComponent}
+      <div className={classes.PageWrapper}>
+        <Grid container>
+          <Hidden only={["sm", "xs"]}>
+            <Grid container item lg={3} md={3}>
+              <UserMenu match={match}/>
             </Grid>
+          </Hidden>
+          <Grid container item lg={9} md={9} sm={12} >
+            {/* このコンテナの中にコンポーネントとしてそれぞれのページを追加する */}
+            {mainComponent}
           </Grid>
-        </Container>
+        </Grid>
       </div>
     </Fragment>
   )

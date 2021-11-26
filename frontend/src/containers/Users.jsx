@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useRef, useEffect, useState } from 'react';
-import { Typography, Grid, Avatar, Container, Button, ButtonBase } from '@material-ui/core';
+import { Typography, Grid, Avatar, Button, ButtonBase } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -16,10 +16,6 @@ import { FailedAlert } from '../components/FailedAlert';
 import { ReloadButton } from '../components/ReloadButton';
 
 const useStyles = makeStyles((theme) => ({
-  userWrapper: {
-    paddingTop: '2rem',
-    paddingBottom: '2rem'
-  },
   largeAvatar: {
     width: theme.spacing(20),
     height: theme.spacing(20),
@@ -84,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
   },
   toFollowerButton: {
     marginLeft: "0.5rem"
+  },
+  userWrapper: {
+    margin: "0 auto",
+    padding: "0 2rem",
+    marginBottom: "3rem"
   }
 }))
 
@@ -279,156 +280,154 @@ export const Users = ({ match }) => {
         <FailedAlert message="画像を更新できませんでした" /> : 
         null
       }
-        <Container className={classes.userWrapper}>
-          <Grid container spacing={4}>
-            <Grid container item direction="column" alignItems="center" >
-              <Grid item>
-                <Typography variant="h3" gutterBottom >{`${user.nickname}さんのプロフィール`}</Typography>
-              </Grid>
-              <Grid item>
-                <Avatar 
-                  className={classes.largeAvatar} 
-                  src={userImage ? userImage : ""}
-                >
-                </Avatar>
-              </Grid>
-              <Grid item>
-                <ButtonBase 
-                  className={classes.toFollowingButton} 
-                  onClick={() => history.push(`/users/${user.id}/followings`)}
-                >
-                  <Typography>{`${userFollowingsArr.length}フォロー`}</Typography>
-                </ButtonBase>
-                <ButtonBase 
-                  className={classes.toFollowerButton} 
-                  onClick={() => history.push(`/users/${user.id}/followers`)}
-                >
-                  <Typography>{`${userFollowersArr.length}フォロワー`}</Typography>
-                </ButtonBase>
-              </Grid>
-              <Grid item className={classes.followButton}>
-                {
-                  currentUserFollowingsArr.find((following) => following.id === user.id ) ?
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={() => userUnFollowAction(match.params.userId)}
-                  >
-                    フォロー中
-                  </Button>
-                  :
-                  currentUser.length !== 0 ?
-                  <Fragment>
-                    {
-                      user.id !== currentUser.id && 
-                      <Button 
-                        variant="outlined" 
-                        color="primary" 
-                        onClick={() => userFollowAction(match.params.userId)}
-                      >
-                        フォローする
-                      </Button>
-                    }
-                  </Fragment>
-                  :
-                  null
-                }
-              </Grid>
-              {user.id === currentUser.id ?
-                <Grid container item direction="column" alignItems="center" justifyContent="center" >
-                  <Grid item>
-                    <div className={classes.attachment}>
-                      <label>
-                        <input 
-                          type="file" 
-                          accept="image/*" 
-                          onChange={onSelectFile} 
-                          className={classes.profileChangeButton}
-                        />
-                        新しいプロフィール画像を選択する
-                      </label>
-                      <span className={classes.filename} id="uploadedFileName" >選択されていません</span>
-                    </div>
-                  </Grid>
-                  <Grid item>
-                    <div>
-                      {
-                        !completedCrop?.width || !completedCrop?.height ? 
-                        null : 
-                        <Typography 
-                          variant="body2" 
-                          color="textSecondary" 
-                          className={classes.previewTitle} 
-                        >
-                          プレビュー画像
-                        </Typography>
-                      }
-                      <ReactCrop 
-                        className={classes.previedwImage} 
-                        locked 
-                        circularCrop 
-                        src={upImg} 
-                        crop={crop} 
-                        onImageLoaded={onLoad} 
-                        onChange={(c) => setCrop(c)} 
-                        onComplete={(c) => setCompletedCrop(c)} 
-                      />
-                    </div>
-                  </Grid>
-                  <Grid item>
-                    <canvas 
-                      ref={previewCanvasRef} 
-                      style={{
-                        width: Math.round(completedCrop?.width ?? 0),
-                        height: Math.round(completedCrop?.height ?? 0),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <Button 
-                      variant="contained" 
-                      color="secondary" 
-                      className={classes.imageUpdateButton}
-
-                      // "?." はオプショナルチェーンと呼ばれる
-                      // オブジェクトのプロパティ参照時、 . (ドット表記法、MDNの文中ではチェーン演算子と呼称)を利用すると
-                      //オブジェクトが null や undefined の場合は Uncaught TypeError: Cannot read property が発生するが、 
-                      // ?. を使うと undefined が返る。
-                      // プロパティチェーンで利用すると、途中のプロパティのいずれかで undefined が返れば短絡評価されるので、それ以降は実行されない。
-                      disabled={!completedCrop?.width || !completedCrop?.height} 
-                      onClick={() => hundleImageUpdate(previewCanvasRef.current)}
-                    >
-                      プロフィール画像を更新する
-                    </Button>
-                  </Grid>
-                </Grid> :
-                null
-              }
-              <Grid item className={classes.introduce}>
-                {user.introduction ? 
-                <Typography variant="h5" gutterBottom paragraph >
-                  {user.introduction}
-                </Typography> : 
-                "まだ自己紹介がありません"
-                }
-              </Grid>
-              <Grid item>
-                {user.id === currentUser.id ? 
-                  <Button 
-                    className={classes.updateButton} 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={
-                      () => {history.push(`${match.url}/auth/edit`)}
-                    }
-                  >
-                    登録情報を更新する
-                  </Button> : "" 
-                }
-              </Grid>
-            </Grid>
+      <div className={classes.userWrapper}>
+        <Grid container item direction="column" alignItems="center">
+          <Grid item>
+            <Typography variant="h3" gutterBottom >{`${user.nickname}さんのプロフィール`}</Typography>
           </Grid>
-        </Container>
+          <Grid item>
+            <Avatar 
+              className={classes.largeAvatar} 
+              src={userImage ? userImage : ""}
+            >
+            </Avatar>
+          </Grid>
+          <Grid item>
+            <ButtonBase 
+              className={classes.toFollowingButton} 
+              onClick={() => history.push(`/users/${user.id}/followings`)}
+            >
+              <Typography>{`${userFollowingsArr.length}フォロー`}</Typography>
+            </ButtonBase>
+            <ButtonBase 
+              className={classes.toFollowerButton} 
+              onClick={() => history.push(`/users/${user.id}/followers`)}
+            >
+              <Typography>{`${userFollowersArr.length}フォロワー`}</Typography>
+            </ButtonBase>
+          </Grid>
+          <Grid item className={classes.followButton}>
+            {
+              currentUserFollowingsArr.find((following) => following.id === user.id ) ?
+              <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={() => userUnFollowAction(match.params.userId)}
+              >
+                フォロー中
+              </Button>
+              :
+              currentUser.length !== 0 ?
+              <Fragment>
+                {
+                  user.id !== currentUser.id && 
+                  <Button 
+                    variant="outlined" 
+                    color="primary" 
+                    onClick={() => userFollowAction(match.params.userId)}
+                  >
+                    フォローする
+                  </Button>
+                }
+              </Fragment>
+              :
+              null
+            }
+          </Grid>
+          {user.id === currentUser.id ?
+            <Grid container item direction="column" alignItems="center" justifyContent="center" >
+              <Grid item>
+                <div className={classes.attachment}>
+                  <label>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={onSelectFile} 
+                      className={classes.profileChangeButton}
+                    />
+                    新しいプロフィール画像を選択する
+                  </label>
+                  <span className={classes.filename} id="uploadedFileName" >選択されていません</span>
+                </div>
+              </Grid>
+              <Grid item>
+                <div>
+                  {
+                    !completedCrop?.width || !completedCrop?.height ? 
+                    null : 
+                    <Typography 
+                      variant="body2" 
+                      color="textSecondary" 
+                      className={classes.previewTitle} 
+                    >
+                      プレビュー画像
+                    </Typography>
+                  }
+                  <ReactCrop 
+                    className={classes.previedwImage} 
+                    locked 
+                    circularCrop 
+                    src={upImg} 
+                    crop={crop} 
+                    onImageLoaded={onLoad} 
+                    onChange={(c) => setCrop(c)} 
+                    onComplete={(c) => setCompletedCrop(c)} 
+                  />
+                </div>
+              </Grid>
+              <Grid item>
+                <canvas 
+                  ref={previewCanvasRef} 
+                  style={{
+                    width: Math.round(completedCrop?.width ?? 0),
+                    height: Math.round(completedCrop?.height ?? 0),
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Button 
+                  variant="contained" 
+                  color="secondary" 
+                  className={classes.imageUpdateButton}
+
+                  // "?." はオプショナルチェーンと呼ばれる
+                  // オブジェクトのプロパティ参照時、 . (ドット表記法、MDNの文中ではチェーン演算子と呼称)を利用すると
+                  //オブジェクトが null や undefined の場合は Uncaught TypeError: Cannot read property が発生するが、 
+                  // ?. を使うと undefined が返る。
+                  // プロパティチェーンで利用すると、途中のプロパティのいずれかで undefined が返れば短絡評価されるので、それ以降は実行されない。
+                  disabled={!completedCrop?.width || !completedCrop?.height} 
+                  onClick={() => hundleImageUpdate(previewCanvasRef.current)}
+                >
+                  プロフィール画像を更新する
+                </Button>
+              </Grid>
+            </Grid> :
+            null
+          }
+          <Grid item className={classes.introduce}>
+            {user.introduction ? 
+            <Typography variant="h5" gutterBottom paragraph >
+              {user.introduction}
+            </Typography> : 
+            "まだ自己紹介がありません"
+            }
+          </Grid>
+          <Grid item>
+            {user.id === currentUser.id ? 
+              <Button 
+                className={classes.updateButton} 
+                variant="contained" 
+                color="primary" 
+                onClick={
+                  () => {history.push(`${match.url}/auth/edit`)}
+                }
+              >
+                登録情報を更新する
+              </Button> : "" 
+            }
+          </Grid>
+        </Grid>
+      </div>
     </Fragment>
   )
 }

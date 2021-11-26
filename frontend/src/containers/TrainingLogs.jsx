@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
+import { Avatar, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Hidden, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
@@ -23,8 +23,8 @@ const useStyles = makeStyles(() => ({
     padding: "0.5rem"
   },
   trainingCardWrapper: {
-    paddingRight: "4rem",
-    paddingLeft: "4rem",
+    paddingRight: "1rem",
+    paddingLeft: "1rem",
     marginTop: "1rem"
   }
 }))
@@ -167,12 +167,17 @@ export const TrainingLogs = () => {
   return(
     <Fragment>
       <Grid className={classes.pageWrapper} container direction="column">
-        <Typography variant="h4">トレーニング記録一覧</Typography>
+        <Hidden only="xs">
+          <Typography variant="h4">トレーニング記録一覧</Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography variant="h5">トレーニング記録一覧</Typography>
+        </Hidden>
         <Grid className={classes.trainingCardWrapper} container item spacing={4}>
           {
             trainingLogsArr.map((trainingData, index) => {
               return(
-                <Grid key={index} item md={3}>
+                <Grid key={index} item md={3} sm={6} xs={12}>
                   <Card className={classes.trainingCard}>
                     <CardHeader
                       avatar={

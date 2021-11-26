@@ -2,6 +2,8 @@ import React, { Fragment, useState } from 'react';
 import { Grid, Typography, TextField, Button, IconButton, Collapse, Backdrop, CardContent, Card, CardActions, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 // images
 import LoginLogo from '../images/loginLogo2.png';
@@ -36,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
   loginButton: {
     width: '100%',
     margin: '0 auto',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    marginTop: "2rem"
   },
   guestLoginButton: {
     width: "100%",
@@ -65,7 +68,6 @@ export const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmationPassword, setConfirmationPassword] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
@@ -80,24 +82,23 @@ export const SignUp = () => {
       case 'password':
         setPassword(e.target.value);
         break;
-      case 'confirmationPassword':
-        setConfirmationPassword(e.target.value);
-        break;
       default:
         console.log('key not found');
     }
   };
 
-  const postUsers = (nickname,email,password) => {
-    const result = postUser(nickname,email,password);
-    result
+  const userRegistrationAction = () => {
+    postUser(nickname,email,password)
     .then((res) => {
-      if (res.status === "success") {
+      if (res.status == 200) {
+        Cookies.set('access-token', res.headers['access-token']);
+        Cookies.set('client', res.headers['client']);
+        Cookies.set('uid', res.headers['uid']);
         setModalOpen(true);
       }
     })
     .catch((e) => {
-      console.log(e);
+      console.error(e);
       setAlertOpen(true);
     });
   }
@@ -163,23 +164,11 @@ export const SignUp = () => {
               />
             </Grid>
             <Grid item>
-              <TextField 
-                label="パスワード(確認用)" 
-                fullWidth 
-                margin="normal" 
-                type="password" 
-                className={classes.passwordFeild} 
-                name="confirmationPassword" 
-                value={confirmationPassword} 
-                onChange={hundleChange}
-              />
-            </Grid>
-            <Grid item>
               <Button 
                 className={classes.loginButton} 
                 variant="contained" 
                 color="primary"　
-                onClick={() => postUsers(nickname,email,password)}
+                onClick={userRegistrationAction}
               >
                 登録する
               </Button>

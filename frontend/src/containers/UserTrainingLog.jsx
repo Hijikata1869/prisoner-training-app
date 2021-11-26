@@ -28,18 +28,17 @@ import { SuccessAlert } from '../components/SuccessAlert';
 
 const useStyles = makeStyles(() => ({
   pageWrapper: {
-    paddingRight: "1rem",
-    paddingLeft: "1rem"
-  },
-  inputTrainingLogWrapper: {
-  },
-  inputTrainingTitle: {
-  },
-  pastTrainingLogTitle: {
-    marginTop: "3rem",
-    marginBottom: "2rem",
+    paddingRight: "2rem",
+    paddingLeft: "2rem"
   },
   pastTrainingLogWrapper: {
+
+  },
+  pastTrainingLogTitle: {
+    marginTop: "5rem",
+    marginBottom: "2rem",
+  },
+  pastTrainingLog: {
     marginBottom: "3rem",
     border: "1px solid gray",
     borderRadius: "10px",
@@ -54,8 +53,6 @@ const useStyles = makeStyles(() => ({
   },
   numberOfLikes: {
     margin: "0 0 0 auto",
-  },
-  likeWrapper: {
   },
   likeIconWrapper: {
     textAlign: "right"
@@ -213,7 +210,7 @@ export const UserTrainingLog = ({ match }) => {
         null
       }
       <Grid className={classes.pageWrapper} container item direction="column">
-        <Hidden smDown>
+        <Hidden only="xs">
           <Typography className={classes.inputTrainingTitle} variant="h4">
             {`${user.nickname}さんのトレーニング記録`}
           </Typography>
@@ -327,8 +324,17 @@ export const UserTrainingLog = ({ match }) => {
           :
           null
         }
-        <Grid container item direction="column" >
-          <Typography className={classes.pastTrainingLogTitle} variant="h4" >これまでの記録</Typography>
+        <Grid className={classes.pastTrainingLogWrapper} container item direction="column" >
+          <Hidden only="xs">
+            <Typography className={classes.pastTrainingLogTitle} variant="h4">
+              これまでの記録
+            </Typography>
+          </Hidden>
+          <Hidden smUp>
+            <Typography className={classes.pastTrainingLogTitle} variant="h5">
+              これまでの記録
+            </Typography>
+          </Hidden>
           {
             pastTrainingLogsArr.length !== 0 ?
             <Fragment>
@@ -337,7 +343,7 @@ export const UserTrainingLog = ({ match }) => {
                   return(
                     <Grid 
                       key={index} 
-                      className={classes.pastTrainingLogWrapper} 
+                      className={classes.pastTrainingLog} 
                       container 
                       item 
                       spacing={4} 
