@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       end
 
       get '/likes', to: 'likes#index'
+      get '/current_user', to: 'current_users#show'
 
       root to: "homes#index"
     end
