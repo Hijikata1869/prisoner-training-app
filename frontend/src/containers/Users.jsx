@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useRef, useEffect, useState } from 'react';
-import { Typography, Grid, Avatar, Button, ButtonBase } from '@material-ui/core';
+import { Typography, Grid, Avatar, Button, ButtonBase, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -282,9 +282,16 @@ export const Users = ({ match }) => {
       }
       <div className={classes.userWrapper}>
         <Grid container item direction="column" alignItems="center">
-          <Grid item>
-            <Typography variant="h3" gutterBottom >{`${user.nickname}さんのプロフィール`}</Typography>
-          </Grid>
+          <Hidden only="xs">
+            <Grid item>
+              <Typography variant="h3" gutterBottom >{`${user.nickname}さんのプロフィール`}</Typography>
+            </Grid>
+          </Hidden>
+          <Hidden smUp>
+            <Grid item>
+              <Typography variant="h6" gutterBottom >{`${user.nickname}さんのプロフィール`}</Typography>
+            </Grid>
+          </Hidden>
           <Grid item>
             <Avatar 
               className={classes.largeAvatar} 
@@ -404,11 +411,29 @@ export const Users = ({ match }) => {
             </Grid> :
             null
           }
+          <Hidden smUp>
+            <Grid item>
+              <Button>トレーニング記録</Button>
+            </Grid>
+            <Grid item>
+              <Button>ブックマーク</Button>
+            </Grid>
+            <Grid item>
+              <Button>過去のアドバイス</Button>
+            </Grid>
+            <Grid item>
+              <Button>過去の質問</Button>
+            </Grid>
+          </Hidden>
           <Grid item className={classes.introduce}>
             {user.introduction ? 
-            <Typography variant="h5" gutterBottom paragraph >
-              {user.introduction}
-            </Typography> : 
+            <Fragment>
+              <Typography variant="subtitle1" color="textSecondary">自己紹介</Typography>
+              <Typography variant="h5" gutterBottom paragraph >
+                {user.introduction}
+              </Typography> 
+            </Fragment>
+            : 
             "まだ自己紹介がありません"
             }
           </Grid>

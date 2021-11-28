@@ -26,3 +26,4 @@ export const hundleQuestionsUrl = (id) => `${DEFAULT_API_LOCALHOST}/questions/${
 export const hundleAdivceUrl = (id) => `${DEFAULT_API_LOCALHOST}/advices/${id}`;
 export const showTrainingLogUrl = (id) => `${DEFAULT_API_LOCALHOST}/training_logs/${id}`;
 export const hundleLikesUrl = `${DEFAULT_API_LOCALHOST}/likes`;
+export const showCurrentUserUrl = `${DEFAULT_API_LOCALHOST}/current_user`;

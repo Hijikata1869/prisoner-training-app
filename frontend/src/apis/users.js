@@ -23,6 +23,7 @@ import {
   hundleAdivceUrl,
   showTrainingLogUrl,
   hundleLikesUrl,
+  showCurrentUserUrl
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -73,7 +74,7 @@ export const userSignIn = (email, password) => {
 }
 
 export const fetchCurrentUser = (token, client, uid) => {
-  return axios.get(userEditPage, {headers: {
+  return axios.get(showCurrentUserUrl, {headers: {
     'access-token': token,
     'client': client,
     'uid': uid

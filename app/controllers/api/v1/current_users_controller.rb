@@ -1,6 +1,6 @@
 module Api
   module V1
-    class BookmarksController < ApplicationController
+    class CurrentUsersController < ApplicationController
       before_action :authenticate_api_v1_user!
 
       def show

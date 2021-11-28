@@ -322,6 +322,9 @@ export const Index = () => {
                     <Typography variant="body1" component="p">
                       マイページで自分のトレーニング記録やプロフィール、質問にアドバイスが来ていないかなどを確認してみましょう。
                     </Typography>
+                    <Typography variant="body1" component="p">
+                      登録情報の変更もこちらから行えます。
+                    </Typography>
                     <Typography variant="subtitle2" color="textSecondary" >※ログインすると使える機能です</Typography>
                   </CardContent>
                 </CardActionArea>

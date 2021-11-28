@@ -37,6 +37,9 @@ const useStyles = makeStyles(() => ({
   },
   deleteButton: {
     margin: "0 0 0 auto"
+  },
+  nonQuestionWrapper: {
+    marginLeft: "2rem"
   }
 }))
 
@@ -208,7 +211,7 @@ export const UserQuestions = ({ match }) => {
             );
           })
           :
-          <Grid item>
+          <Grid item className={classes.nonQuestionWrapper}>
             <Typography variant="h6">まだ質問がありません</Typography>
             {
               currentUser.length !== 0 ?

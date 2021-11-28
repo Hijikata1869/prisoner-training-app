@@ -9,6 +9,11 @@ import { passwordUpdate } from '../apis/users';
 // images
 import LoginLogo from '../images/loginLogo2.png';
 
+// components
+import { SuccessModal } from '../components/SuccessModal';
+import { ToTopPageButton } from '../components/ToTopPageButton';
+import { FailedAlert } from '../components/FailedAlert';
+
 const useStyles = makeStyles((theme) => ({
   textFieldWrapper: {
     padding: ' 2rem 2rem',
@@ -44,8 +49,14 @@ export const PasswordUpdate = () => {
 
   const classes = useStyles();
 
+  const token = Cookies.get('access-token');
+  const client = Cookies.get('client');
+  const uid = Cookies.get('uid');
+
   const [password, setPassword] = useState("");
   const [confirmationPassword, setConfirmationPassword] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const hundleChange = (e) => {
     switch (e.target.name) {
@@ -60,21 +71,33 @@ export const PasswordUpdate = () => {
     }
   }
 
-  const hundleUpdate = (password, confirmationPassword) => {
-    const token = Cookies.get('access-token');
-    const client = Cookies.get('client');
-    const uid = Cookies.get('uid');
+  const hundleUpdate = () => {
     passwordUpdate(token, client, uid, password, confirmationPassword)
     .then((res) => {
-      console.log(res);
+      if (res.status == 200) {
+        setModalOpen(true);
+      }
     })
     .catch((e) => {
       console.error(e);
+      setAlertOpen(true);
     })
   }
 
   return(
     <Fragment>
+      {
+        modalOpen ?
+        <SuccessModal message="パスワードが変更されました" button={<ToTopPageButton />} />
+        :
+        null
+      }
+      {
+        alertOpen ?
+        <FailedAlert message="パスワードを更新できませんでした" />
+        :
+        null
+      }
       <Grid container>
         <Grid className={classes.textFieldWrapper} 
           container 
@@ -115,7 +138,7 @@ export const PasswordUpdate = () => {
               variant="contained" 
               color="primary" 
               disabled={password && password === confirmationPassword ? false : true}
-              onClick={() => hundleUpdate(password, confirmationPassword)} 
+              onClick={() => hundleUpdate()} 
             >
               パスワードを変更する
             </Button>

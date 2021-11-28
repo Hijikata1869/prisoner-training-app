@@ -70,6 +70,7 @@ export const SignUp = () => {
   const [password, setPassword] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [confirmationPassword, setConfirmationPassword] = useState("");
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -81,6 +82,9 @@ export const SignUp = () => {
         break;
       case 'password':
         setPassword(e.target.value);
+        break;
+      case 'confirmationPassword':
+        setConfirmationPassword(e.target.value);
         break;
       default:
         console.log('key not found');
@@ -164,11 +168,29 @@ export const SignUp = () => {
               />
             </Grid>
             <Grid item>
+              <TextField 
+                label="パスワード（確認用）" 
+                fullWidth 
+                margin="normal" 
+                type="password" 
+                name="confirmationPassword" 
+                value={confirmationPassword} 
+                onChange={hundleChange}
+                helperText={confirmationPassword ? 
+                  password != confirmationPassword ? "パスワードが一致してません" : "" :
+                  ""
+                }
+              />
+            </Grid>
+            <Grid item>
               <Button 
                 className={classes.loginButton} 
                 variant="contained" 
                 color="primary"　
                 onClick={userRegistrationAction}
+                disabled={
+                  password && password === confirmationPassword ? false : true
+                }
               >
                 登録する
               </Button>

@@ -13,6 +13,7 @@ import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import HomeIcon from '@material-ui/icons/Home';
 
 // apis
 import { signOut, fetchCurrentUser, fetchUsers } from '../apis/users';
@@ -159,6 +160,22 @@ export const Header = () => {
           {`${showUserName(currentUser.id)}`}
         </Typography>
         <Divider />
+        <ListItem 
+          button
+          onClick={
+            () => {
+              history.push(`/`);
+              hundleDrawerToggle();
+            }
+          }
+        >
+          <ListItemAvatar>
+            <HomeIcon />
+          </ListItemAvatar>
+          <ListItemText>
+            ホーム
+          </ListItemText>
+        </ListItem>
         <ListItem 
           button
           onClick={
