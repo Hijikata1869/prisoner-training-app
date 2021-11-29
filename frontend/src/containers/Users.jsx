@@ -6,6 +6,12 @@ import Cookies from 'js-cookie';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
+// Icons
+import FitnessCenterOutlinedIcon from '@material-ui/icons/FitnessCenterOutlined';
+import BookmarkOutlinedIcon from '@material-ui/icons/BookmarkOutlined';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
+import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
+
 
 // apis
 import { fetchUser, imageUpdate, fetchCurrentUser } from '../apis/users';
@@ -14,6 +20,7 @@ import { fetchUser, imageUpdate, fetchCurrentUser } from '../apis/users';
 import { SuccessModal } from '../components/SuccessModal';
 import { FailedAlert } from '../components/FailedAlert';
 import { ReloadButton } from '../components/ReloadButton';
+import { UserMenu } from '../components/UserMenu';
 
 const useStyles = makeStyles((theme) => ({
   largeAvatar: {
@@ -70,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1rem",
   },
   imageUpdateButton: {
-    marginBottom: "1rem"
+    marginBottom: "2rem"
   },
   followButton: {
     marginTop: "1rem"
@@ -85,6 +92,15 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 auto",
     padding: "0 2rem",
     marginBottom: "3rem"
+  },
+  bookmarkButtonWrapper: {
+    marginRight: "auto"
+  },
+  menuIcon: {
+    marginRight: "0.5rem"
+  },
+  menuContent: {
+    marginBottom: "1rem"
   }
 }))
 
@@ -267,6 +283,35 @@ export const Users = ({ match }) => {
     })
   }
 
+  const userMenu = (
+    <div>
+      <Grid item>
+        <ButtonBase className={classes.menuContent}>
+          <FitnessCenterOutlinedIcon className={classes.menuIcon} />
+          <Typography>トレーニング記録</Typography>
+        </ButtonBase>
+      </Grid>
+      <Grid item className={classes.bookmarkButtonWrapper}>
+        <ButtonBase className={classes.menuContent}>
+          <BookmarkOutlinedIcon className={classes.menuIcon} />
+          <Typography>ブックマーク</Typography>
+        </ButtonBase>
+      </Grid>
+      <Grid item xs={12}>
+        <ButtonBase className={classes.menuContent}>
+          <HelpOutlineOutlinedIcon className={classes.menuIcon} />
+          <Typography>過去の質問</Typography>
+        </ButtonBase>
+      </Grid>
+      <Grid item>
+        <ButtonBase>
+          <MessageOutlinedIcon className={classes.menuIcon} />
+          <Typography>過去のアドバイス</Typography>
+        </ButtonBase>
+      </Grid>
+    </div>
+  );
+
 
   return(
     <Fragment>
@@ -412,18 +457,7 @@ export const Users = ({ match }) => {
             null
           }
           <Hidden smUp>
-            <Grid item>
-              <Button>トレーニング記録</Button>
-            </Grid>
-            <Grid item>
-              <Button>ブックマーク</Button>
-            </Grid>
-            <Grid item>
-              <Button>過去のアドバイス</Button>
-            </Grid>
-            <Grid item>
-              <Button>過去の質問</Button>
-            </Grid>
+            {userMenu}
           </Hidden>
           <Grid item className={classes.introduce}>
             {user.introduction ? 
