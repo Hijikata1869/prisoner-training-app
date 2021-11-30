@@ -77,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1rem",
   },
   imageUpdateButton: {
-    marginBottom: "2rem"
   },
   followButton: {
     marginTop: "1rem"
@@ -101,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuContent: {
     marginBottom: "1rem"
+  },
+  userMenuWrapper: {
+    marginTop: "2rem"
   }
 }))
 
@@ -284,27 +286,38 @@ export const Users = ({ match }) => {
   }
 
   const userMenu = (
-    <div>
+    <div className={classes.userMenuWrapper}>
       <Grid item>
-        <ButtonBase className={classes.menuContent}>
+        <ButtonBase 
+          className={classes.menuContent}
+          onClick={() => history.push(`/users/${user.id}/training_logs`)}
+        >
           <FitnessCenterOutlinedIcon className={classes.menuIcon} />
           <Typography>トレーニング記録</Typography>
         </ButtonBase>
       </Grid>
       <Grid item className={classes.bookmarkButtonWrapper}>
-        <ButtonBase className={classes.menuContent}>
+        <ButtonBase 
+          className={classes.menuContent}
+          onClick={() => history.push(`/users/${user.id}/bookmarks`)}
+        >
           <BookmarkOutlinedIcon className={classes.menuIcon} />
           <Typography>ブックマーク</Typography>
         </ButtonBase>
       </Grid>
       <Grid item xs={12}>
-        <ButtonBase className={classes.menuContent}>
+        <ButtonBase 
+          className={classes.menuContent}
+          onClick={() => history.push(`/users/${user.id}/questions`)}
+        >
           <HelpOutlineOutlinedIcon className={classes.menuIcon} />
           <Typography>過去の質問</Typography>
         </ButtonBase>
       </Grid>
       <Grid item>
-        <ButtonBase>
+        <ButtonBase 
+          onClick={() => history.push(`/users/${user.id}/advices`)}
+        >
           <MessageOutlinedIcon className={classes.menuIcon} />
           <Typography>過去のアドバイス</Typography>
         </ButtonBase>
