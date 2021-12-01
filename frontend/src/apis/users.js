@@ -23,7 +23,8 @@ import {
   hundleAdivceUrl,
   showTrainingLogUrl,
   hundleLikesUrl,
-  showCurrentUserUrl
+  showCurrentUserUrl,
+  guestLoginUrl
  } from '../urls/index';
 
 export const fetchUsers = () => {
@@ -390,4 +391,18 @@ export const fetchLikes = () => {
   .catch((e) => {
     console.error(e);
   })
+}
+
+export const guestLogin = (nickname, email, password) => {
+  return axios.post(guestLoginUrl,
+    {
+      nickname: nickname,
+      email: email,
+      password: password
+    },
+  )
+  .then(res => {
+    return res;
+  })
+  .catch((e) => console.error(e))
 }

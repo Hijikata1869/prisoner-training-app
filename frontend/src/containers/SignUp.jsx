@@ -1,15 +1,14 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, Button, IconButton, Collapse, Backdrop, CardContent, Card, CardActions, Hidden } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
 
 // images
 import LoginLogo from '../images/loginLogo2.png';
 
 // apis
-import { postUser } from '../apis/users';
+import { postUser, guestLogin, userSignIn } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -71,6 +70,8 @@ export const SignUp = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [confirmationPassword, setConfirmationPassword] = useState("");
+  const [guestModalOpen, setGuestModalOpen] = useState(false);
+  const [guestAlertOpen, setGuestAlertOpen] = useState(false);
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -107,6 +108,22 @@ export const SignUp = () => {
     });
   }
 
+  const guestLoginAction  = () => {
+    guestLogin()
+    .then((res) => {
+      if (res.status == 200) {
+        Cookies.set('access-token', res.data.token['access-token']);
+        Cookies.set('client', res.data.token['client']);
+        Cookies.set('uid', res.data.token['uid']);
+        setGuestModalOpen(true);
+      }
+    })
+    .catch((e) => {
+      console.error(e);
+      setGuestAlertOpen(true);
+    })
+  }
+
   return(
     <Fragment>
       {
@@ -116,8 +133,20 @@ export const SignUp = () => {
         null
       }
       {
+        guestModalOpen ?
+        <SuccessModal message="ゲストとしてログインしました" button={<ToTopPageButton />} />
+        :
+        null
+      }
+      {
         alertOpen ?
         <FailedAlert message="登録ができませんでした" />
+        :
+        null
+      }
+      {
+        guestAlertOpen ?
+        <FailedAlert message="ゲストログインできませんでした" />
         :
         null
       }
@@ -200,7 +229,7 @@ export const SignUp = () => {
                 className={classes.guestLoginButton} 
                 variant="contained" 
                 color="secondary" 
-                onClick={() => { }}
+                onClick={guestLoginAction}
               >
                 ゲストログインして使ってみる
               </Button>

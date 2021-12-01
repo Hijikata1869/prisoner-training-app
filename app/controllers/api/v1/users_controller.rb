@@ -3,6 +3,7 @@ module Api
     class UsersController < ApplicationController
 
       before_action :authenticate_api_v1_user!, except: [:index, :show, :follows, :followers]
+      before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
         users = User.all
@@ -66,6 +67,14 @@ module Api
       private
       def update_params
         params.permit(:email, :password, :nickname, :introduction, :image)
+      end
+
+      def ensure_normal_user
+        if @resource.email == 'guest@example.com'
+          render json: {
+            message: "ゲストユーザーは更新・削除できません"
+          }, status: :bad_request
+        end
       end
 
     end

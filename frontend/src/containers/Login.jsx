@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import LoginLogo from '../images/loginLogo2.png';
 
 // apis
-import { userSignIn } from '../apis/users';
+import { userSignIn, guestLogin } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
@@ -61,6 +61,8 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [alertOpen, setAlertOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [guestModalOpen, setGuestModalOpen] = useState(false);
+  const [guestAlertOpen, setGuestAlertOpen] = useState(false);
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -91,6 +93,22 @@ export const Login = () => {
     });
   }
 
+  const guestLoginAction = () => {
+    guestLogin()
+    .then((res) => {
+      if (res.status == 200) {
+        Cookies.set('access-token', res.data.token['access-token']);
+        Cookies.set('client', res.data.token['client']);
+        Cookies.set('uid', res.data.token['uid']);
+        setGuestModalOpen(true);
+      }
+    })
+    .catch((e) => {
+      console.error(e);
+      setGuestAlertOpen(true);
+    })
+  }
+
   return(
     <Fragment>
       {
@@ -102,6 +120,18 @@ export const Login = () => {
       {
         alertOpen ?
         <FailedAlert message="ログインできませんでした" />
+        :
+        null
+      }
+      {
+        guestModalOpen ?
+        <SuccessModal message="ゲストとしてログインしました"　button={<ToTopPageButton />} />
+        :
+        null
+      }
+      {
+        guestAlertOpen ?
+        <FailedAlert message="ゲストログインできませんでした" />
         :
         null
       }
@@ -153,7 +183,14 @@ export const Login = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button className={classes.guestLoginButton} variant="contained" color="secondary">ゲストログインして使ってみる</Button>
+              <Button 
+                className={classes.guestLoginButton} 
+                variant="contained" 
+                color="secondary"
+                onClick={guestLoginAction}
+              >
+                ゲストログインして使ってみる
+              </Button>
             </Grid>
           </Grid>
           <Hidden only={['sm', 'xs']}>
