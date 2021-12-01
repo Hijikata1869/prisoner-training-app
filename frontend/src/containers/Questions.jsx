@@ -19,7 +19,8 @@ const useStyles = makeStyles(() => ({
   },
   postQuestionWrapper: {
     paddingLeft: "2rem",
-    paddingRight: "2rem"
+    paddingRight: "2rem",
+    marginBottom: "2rem"
   },
   showQuestionsWrapper: {
     paddingRight: "2rem",
@@ -47,7 +48,8 @@ const useStyles = makeStyles(() => ({
     height: "60px"
   },
   viewQuestionTitle: {
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    paddingLeft: "2rem",
   },
   adviceButton: {
     margin: "0 auto"
@@ -75,7 +77,7 @@ export const Questions = () => {
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
     .then((res) => {
-      setCurrentUser(res);
+      setCurrentUser(res.data.currentUser);
     })
     .catch((e) => {
       console.error(e);
@@ -83,7 +85,7 @@ export const Questions = () => {
   }, []);
 
   useEffect(() => {
-    fetchQuestions()
+    fetchQuestions(token, client, uid)
     .then((res) => {
       setQuestionsArr(res.data.questions);
     })
@@ -155,6 +157,7 @@ export const Questions = () => {
             container 
             item 
             md={5} 
+            xs={12}
             direction="column" 
           >
             <Grid item>
@@ -220,7 +223,7 @@ export const Questions = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid className={classes.showQuestionsWrapper} container item md={7} direction="column">
+          <Grid className={classes.showQuestionsWrapper} container item md={7} xs={12} direction="column">
             <Grid item>
               <Typography className={classes.viewQuestionTitle} variant="h4">質問一覧</Typography>
             </Grid>

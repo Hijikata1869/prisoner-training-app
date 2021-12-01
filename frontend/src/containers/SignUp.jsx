@@ -1,15 +1,19 @@
 import React, { Fragment, useState } from 'react';
-import { Grid, Typography, TextField, Button, IconButton, Collapse, Backdrop, CardContent, Card, CardActions } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, Hidden } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Alert } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom';
-import CloseIcon from '@material-ui/icons/Close';
+import Cookies from 'js-cookie';
 
 // images
 import LoginLogo from '../images/loginLogo2.png';
 
 // apis
-import { postUser } from '../apis/users';
+import { postUser, guestLogin, userSignIn } from '../apis/users';
+
+// components
+import { SuccessModal } from '../components/SuccessModal';
+import { ToTopPageButton } from '../components/ToTopPageButton';
+import { FailedAlert } from '../components/FailedAlert';
 
 const useStyles = makeStyles((theme) => ({
   loginWrapper: {
@@ -33,6 +37,13 @@ const useStyles = makeStyles((theme) => ({
   loginButton: {
     width: '100%',
     margin: '0 auto',
+    marginBottom: '1rem',
+    marginTop: "2rem"
+  },
+  guestLoginButton: {
+    width: "100%",
+    margin: '0 auto',
+    marginBottom: "1rem"
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -44,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
   signInButton: {
     width: "100%",
     marin: "0 auto"
-  }
+  },
+  
 }));
 
 export const SignUp = () => {
@@ -55,18 +67,11 @@ export const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const [confirmationPassword, setConfirmationPassword] = useState("");
-  const [failedAlert, setFailedAlert] = useState(false);
-  const [open, setOpen] = useState(true);
-  const [toggleOpen, setToggleOpen] = useState(false);
-
-  const hundleClose = () => {
-    setToggleOpen(false);
-  }
-
-  const hundleToggle = () => {
-    setToggleOpen(!toggleOpen);
-  }
+  const [guestModalOpen, setGuestModalOpen] = useState(false);
+  const [guestAlertOpen, setGuestAlertOpen] = useState(false);
 
   const hundleChange = (e) => {
     switch(e.target.name) {
@@ -87,54 +92,63 @@ export const SignUp = () => {
     }
   };
 
-  const postUsers = (nickname,email,password) => {
-    const result = postUser(nickname,email,password);
-    result
+  const userRegistrationAction = () => {
+    postUser(nickname,email,password)
     .then((res) => {
-      if (res.status === "success") {
-        hundleToggle();
+      if (res.status == 200) {
+        Cookies.set('access-token', res.headers['access-token']);
+        Cookies.set('client', res.headers['client']);
+        Cookies.set('uid', res.headers['uid']);
+        setModalOpen(true);
       }
     })
     .catch((e) => {
-      console.log(e);
-      setFailedAlert(true);
+      console.error(e);
+      setAlertOpen(true);
     });
+  }
+
+  const guestLoginAction  = () => {
+    guestLogin()
+    .then((res) => {
+      if (res.status == 200) {
+        Cookies.set('access-token', res.data.token['access-token']);
+        Cookies.set('client', res.data.token['client']);
+        Cookies.set('uid', res.data.token['uid']);
+        setGuestModalOpen(true);
+      }
+    })
+    .catch((e) => {
+      console.error(e);
+      setGuestAlertOpen(true);
+    })
   }
 
   return(
     <Fragment>
-      <Backdrop className={classes.backdrop} open={toggleOpen}>
-        <Card className={classes.backdropCard}>
-          <CardContent>
-            <Typography variant="h5" component="h2" >登録が完了しました</Typography>
-          </CardContent>
-          <CardActions>
-            <Button variant="contained" color="primary" fullWidth onClick={() => {history.push('/')}} >
-              アプリに戻る
-            </Button>
-          </CardActions>
-        </Card>
-      </Backdrop>
       {
-        failedAlert ? 
-        <Collapse in={open}>
-        <Alert 
-          severity="error" 
-          action={
-                    <IconButton 
-                      aria-label="close"
-                      color="inherit"
-                      size="small"
-                      onClick={() => {setOpen(false);}}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  }
-        >
-          登録できませんでした
-        </Alert>
-        </Collapse> : 
-        <></>
+        modalOpen ?
+        <SuccessModal message="登録が完了しました" button={<ToTopPageButton />} />
+        :
+        null
+      }
+      {
+        guestModalOpen ?
+        <SuccessModal message="ゲストとしてログインしました" button={<ToTopPageButton />} />
+        :
+        null
+      }
+      {
+        alertOpen ?
+        <FailedAlert message="登録ができませんでした" />
+        :
+        null
+      }
+      {
+        guestAlertOpen ?
+        <FailedAlert message="ゲストログインできませんでした" />
+        :
+        null
       }
       <div className={classes.wrapper}>
         <Grid container direction="row">
@@ -184,14 +198,17 @@ export const SignUp = () => {
             </Grid>
             <Grid item>
               <TextField 
-                label="パスワード(確認用)" 
+                label="パスワード（確認用）" 
                 fullWidth 
                 margin="normal" 
                 type="password" 
-                className={classes.passwordFeild} 
                 name="confirmationPassword" 
                 value={confirmationPassword} 
                 onChange={hundleChange}
+                helperText={confirmationPassword ? 
+                  password != confirmationPassword ? "パスワードが一致してません" : "" :
+                  ""
+                }
               />
             </Grid>
             <Grid item>
@@ -199,17 +216,20 @@ export const SignUp = () => {
                 className={classes.loginButton} 
                 variant="contained" 
                 color="primary"　
-                onClick={() => postUsers(nickname,email,password)}
+                onClick={userRegistrationAction}
+                disabled={
+                  password && password === confirmationPassword ? false : true
+                }
               >
                 登録する
               </Button>
             </Grid>
             <Grid item>
               <Button 
-                className={classes.loginButton} 
+                className={classes.guestLoginButton} 
                 variant="contained" 
                 color="secondary" 
-                onClick={() => { }}
+                onClick={guestLoginAction}
               >
                 ゲストログインして使ってみる
               </Button>
@@ -223,9 +243,16 @@ export const SignUp = () => {
               </Button>
             </Grid>
           </Grid>
-          <Grid className={classes.loginIconWrappr} container item md={9} sm={false} justifyContent="space-between">
-            <img className={classes.loginIcon} src={LoginLogo} />
-          </Grid>
+          <Hidden only={['sm', 'xs']}>
+            <Grid 
+              className={classes.loginIconWrappr} 
+              container 
+              item md={9} 
+              justifyContent="space-between"
+            >
+              <img className={classes.loginIcon} src={LoginLogo} />
+            </Grid>
+          </Hidden>
         </Grid>
       </div>
     </Fragment>

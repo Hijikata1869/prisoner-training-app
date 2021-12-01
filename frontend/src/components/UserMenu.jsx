@@ -5,12 +5,19 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   menuWrapper: {
     height: '85vh',
+    marginLeft: "5rem"
   },
   link: {
     '&:hover': {
       cursor: 'pointer',
     },
   },
+  menuTitle: {
+    marginBottom: "3rem"
+  },
+  linkMenu: {
+    marginBottom: "3rem"
+  }
 }))
  
 export const UserMenu = ({ match }) => {
@@ -19,15 +26,15 @@ export const UserMenu = ({ match }) => {
 
   return(
     <Fragment>
-      <Hidden only="xs">
-        <Grid className={classes.menuWrapper} container item md={3} sm={3}>
-          <Grid container item direction="column" justifyContent="space-evenly" >
-            <Grid item >
+      <Hidden only={["sm", "xs"]}>
+        <Grid className={classes.menuWrapper} container item>
+          <Grid container item direction="column" alignItems="flex-start" justifyContent="center">
+            <Grid className={classes.menuTitle} item >
               <Typography variant="h4">
                 メニュー
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid className={classes.linkMenu} item>
               <Typography variant="h5" >
                 <Link 
                   className={classes.link} 
@@ -39,7 +46,7 @@ export const UserMenu = ({ match }) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid className={classes.linkMenu} item>
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
@@ -51,7 +58,7 @@ export const UserMenu = ({ match }) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid className={classes.linkMenu} item>
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
@@ -63,7 +70,7 @@ export const UserMenu = ({ match }) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid className={classes.linkMenu} item>
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
@@ -75,7 +82,7 @@ export const UserMenu = ({ match }) => {
                 </Link>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid className={classes.linkMenu} item>
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 

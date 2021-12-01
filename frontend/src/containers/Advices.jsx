@@ -8,6 +8,7 @@ import {
   CardContent, 
   CardHeader, 
   Grid, 
+  Hidden, 
   IconButton, 
   TextField, 
   Typography 
@@ -30,6 +31,9 @@ import { FailedAlert } from '../components/FailedAlert';
 import { ReloadButton } from '../components/ReloadButton';
 import { UserBookmarks } from './UserBookmarks';
 
+// images
+import mainLogo from '../images/answerAdviceImage.svg';
+
 const useStyles = makeStyles((theme) => ({
   adviceContainer: {
     marginTop: "2rem"
@@ -38,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
     margin: "2rem"
   },
   pageTitle: {
-    marginBottom: "1rem"
+    marginBottom: "1rem",
+    marginLeft: "2rem",
   },
   questionTitle: {
     marginLeft: "2rem",
@@ -73,6 +78,13 @@ const useStyles = makeStyles((theme) => ({
   },
   adviceTextField: {
     backgroundColor: theme.palette.background.paper
+  },
+  mainLogoImage: {
+    width: "100%",
+    height: "100%"
+  },
+  mainLogoWrapper: {
+    height: "85vh"
   }
 }));
 
@@ -216,9 +228,21 @@ export const Advices = ({ match }) => {
         null
       }
       <Grid className={classes.adviceContainer} container>
-        <Grid container item md={3}></Grid>
+        <Hidden smDown>
+          <Grid className={classes.mainLogoWrapper} container item md={3}>
+            {/* このコンテナに画像を入れる */}
+            <Grid item>
+              <img className={classes.mainLogoImage} src={mainLogo} />
+            </Grid>
+          </Grid>
+        </Hidden>
         <Grid container item md={9} direction="column" >
-          <Typography className={classes.pageTitle} variant="h3" >アドバイスする</Typography>
+          <Hidden only="xs">
+            <Typography className={classes.pageTitle} variant="h3" >アドバイスする</Typography>
+          </Hidden>
+          <Hidden smUp>
+            <Typography className={classes.pageTitle} variant="h4" >アドバイスする</Typography>
+          </Hidden>
           <Grid item>
             <Typography className={classes.questionTitle} variant="h5">質問</Typography>
           </Grid>

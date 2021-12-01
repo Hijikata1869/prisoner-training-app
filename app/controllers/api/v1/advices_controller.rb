@@ -23,6 +23,20 @@ module Api
         end
       end
 
+      def destroy
+        advice = Advice.find(params[:id])
+        if current_api_v1_user.id == advice.user_id
+          advice.destroy
+          render json: {
+            message: "completed"
+          }, status: :ok
+        else
+          render json: {
+            message: "incomplete"
+          }, status: :bad_request
+        end
+      end
+
       private
       def post_params
         params.permit(:user_id, :question_id, :advice)

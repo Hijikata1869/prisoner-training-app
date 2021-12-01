@@ -2,7 +2,7 @@ class Advice < ApplicationRecord
   belongs_to :user
   belongs_to :question
 
-  has_many :bookmarks
+  has_many :bookmarks, dependent: :destroy
 
   validates :advice, presence: true
 

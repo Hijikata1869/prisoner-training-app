@@ -3,14 +3,12 @@ module Api
     class UsersController < ApplicationController
 
       before_action :authenticate_api_v1_user!, except: [:index, :show, :follows, :followers]
+      before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
         users = User.all
-        current_user = current_api_v1_user
-
         render json: {
-          users: users,
-          currentUser: current_user
+          users: users
         }, status: :ok
       end
 
@@ -20,13 +18,17 @@ module Api
         bookmarked_advices = user.bookmark_advices
         user_followings = user.followings
         user_followers = user.followers
+        user_questions = user.questions.order(id: "DESC")
+        user_advices = user.advices
 
         render json: {
           user: user,
           userTrainingLogs: user_training_logs,
           bookmarkedAdvices: bookmarked_advices,
           userFollowings: user_followings,
-          userFollowers: user_followers
+          userFollowers: user_followers,
+          userQuestions: user_questions,
+          userAdvices: user_advices
         }, status: :ok
       end
 
@@ -65,6 +67,14 @@ module Api
       private
       def update_params
         params.permit(:email, :password, :nickname, :introduction, :image)
+      end
+
+      def ensure_normal_user
+        if @resource.email == 'guest@example.com'
+          render json: {
+            message: "ゲストユーザーは更新・削除できません"
+          }, status: :bad_request
+        end
       end
 
     end

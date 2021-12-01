@@ -4,10 +4,8 @@ module Api
       before_action :authenticate_api_v1_user!, except: [:index]
 
       def index
-        users = User.all
         questions = Question.all.order(id: "DESC")
         render json: {
-          users: users,
           questions: questions
         }, status: :ok
       end
@@ -31,6 +29,20 @@ module Api
           question: question,
           advices: advices
         }, status: :ok
+      end
+
+      def destroy
+        question = Question.find(params[:id])
+        if current_api_v1_user.id == question.user_id
+          question.destroy
+          render json: {
+            message: "completed"
+          }, status: :ok
+        else
+          render json: {
+            message: "failed"
+          }, status: :bad_request
+        end
       end
 
       private

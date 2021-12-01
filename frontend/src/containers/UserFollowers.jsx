@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
+import { Avatar, Button, ButtonBase, Card, CardActions, CardContent, CardHeader, Grid, Hidden, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 
@@ -9,7 +9,8 @@ import { fetchUser } from '../apis/users';
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
-    marginBottom: "2rem"
+    marginBottom: "2rem",
+    marginLeft: "1rem"
   },
   followerUserCard: {
     marginBottom: "2rem"
@@ -48,9 +49,13 @@ export const UserFollowers = ({ match }) => {
 
   return(
     <Fragment>
-      {/* <Button variant="contained" onClick={() => console.log(followingUsersArr)}>api</Button> */}
       <Grid container item direction="column">
-        <Typography className={classes.pageTitle} variant="h4">フォローされているユーザー</Typography>
+        <Hidden only="xs">
+          <Typography className={classes.pageTitle} variant="h4">フォローされているユーザー</Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.pageTitle} variant="h6">フォローされているユーザー</Typography>
+        </Hidden>
         <Grid className={classes.cardWrapper} item>
           {
             followerUsersArr.length !== 0 ?

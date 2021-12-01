@@ -14,9 +14,11 @@ module Api
 
       def show
         training_log = TrainingLog.find(params[:id])
+        training_log_likes = training_log.likes
 
         render json: {
-          training_log: training_log
+          training_log: training_log,
+          trianing_log_likes: training_log_likes
         }, status: :ok
       end
 
@@ -28,6 +30,20 @@ module Api
         else
           render json: {
             message: "トレーニングを登録できませんでした"
+          }, status: :bad_request
+        end
+      end
+
+      def destroy
+        training_log = TrainingLog.find(params[:id])
+        if current_api_v1_user.id == training_log.user_id
+          training_log.destroy
+          render json: {
+            message: "削除完了"
+          }, status: :ok
+        else
+          render json: {
+            message: "削除できませんでした"
           }, status: :bad_request
         end
       end

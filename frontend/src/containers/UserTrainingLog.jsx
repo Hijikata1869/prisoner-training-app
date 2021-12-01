@@ -6,38 +6,59 @@ import { Grid,
   InputLabel, 
   Select, 
   MenuItem, 
-  TextField, 
+  TextField,
+  Hidden, 
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import moment from 'moment';
 
+// icons
+import { ThumbUp } from '@material-ui/icons';
+
 // apis
-import { postTraining, fetchCurrentUser, fetchUser } from '../apis/users';
+import { postTraining, fetchCurrentUser, fetchUser, deleteTrainingLog, fetchLikes } from '../apis/users';
 
 // components
 import { SuccessModal } from '../components/SuccessModal';
 import { ReloadButton } from '../components/ReloadButton';
 import { FailedAlert } from '../components/FailedAlert';
+import { DeleteDialog } from '../components/DeleteDialog';
+import { SuccessAlert } from '../components/SuccessAlert';
 
 const useStyles = makeStyles(() => ({
-  inputTrainingLogWrapper: {
-    marginLeft: "1rem",
-  },
-  inputTrainingTitle: {
-  },
-  pastTrainingLogTitle: {
-    marginTop: "3rem",
-    marginBottom: "2rem",
+  pageWrapper: {
+    paddingRight: "2rem",
+    paddingLeft: "2rem"
   },
   pastTrainingLogWrapper: {
+
+  },
+  pastTrainingLogTitle: {
+    marginTop: "5rem",
+    marginBottom: "2rem",
+  },
+  pastTrainingLog: {
     marginBottom: "3rem",
-    marginLeft: "1rem",
     border: "1px solid gray",
     borderRadius: "10px",
   },
   trainingLogNotes: {
     borderTop: "1px solid gray"
+  },
+  deleteButtonWrapper: {
+    margin: "0 0 0 auto",
+  },
+  deleteButton: {
+  },
+  numberOfLikes: {
+    margin: "0 0 0 auto",
+  },
+  likeIconWrapper: {
+    textAlign: "right"
+  },
+  likeNumber: {
+    marginLeft: "0.5rem"
   }
 }));
 
@@ -68,6 +89,10 @@ export const UserTrainingLog = ({ match }) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [pastTrainingLogsArr, setPastTrainingLogsArr] = useState([]);
   const [user, setUser] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+  const [targetTrainingLogId, setTargetTrainingLogId] = useState();
+  const [allLikesArr, setAllLikesArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -89,6 +114,16 @@ export const UserTrainingLog = ({ match }) => {
       console.error(e);
     })
   },[])
+
+  useEffect(() => {
+    fetchLikes()
+    .then((res) => {
+      setAllLikesArr(res.data.likes);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
 
   const hundleMenuChange = (e) => {
     setTrainingMenu(e.target.value);
@@ -125,6 +160,30 @@ export const UserTrainingLog = ({ match }) => {
     })
   }
 
+  const dialogOpenAction = (trainingLogId) => {
+    setTargetTrainingLogId(trainingLogId);
+    setDialogOpen(true);
+  }
+
+  const trainingLogDeleteAction = () => {
+    const trainingLogId = targetTrainingLogId;
+    deleteTrainingLog(token, client, uid, trainingLogId)
+    .then((res) => {
+      if (res.status == 200){
+        setDialogOpen(false);
+        setSuccessAlertOpen(true);
+      }
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }
+
+  const numberOfLikes = (trainingLogId) => {
+    const targetLikes = allLikesArr.filter(like => like.training_log_id == trainingLogId);
+    return targetLikes?.length;
+  }
+
 
   return(
     <Fragment>
@@ -138,14 +197,33 @@ export const UserTrainingLog = ({ match }) => {
         <FailedAlert message="トレーニングを記録できませんでした" /> :
         null
       }
-      <Grid container item direction="column">
-        <Typography className={classes.inputTrainingTitle} variant="h4">
-          {`${user.nickname}さんのトレーニング記録`}
-        </Typography>
+      {
+        dialogOpen ?
+        <DeleteDialog deleteAction={trainingLogDeleteAction} />
+        :
+        null
+      }
+      {
+        successAlertOpen ?
+        <SuccessAlert message="記録を１件削除しました" />
+        :
+        null
+      }
+      <Grid className={classes.pageWrapper} container item direction="column">
+        <Hidden only="xs">
+          <Typography className={classes.inputTrainingTitle} variant="h4">
+            {`${user.nickname}さんのトレーニング記録`}
+          </Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.inputTrainingTitle} variant="h6">
+            {`${user.nickname}さんのトレーニング記録`}
+          </Typography>
+        </Hidden>
         {
           currentUser.id == match.params.userId ?
           <Grid className={classes.inputTrainingLogWrapper} container item spacing={3} direction="row" alignItems="center" >
-            <Grid item md={4} >
+            <Grid item md={4} sm={12} xs={12} >
               <FormControl variant="standard" fullWidth >
                 <InputLabel>トレーニングメニュー</InputLabel>
                 <Select 
@@ -162,7 +240,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3}>
+            <Grid item md={3} sm={12} xs={12}>
               <FormControl variant="standard" fullWidth >
                 <InputLabel>ステップ</InputLabel>
                 <Select
@@ -183,7 +261,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={2}>
+            <Grid item md={2} sm={12} xs={12}>
               <FormControl variant="standard" fullWidth>
                 <InputLabel>回数</InputLabel>
                 <Select
@@ -201,7 +279,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={3}>
+            <Grid item md={3} sm={12} xs={12}>
               <FormControl variant="standard" fullWidth >
                 <InputLabel>セット数</InputLabel>
                 <Select
@@ -222,7 +300,7 @@ export const UserTrainingLog = ({ match }) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={10} >
+            <Grid item md={10} sm={12} xs={12} >
               <FormControl variant="standard" fullWidth >
                 <TextField 
                   label="一言メモ" 
@@ -231,11 +309,12 @@ export const UserTrainingLog = ({ match }) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item md={2}>
+            <Grid item md={2} sm={12} xs={12}>
               <Button 
                 color="primary" 
                 variant="contained"
                 size="medium" 
+                fullWidth
                 onClick={() => postTrainingAction(trainingMenu, step, rep, set, note)}
               >
                 記録する
@@ -245,38 +324,88 @@ export const UserTrainingLog = ({ match }) => {
           :
           null
         }
-        <Grid container item direction="column" >
-          <Typography className={classes.pastTrainingLogTitle} variant="h4" >これまでの記録</Typography>
+        <Grid className={classes.pastTrainingLogWrapper} container item direction="column" >
+          <Hidden only="xs">
+            <Typography className={classes.pastTrainingLogTitle} variant="h4">
+              これまでの記録
+            </Typography>
+          </Hidden>
+          <Hidden smUp>
+            <Typography className={classes.pastTrainingLogTitle} variant="h5">
+              これまでの記録
+            </Typography>
+          </Hidden>
           {
-            pastTrainingLogsArr.map((data, index) => {
-              return(
-                <Grid key={index} className={classes.pastTrainingLogWrapper} container item spacing={4} direction="row" >
-                  <Grid item >
-                    <Typography variant="subtitle2" >日付</Typography>
-                    <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >メニュー</Typography>
-                    <Typography variant="h6" >{`${data.training_menu}`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >ステップ</Typography>
-                    <Typography variant="h6" >{`${data.step}`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >回数</Typography>
-                    <Typography variant="h6" >{`${data.repetition}回`}</Typography>
-                  </Grid>
-                  <Grid item >
-                    <Typography variant="subtitle2" >セット数</Typography>
-                    <Typography variant="h6" >{`${data.set}`}</Typography>
-                  </Grid>
-                  <Grid className={classes.trainingLogNotes} item md={12}>
-                    <Typography variant="body1" >{`一言メモ：${data.memo}`}</Typography>
-                  </Grid>
-                </Grid>
-              );
-            })
+            pastTrainingLogsArr.length !== 0 ?
+            <Fragment>
+              {
+                pastTrainingLogsArr.map((data, index) => {
+                  return(
+                    <Grid 
+                      key={index} 
+                      className={classes.pastTrainingLog} 
+                      container 
+                      item 
+                      spacing={4} 
+                      direction="row" 
+                      alignItems="center"
+                    >
+                      <Grid item md="auto" xs={12}>
+                        <Typography variant="subtitle2" >日付</Typography>
+                        <Typography variant="h6" >{`${moment(data.updated_at).format('YYYY-MM-DD')}`}</Typography>
+                      </Grid>
+                      <Grid item md="auto"  xs={12} >
+                        <Typography variant="subtitle2" >メニュー</Typography>
+                        <Typography variant="h6" >{`${data.training_menu}`}</Typography>
+                      </Grid>
+                      <Grid item md="auto"  xs={12} >
+                        <Typography variant="subtitle2" >ステップ</Typography>
+                        <Typography variant="h6" >{`${data.step}`}</Typography>
+                      </Grid>
+                      <Grid item md="auto"  xs={12} >
+                        <Typography variant="subtitle2" >回数</Typography>
+                        <Typography variant="h6" >{`${data.repetition}回`}</Typography>
+                      </Grid>
+                      <Grid item md="auto" xs={12} >
+                        <Typography variant="subtitle2" >セット数</Typography>
+                        <Typography variant="h6" >{`${data.set}`}</Typography>
+                      </Grid>
+                      <Grid className={classes.deleteButtonWrapper} item>
+                        {
+                          currentUser.id === data.user_id ?
+                          <Button 
+                            className={classes.deleteButton} 
+                            variant="text" 
+                            color="secondary" 
+                            size="small" 
+                            onClick={() => dialogOpenAction(data.id)}
+                          >
+                            削除する
+                          </Button>
+                          :
+                          null
+                        }
+                      </Grid>
+                      <Grid className={classes.trainingLogNotes} container item alignItems="center">
+                        <Grid className={classes.trianingLogNotes} item md={10} sm={10} xs={12}>
+                          <Typography variant="body1">{`一言メモ：${data.memo}`}</Typography>
+                        </Grid>
+                        <Grid className={classes.likeIconWrapper} item md={1} sm={1}>
+                          <ThumbUp className={classes.likeIcon} />
+                        </Grid>
+                        <Grid className={classes.likeWrapper} item md={1} sm={1}>
+                          <Typography className={classes.likeNumber} color="textSecondary">
+                            {numberOfLikes(data.id)}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  );
+                })
+              }
+            </Fragment>
+            :
+            <Typography>まだトレーニング記録がありません</Typography>
           }
         </Grid>
       </Grid>

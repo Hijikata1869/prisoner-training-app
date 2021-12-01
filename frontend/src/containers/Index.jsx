@@ -3,10 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { Typography, Card, CardActions, CardActionArea, CardContent, CardMedia, Grid, Container, Button, Avatar, CardHeader, IconButton, ButtonBase  } from '@material-ui/core';
 import { ThumbUp, ThumbUpAltOutlined } from '@material-ui/icons';
 import Cookies from 'js-cookie';
-import moment from 'moment';
 
 // apis
-import { fetchCurrentUser, fetchTrainingLogs } from '../apis/users';
+import { fetchCurrentUser, fetchTrainingLogs, fetchLikes } from '../apis/users';
 import { fetchHome } from '../apis/home';
 
 // styles
@@ -35,6 +34,7 @@ export const Index = () => {
   const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
   const [allTrainingLogsArr, setAllTrainingLogsArr] = useState([]);
   const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
+  const [allLikesArr, setAllLikesArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -63,6 +63,16 @@ export const Index = () => {
     fetchTrainingLogs()
     .then((res) => {
       setAllTrainingLogsArr(res.data.trainingLogs);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
+
+  useEffect(() => {
+    fetchLikes()
+    .then((res) => {
+      setAllLikesArr(res.data.likes);
     })
     .catch((e) => {
       console.error(e);
@@ -98,6 +108,15 @@ export const Index = () => {
         console.error(e);
       })
     })
+    .then(() => {
+      fetchLikes()
+      .then((res) => {
+        setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
     .catch((e) => console.error(e))
   }
 
@@ -120,7 +139,21 @@ export const Index = () => {
         console.error(e);
       })
     })
+    .then(() => {
+      fetchLikes()
+      .then((res) => {
+        setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+    })
     .catch((e) => console.error(e))
+  }
+
+  const numberOfLikes = (trainingLogId) => {
+    const targetLikes = allLikesArr.filter(like => like.training_log_id == trainingLogId);
+    return targetLikes?.length;
   }
 
 
@@ -289,6 +322,9 @@ export const Index = () => {
                     <Typography variant="body1" component="p">
                       マイページで自分のトレーニング記録やプロフィール、質問にアドバイスが来ていないかなどを確認してみましょう。
                     </Typography>
+                    <Typography variant="body1" component="p">
+                      登録情報の変更もこちらから行えます。
+                    </Typography>
                     <Typography variant="subtitle2" color="textSecondary" >※ログインすると使える機能です</Typography>
                   </CardContent>
                 </CardActionArea>
@@ -318,11 +354,11 @@ export const Index = () => {
           {
             currentUser.length !== 0 && currentUserFollowingsArr.length !== 0 ?
             <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
-              フォローしているユーザーのトレーニング記録
+              フォローしているユーザーの最新トレーニング記録
             </Typography>
             :
             <Typography variant="h5" className={classes.thirdWrapperTitle} gutterBottom>
-              みんなのトレーニング記録
+              みんなの最新トレーニング記録
             </Typography>
           }
           {
@@ -334,8 +370,8 @@ export const Index = () => {
                     currentUserFollowingsArr.map((followings) => {
                         {
                           return(
-                            trainingData.user_id === followings.id && index < 4 ? 
-                            <Grid item md={3} key={index}>
+                            trainingData.user_id === followings.id && index < 5 ? 
+                            <Grid item md={3} sm={6} xs={12} key={index}>
                               <Card>
                                 <CardHeader 
                                   avatar={
@@ -373,7 +409,7 @@ export const Index = () => {
                                       >
                                         <ThumbUp/>
                                       </IconButton>
-                                      <Typography>いいね済み</Typography>
+                                      <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
                                     </Fragment>
                                     :
                                     <Fragment>
@@ -383,7 +419,7 @@ export const Index = () => {
                                       >
                                         <ThumbUpAltOutlined />
                                       </IconButton>
-                                      <Typography>いいねする</Typography>
+                                      <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
                                     </Fragment>
                                   }
                                 </CardActions>
@@ -403,7 +439,7 @@ export const Index = () => {
               {
                 trainingLogsArr.map((data, index) => {
                   return(
-                    <Grid item md={3} key={index} >
+                    <Grid item md={3} sm={6} xs={12} key={index} >
                       <Card>
                         <CardHeader 
                           avatar={
@@ -428,6 +464,9 @@ export const Index = () => {
                           <Typography variant="subtitle2" color="textSecondary">回数</Typography>
                           <Typography variant="body1" >{`${data.repetition}回`}</Typography>
                         </CardContent>
+                        <CardContent>
+                          <Typography color="textSecondary">{`${numberOfLikes(data.id)}件のいいね`}</Typography>
+                        </CardContent>
                       </Card>
                     </Grid>
                   );
@@ -435,7 +474,13 @@ export const Index = () => {
               }
             </Grid>
           }
-          <Button variant="text" className={classes.toTrainingLogButton}>トレーニング記録一覧はこちら</Button>
+          <Button 
+            variant="text" 
+            className={classes.toTrainingLogButton}
+            onClick={() => history.push("/training_logs")}
+          >
+            トレーニング記録一覧はこちら
+          </Button>
         </Container>
       </div>
       <div className={classes.fourthWrapper}>

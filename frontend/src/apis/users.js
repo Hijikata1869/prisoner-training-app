@@ -17,13 +17,20 @@ import {
   hundleFollowUrl,
   showFollowingsUrl,
   showFollowersUrl,
-  getTrainingLogsUrl
+  getTrainingLogsUrl,
+  hundleTrainingLogsUrl,
+  hundleQuestionsUrl,
+  hundleAdivceUrl,
+  showTrainingLogUrl,
+  hundleLikesUrl,
+  showCurrentUserUrl,
+  guestLoginUrl
  } from '../urls/index';
 
 export const fetchUsers = () => {
   return axios.get(usersIndexPage)
   .then(res => {
-    return res
+    return res;
   })
   .catch((e) => console.error(e))
 }
@@ -45,7 +52,7 @@ export const postUser = (nickname, email, password) => {
     },
   )
   .then(res => {
-    return res.data;
+    return res;
   })
   .catch((e) => console.error(e))
 }
@@ -68,7 +75,7 @@ export const userSignIn = (email, password) => {
 }
 
 export const fetchCurrentUser = (token, client, uid) => {
-  return axios.get(userEditPage, {headers: {
+  return axios.get(showCurrentUserUrl, {headers: {
     'access-token': token,
     'client': client,
     'uid': uid
@@ -322,4 +329,80 @@ export const fetchTrainingLogs = () => {
   .catch((e) => {
     console.error(e);
   })
+}
+
+export const deleteTrainingLog = (token, client, uid, trainingLogId) => {
+  return axios.delete(hundleTrainingLogsUrl(trainingLogId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const deleteQuestion = (token, client, uid, questionId) => {
+  return axios.delete(hundleQuestionsUrl(questionId),{headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const deleteAdvice = (token, client, uid, adviceId) => {
+  return axios.delete(hundleAdivceUrl(adviceId), {headers: {
+    'access-token': token,
+    'client': client,
+    'uid': uid
+  }})
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchTrainingLog = (trainingLogId) => {
+  return axios.get(showTrainingLogUrl(trainingLogId))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const fetchLikes = () => {
+  return axios.get(hundleLikesUrl)
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+}
+
+export const guestLogin = (nickname, email, password) => {
+  return axios.post(guestLoginUrl,
+    {
+      nickname: nickname,
+      email: email,
+      password: password
+    },
+  )
+  .then(res => {
+    return res;
+  })
+  .catch((e) => console.error(e))
 }
