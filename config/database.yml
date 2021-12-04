@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
-  database: prisoner_training_app_production
-  username: prisoner_training_app
-  password: <%= ENV['PRISONER_TRAINING_APP_DATABASE_PASSWORD'] %>
+  database: <%= ENV['DB_NAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  url: <%= ENV['DB_URL'] %>

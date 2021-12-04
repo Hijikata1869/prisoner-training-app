@@ -1,8 +1,7 @@
 import axios from "axios";
-import { DEFAULT_API_LOCALHOST } from "../urls/index";
 
 export const fetchHome = () => {
-  return axios.get(DEFAULT_API_LOCALHOST)
+  return axios.get(`${process.env.REACT_APP_SERVER_URL}`)
   .then(res => {
     return res;
   })
