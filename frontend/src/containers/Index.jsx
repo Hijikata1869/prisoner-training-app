@@ -35,6 +35,7 @@ export const Index = () => {
   const [allTrainingLogsArr, setAllTrainingLogsArr] = useState([]);
   const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
   const [allLikesArr, setAllLikesArr] = useState([]);
+  const [followingUserTrainingLogsArr, setFollowingUserTrainingLogsArr] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -154,6 +155,21 @@ export const Index = () => {
   const numberOfLikes = (trainingLogId) => {
     const targetLikes = allLikesArr.filter(like => like.training_log_id == trainingLogId);
     return targetLikes?.length;
+  }
+
+  const fetchFollowingUserIds = () => {
+    const followingUserIds = currentUserFollowingsArr.map(followingUser => {
+      return followingUser.id;
+    })
+    return followingUserIds;
+  }
+
+  const fetchFollowingUserTrainingLogs = () => {
+    const followingUserIds = fetchFollowingUserIds();
+    const result = allTrainingLogsArr.filter((trainingLog) => {
+      return followingUserIds.includes(trainingLog.user_id);
+    })
+    return result;
   }
 
 
@@ -365,72 +381,65 @@ export const Index = () => {
             currentUser.length !== 0 && currentUserFollowingsArr.length !== 0 ?
             <Grid container spacing={4} >
               {
-                allTrainingLogsArr.map((trainingData, index) => {
-                  return(
-                    currentUserFollowingsArr.map((followings) => {
-                        {
-                          return(
-                            trainingData.user_id === followings.id && index < 5 ? 
-                            <Grid item md={3} sm={6} xs={12} key={index}>
-                              <Card>
-                                <CardHeader 
-                                  avatar={
-                                    <ButtonBase
-                                      onClick={() => history.push(`/users/${trainingData.user_id}`)}
-                                    >
-                                      <Avatar 
-                                        variant="rounded"
-                                        className={classes.trainingCard}
-                                        src={showUserImage(trainingData.user_id)}
-                                      />
-                                    </ButtonBase>
-                                  }
-                                  title={
-                                    <Typography variant="h5">
-                                      {`${showUserName(trainingData.user_id)}`}
-                                    </Typography>
-                                  }
-                                  />
-                                <CardContent>
-                                  <Typography variant="subtitle2" color="textSecondary">トレーニングメニュー</Typography>
-                                  <Typography variant="body1" gutterBottom >{`${trainingData.training_menu}`}</Typography>
-                                  <Typography variant="subtitle2" color="textSecondary">ステップ</Typography>
-                                  <Typography variant="body1" gutterBottom >{`${trainingData.step}`}</Typography>
-                                  <Typography variant="subtitle2" color="textSecondary">回数</Typography>
-                                  <Typography variant="body1" >{`${trainingData.repetition}回`}</Typography>
-                                </CardContent>
-                                <CardActions>
-                                  {
-                                    currentUserLikesArr.find(like => like.training_log_id === trainingData.id) ?
-                                    <Fragment>
-                                      <IconButton 
-                                        className={classes.deleteLikeButton} 
-                                        onClick={() =>deleteLikekAction(trainingData.id)}
-                                      >
-                                        <ThumbUp/>
-                                      </IconButton>
-                                      <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
-                                    </Fragment>
-                                    :
-                                    <Fragment>
-                                      <IconButton
-                                        className={classes.createLikeButton} 
-                                        onClick={() => createLikeAction(trainingData.id)}
-                                      >
-                                        <ThumbUpAltOutlined />
-                                      </IconButton>
-                                      <Typography>{`${numberOfLikes(trainingData.id)}`}</Typography>
-                                    </Fragment>
-                                  }
-                                </CardActions>
-                              </Card>
-                            </Grid>
-                            :
-                            null
-                          )
-                        }
-                    })
-                  )
+                fetchFollowingUserTrainingLogs().map((trainingLog, index) => {
+                  if (index < 4) {
+                    return(
+                      <Grid item md={3} sm={6} xs={12} key={index}>
+                        <Card>
+                          <CardHeader 
+                            avatar={
+                              <ButtonBase
+                                onClick={() => history.push(`/users/${trainingLog.user_id}`)}
+                              >
+                                <Avatar 
+                                  variant="rounded"
+                                  className={classes.trainingCard}
+                                  src={showUserImage(trainingLog.user_id)}
+                                />
+                              </ButtonBase>
+                            }
+                            title={
+                              <Typography variant="h5">
+                                {`${showUserName(trainingLog.user_id)}`}
+                              </Typography>
+                            }
+                            />
+                          <CardContent>
+                            <Typography variant="subtitle2" color="textSecondary">トレーニングメニュー</Typography>
+                            <Typography variant="body1" gutterBottom >{`${trainingLog.training_menu}`}</Typography>
+                            <Typography variant="subtitle2" color="textSecondary">ステップ</Typography>
+                            <Typography variant="body1" gutterBottom >{`${trainingLog.step}`}</Typography>
+                            <Typography variant="subtitle2" color="textSecondary">回数</Typography>
+                            <Typography variant="body1" >{`${trainingLog.repetition}回`}</Typography>
+                          </CardContent>
+                          <CardActions>
+                            {
+                              currentUserLikesArr.find(like => like.training_log_id === trainingLog.id) ?
+                              <Fragment>
+                                <IconButton 
+                                  className={classes.deleteLikeButton} 
+                                  onClick={() =>deleteLikekAction(trainingLog.id)}
+                                >
+                                  <ThumbUp/>
+                                </IconButton>
+                                <Typography>{`${numberOfLikes(trainingLog.id)}`}</Typography>
+                              </Fragment>
+                              :
+                              <Fragment>
+                                <IconButton
+                                  className={classes.createLikeButton} 
+                                  onClick={() => createLikeAction(trainingLog.id)}
+                                >
+                                  <ThumbUpAltOutlined />
+                                </IconButton>
+                                <Typography>{`${numberOfLikes(trainingLog.id)}`}</Typography>
+                              </Fragment>
+                            }
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    );
+                  }
                 })
               }
             </Grid>
