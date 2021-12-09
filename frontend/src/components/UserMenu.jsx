@@ -38,7 +38,7 @@ export const UserMenu = ({ match }) => {
               <Typography variant="h5" >
                 <Link 
                   className={classes.link} 
-                  href={`/api/v1/${match.url}/training_logs`} 
+                  href={`${match.url}/training_logs`} 
                   color="textSecondary" 
                   underline="none" 
                 >
@@ -50,7 +50,7 @@ export const UserMenu = ({ match }) => {
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
-                  href={`/api/v1/${match.url}/bookmarks`} 
+                  href={`${match.url}/bookmarks`} 
                   color="textSecondary" 
                   underline="none" 
                 >
@@ -62,7 +62,7 @@ export const UserMenu = ({ match }) => {
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
-                  href={`/api/v1/${match.url}`} 
+                  href={`${match.url}`} 
                   color="textSecondary" 
                   underline="none" 
                 >
@@ -74,7 +74,7 @@ export const UserMenu = ({ match }) => {
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
-                  href={`/api/v1/${match.url}/questions`} 
+                  href={`${match.url}/questions`} 
                   color="textSecondary" 
                   underline="none" 
                 >
@@ -86,7 +86,7 @@ export const UserMenu = ({ match }) => {
               <Typography variant="h5">
                 <Link 
                   className={classes.link} 
-                  href={`/api/v1/${match.url}/advices`} 
+                  href={`${match.url}/advices`} 
                   color="textSecondary" 
                   underline="none" 
                 >
