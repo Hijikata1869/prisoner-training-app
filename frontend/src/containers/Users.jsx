@@ -238,7 +238,7 @@ export const Users = ({ match }) => {
   }
 
   const userFollowAction = (userId) => {
-    fetch(`http://localhost:3000/api/v1/users/${userId}/relationships`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/users/${userId}/relationships`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ export const Users = ({ match }) => {
   }
 
   const userUnFollowAction = (userId) => {
-    fetch(`http://localhost:3000/api/v1/users/${userId}/relationships`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/users/${userId}/relationships`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

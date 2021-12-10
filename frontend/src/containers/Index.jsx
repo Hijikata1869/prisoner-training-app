@@ -91,7 +91,7 @@ export const Index = () => {
   }
 
   const createLikeAction = (trainingLogId) => {
-    fetch(`http://localhost:3000/api/v1/training_logs/${trainingLogId}/likes`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/training_logs/${trainingLogId}/likes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export const Index = () => {
   }
 
   const deleteLikekAction = (trainingLogId) => {
-    fetch(`http://localhost:3000/api/v1/training_logs/${trainingLogId}/likes`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/training_logs/${trainingLogId}/likes`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

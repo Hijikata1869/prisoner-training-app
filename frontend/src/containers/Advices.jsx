@@ -172,7 +172,7 @@ export const Advices = ({ match }) => {
   }
 
   const createBookmarkAction = (adviceId) => {
-    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/advices/${adviceId}/bookmarks`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ export const Advices = ({ match }) => {
   }
 
   const deleteBookmarkAction = (adviceId) => {
-    fetch(`http://localhost:3000/api/v1/advices/${adviceId}/bookmarks`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/advices/${adviceId}/bookmarks`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
