@@ -46,3 +46,5 @@ gem 'devise_token_auth'
 gem 'carrierwave'
 
 gem 'foreman'
+
+gem 'fog'
