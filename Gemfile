@@ -47,4 +47,4 @@ gem 'carrierwave'
 
 gem 'foreman'
 
-gem 'fog'
+gem 'fog-aws'
