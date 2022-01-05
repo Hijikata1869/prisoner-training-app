@@ -1,22 +1,28 @@
-require 'carrierwave/storage/abstract'
-require 'carrierwave/storage/file'
-require 'carrierwave/storage/fog'
-
 CarrierWave.configure do |config|
   if Rails.env.production?
-    config.storage :fog
-    config.fog_provider = 'fog/aws'
-    config.fog_directory  = 'prisoner-training-app-images'
-    config.fog_credentials = {
-      provider: 'AWS',
-      aws_access_key_id: Rails.application.credentials.s3[:s3_access_key_id],
-      aws_secret_access_key: Rails.application.credentials.s3[:s3_secret_access_key],
-      region: 'ap-northeast-1',
-      path_style: true
+    config.storage    = :aws
+    config.aws_bucket = 'prisoner-training-app-images'
+    config.aws_acl    = 'public-read'
+ 
+    # The maximum period for authenticated_urls is only 7 days.
+    config.aws_authenticated_url_expiration = 60 * 60 * 24 * 7
+ 
+    # Set custom options such agit s cache control to leverage browser caching
+    config.aws_attributes = {
+      expires: 1.week.from_now.httpdate,
+      cache_control: 'max-age=604800'
+    }
+ 
+    # aws credential
+    config.aws_credentials = {
+      access_key_id:     Rails.application.credentials.s3[:s3_access_key_id],
+      secret_access_key: Rails.application.credentials.s3[:s3_secret_access_key],
+      region: 'ap-northeast-1'
     }
   else
-    config.asset_host = "http://localhost:3000"
+    # テスト時はローカルにファイルを保存する
     config.storage = :file
-    config.cache_storage = :file
   end
-end 
+end
+ 
+CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
