@@ -44,7 +44,6 @@ gem 'devise'
 gem 'devise_token_auth'
 
 gem 'carrierwave'
-gem 'carrierwave-aws'
 
 gem 'foreman'
 
