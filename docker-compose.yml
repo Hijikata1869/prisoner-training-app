@@ -1,0 +1,35 @@
+version: '3'
+
+services: 
+  db:
+    image: mysql:8.0
+    volumes:
+      - pta-db-volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    restart: always
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/prisoner-training-app
+      - bundle:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    command: sh -c "cd /home/node/app && npm install && npm run build && npm start"
+    volumes:
+      - ./frontend:/home/node/app
+    ports:
+      - "3001:3000"
+
+volumes:
+  pta-db-volume:
+  bundle:
