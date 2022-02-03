@@ -24,11 +24,10 @@ services:
     build:
       context: ./frontend/
       dockerfile: Dockerfile
-    command: sh -c "cd /home/node/app && npm install && npm run build && npm start"
-    volumes:
-      - ./frontend:/home/node/app
     ports:
-      - "3001:3000"
+      - "3001:80"
+    depends_on:
+      - api
 
 volumes:
   pta-db-volume:

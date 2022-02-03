@@ -14,7 +14,7 @@ threads min_threads_count, max_threads_count
 if Rails.env.production?
   bind "unix:///var/www/prisoner-training-app/tmp/sockets/puma.sock"
 else
-  port        ENV.fetch("PORT") { 3000 }
+  bind "unix:///prisoner-training-app/tmp/sockets/puma.sock"
 end
 
 # Specifies the `environment` that Puma will run in.
