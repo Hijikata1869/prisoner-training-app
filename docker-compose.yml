@@ -3,21 +3,21 @@ version: '3'
 services: 
   db:
     image: mysql:8.0
-    volumes:
-      - pta-db-volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-    restart: always
+    ports:
+      - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - pta-db-data:/var/lib/mysql
   api:
     build: 
       context: .
       dockerfile: Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/prisoner-training-app
+      - ignore-sample:/prisoner-training-app/frontend
       - bundle:/usr/local/bundle
-    ports:
-      - "3000:3000"
     depends_on:
       - db
   frontend:
@@ -26,9 +26,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3001:80"
+    volumes_from:
+      - api
     depends_on:
       - api
 
 volumes:
-  pta-db-volume:
+  pta-db-data:
   bundle:
+  ignore-sample:
