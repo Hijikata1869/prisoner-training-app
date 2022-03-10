@@ -12,14 +12,16 @@ module Api
       end
 
       def create
-        if Advice.create!(post_params)
+        advice = Advice.new(post_params)
+        if advice.save
           render json: {
-            message: "登録成功"
+            message: "登録成功",
+            advice: advice
           }, status: :ok
         else
           render json: {
             message: "アドバイスを投稿できませんでした"
-          }, status: :bad_request
+          }, status: 422
         end
       end
 
