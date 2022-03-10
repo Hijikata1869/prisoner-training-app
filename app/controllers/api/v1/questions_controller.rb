@@ -11,14 +11,16 @@ module Api
       end
 
       def create
-        if Question.create!(post_params)
+        question = Question.new(post_params)
+        if question.save
           render json: {
-            message: "登録成功"
+            message: "登録成功",
+            question: question
           }, status: :ok
         else
           render json: {
             message: "質問を投稿できませんでした"
-          }, status: :bad_request
+          }, status: 422
         end
       end
 
