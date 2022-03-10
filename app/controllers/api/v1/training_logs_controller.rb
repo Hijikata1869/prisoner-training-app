@@ -23,14 +23,16 @@ module Api
       end
 
       def create
-        if TrainingLog.create!(post_params)
+        training_log = TrainingLog.new(post_params)
+        if training_log.save
           render json: {
-            message: "登録成功"
+            message: "登録成功",
+            trainingLog: training_log
           }, status: :ok
         else
           render json: {
-            message: "トレーニングを登録できませんでした"
-          }, status: :bad_request
+            message: "トレーニングを記録できませんでした"
+          }, status: 422
         end
       end
 
