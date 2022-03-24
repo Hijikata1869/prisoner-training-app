@@ -125,7 +125,7 @@ export const Login = () => {
       }
       {
         guestModalOpen ?
-        <SuccessModal message="ゲストとしてログインしました"　button={<ToTopPageButton />} />
+        <SuccessModal message="ゲストとしてログインしました" button={<ToTopPageButton />} />
         :
         null
       }

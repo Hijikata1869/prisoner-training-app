@@ -167,6 +167,7 @@ export const SignUp = () => {
             </Grid>
             <Grid item>
               <TextField 
+                id="nickname"
                 label="ニックネーム" 
                 fullWidth 
                 margin="normal" 
@@ -177,6 +178,7 @@ export const SignUp = () => {
             </Grid>
             <Grid item>
               <TextField 
+                id="email"
                 label="メールアドレス" 
                 fullWidth 
                 margin="normal" 
@@ -187,6 +189,7 @@ export const SignUp = () => {
             </Grid>
             <Grid item>
               <TextField 
+                id="password"
                 label="パスワード" 
                 fullWidth 
                 margin="normal" 
@@ -198,6 +201,7 @@ export const SignUp = () => {
             </Grid>
             <Grid item>
               <TextField 
+                id="confirmationPassword"
                 label="パスワード（確認用）" 
                 fullWidth 
                 margin="normal" 
