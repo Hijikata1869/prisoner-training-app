@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { SignUp} from '../containers/SignUp';
-import { jssPreset } from '@material-ui/core';
 
 describe('SignUpコンポーネントテスト', () => {
   it('必要な要素が表示されていること', () => {
