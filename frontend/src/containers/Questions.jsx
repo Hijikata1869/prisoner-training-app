@@ -167,6 +167,7 @@ export const Questions = () => {
               <FormControl variant="standard" fullWidth >
                 <InputLabel>トレーニングメニュー</InputLabel>
                 <Select 
+                  id="trainingMenus"
                   label="trainingMenu" 
                   value={trainingMenu}
                   onChange={hundleTrainingMenuChange}
@@ -184,6 +185,7 @@ export const Questions = () => {
               <FormControl variant="standard" fullWidth >
                 <InputLabel>ステップ</InputLabel>
                 <Select
+                  id="steps"
                   label="step" 
                   value={step} 
                   onChange={hundleStepChange}
