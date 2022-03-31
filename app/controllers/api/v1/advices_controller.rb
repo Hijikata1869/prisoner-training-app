@@ -15,12 +15,12 @@ module Api
         advice = Advice.new(post_params)
         if advice.save
           render json: {
-            message: "登録成功",
+            message: '登録成功',
             advice: advice
           }, status: :ok
         else
           render json: {
-            message: "アドバイスを投稿できませんでした"
+            message: 'アドバイスを投稿できませんでした'
           }, status: 422
         end
       end
@@ -30,20 +30,20 @@ module Api
         if current_api_v1_user.id == advice.user_id
           advice.destroy
           render json: {
-            message: "completed"
+            message: 'completed'
           }, status: :ok
         else
           render json: {
-            message: "incomplete"
+            message: 'incomplete'
           }, status: :bad_request
         end
       end
 
       private
+
       def post_params
         params.permit(:user_id, :question_id, :advice)
       end
-
     end
   end
 end

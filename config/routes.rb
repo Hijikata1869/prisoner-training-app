@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
 
       resources :users do
-        resource :relationships, only: [:create, :destroy]
+        resource :relationships, only: %i[create destroy]
         get :follows, on: :member
         get :followers, on: :member
       end
@@ -20,20 +20,20 @@ Rails.application.routes.draw do
       resources :questions
 
       resources :training_logs do
-        resource :likes, only: [:create, :destroy]
+        resource :likes, only: %i[create destroy]
       end
       resources :advices do
-        resource :bookmarks, only: [:create, :destroy]
+        resource :bookmarks, only: %i[create destroy]
       end
 
       get '/likes', to: 'likes#index'
       get '/current_user', to: 'current_users#show'
 
-      root to: "homes#index"
+      root to: 'homes#index'
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  get '*path', to: "application#fallback_index_html", constraints: ->(request) do
+  get '*path', to: 'application#fallback_index_html', constraints: lambda { |request|
     !request.xhr? && request.format.html?
-  end
+  }
 end

@@ -9,4 +9,4 @@ namespace :start do
     exec 'NPM_CONFIG_PRODUCTION=true npm heroku-postbuild && foreman start'
   end
 end
-task :start => 'start:development'
+task start: 'start:development'

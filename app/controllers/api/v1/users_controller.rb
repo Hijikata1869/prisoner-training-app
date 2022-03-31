@@ -1,8 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-
-      before_action :authenticate_api_v1_user!, except: [:index, :show, :follows, :followers]
+      before_action :authenticate_api_v1_user!, except: %i[index show follows followers]
       before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
@@ -14,11 +13,11 @@ module Api
 
       def show
         user = User.find(params[:id])
-        user_training_logs = TrainingLog.where(user_id: user.id).order(id: "DESC").limit(6)
+        user_training_logs = TrainingLog.where(user_id: user.id).order(id: 'DESC').limit(6)
         bookmarked_advices = user.bookmark_advices
         user_followings = user.followings
         user_followers = user.followers
-        user_questions = user.questions.order(id: "DESC")
+        user_questions = user.questions.order(id: 'DESC')
         user_advices = user.advices
 
         render json: {
@@ -34,17 +33,16 @@ module Api
 
       def update
         user = current_api_v1_user
-        
+
         if user.update!(update_params)
           render json: {
             user: user
           }, status: :ok
         else
           render json: {
-            message: "アップデートに失敗しました"
+            message: 'アップデートに失敗しました'
           }, status: :bad_request
         end
-
       end
 
       def follows
@@ -63,8 +61,8 @@ module Api
         }, status: :ok
       end
 
-
       private
+
       def update_params
         params.permit(:email, :password, :nickname, :introduction, :image)
       end
@@ -72,11 +70,10 @@ module Api
       def ensure_normal_user
         if @resource.email == 'guest@example.com'
           render json: {
-            message: "ゲストユーザーは更新・削除できません"
+            message: 'ゲストユーザーは更新・削除できません'
           }, status: :bad_request
         end
       end
-
     end
   end
-end 
+end

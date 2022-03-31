@@ -10,12 +10,11 @@ module LoginSupport
     token = response.headers['access-token']
     client = response.headers['client']
     uid = response.headers['uid']
-    auth_params = {
+    {
       'access-token': token,
       'client': client,
       'uid': uid
     }
-    auth_params
   end
 end
 

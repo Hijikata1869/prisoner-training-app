@@ -4,7 +4,7 @@ module Api
       before_action :authenticate_api_v1_user!, except: [:index]
 
       def index
-        questions = Question.all.order(id: "DESC")
+        questions = Question.all.order(id: 'DESC')
         render json: {
           questions: questions
         }, status: :ok
@@ -14,12 +14,12 @@ module Api
         question = Question.new(post_params)
         if question.save
           render json: {
-            message: "登録成功",
+            message: '登録成功',
             question: question
           }, status: :ok
         else
           render json: {
-            message: "質問を投稿できませんでした"
+            message: '質問を投稿できませんでした'
           }, status: 422
         end
       end
@@ -38,20 +38,20 @@ module Api
         if current_api_v1_user.id == question.user_id
           question.destroy
           render json: {
-            message: "completed"
+            message: 'completed'
           }, status: :ok
         else
           render json: {
-            message: "failed"
+            message: 'failed'
           }, status: :bad_request
         end
       end
 
       private
+
       def post_params
         params.permit(:user_id, :question, :training_menu, :step)
       end
-
     end
   end
 end

@@ -1,73 +1,73 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Users", type: :request do
-  context "有効なリクエスト" do
-    it "nickname、email、passwordがあればユーザーを作成できること" do
+RSpec.describe 'Api::V1::Users', type: :request do
+  context '有効なリクエスト' do
+    it 'nickname、email、passwordがあればユーザーを作成できること' do
       post api_v1_user_registration_path, params: {
-        nickname: "user",
-        email: "user@example.com",
-        password: "password"
+        nickname: 'user',
+        email: 'user@example.com',
+        password: 'password'
       }
       expect(response).to have_http_status(200)
     end
-    it "email、passwordがあればログインできること" do
+    it 'email、passwordがあればログインできること' do
       user = FactoryBot.create(:user)
       login user
       expect(response).to have_http_status(200)
     end
-  
-    it "ログアウトができること" do
+
+    it 'ログアウトができること' do
       user = FactoryBot.create(:user)
       login user
       auth_params = get_auth_params_from_login_response_headers(response)
       delete destroy_api_v1_user_session_path, headers: auth_params
       expect(response).to have_http_status(200)
     end
-  
-    it "パスワードを更新できること" do
+
+    it 'パスワードを更新できること' do
       user = FactoryBot.create(:user)
       login user
       auth_params = get_auth_params_from_login_response_headers(response)
       put api_v1_user_password_path,
-      headers: auth_params,
-      params: {
-        password: "newpassword",
-        password_confirmation: "newpassword"
-      }
+          headers: auth_params,
+          params: {
+            password: 'newpassword',
+            password_confirmation: 'newpassword'
+          }
       json = JSON.parse(response.body)
       expect(response.status).to eq(200)
-      expect(json['message']).to eq("Your password has been successfully updated.")
+      expect(json['message']).to eq('Your password has been successfully updated.')
     end
   end
-  
-  context "無効なリクエスト" do
-    it "nicknameがなければユーザーを作成できないこと" do
+
+  context '無効なリクエスト' do
+    it 'nicknameがなければユーザーを作成できないこと' do
       post api_v1_user_registration_path, params: {
         nickname: nil,
-        email: "user@example.com",
-        password: "password"
+        email: 'user@example.com',
+        password: 'password'
       }
       expect(response).to_not have_http_status(200)
     end
-  
-    it "emaiがなければユーザーを作成できないこと" do
+
+    it 'emaiがなければユーザーを作成できないこと' do
       post api_v1_user_registration_path, params: {
-        nickname: "user",
+        nickname: 'user',
         email: nil,
-        password: "password"
+        password: 'password'
       }
       expect(response).to_not have_http_status(200)
     end
-  
-    it "passwordがなければユーザーを作成できないこと" do
+
+    it 'passwordがなければユーザーを作成できないこと' do
       post api_v1_user_registration_path, params: {
-        nickname: "user",
-        email: "user@example.com",
+        nickname: 'user',
+        email: 'user@example.com',
         password: nil
       }
       expect(response).to_not have_http_status(200)
     end
-    it "ログインしていなければパスワードを更新できないこと" do
+    it 'ログインしていなければパスワードを更新できないこと' do
       user = FactoryBot.create(:user)
       put api_v1_user_password_path, params: {
         password: 'newpassword',

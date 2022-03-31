@@ -8,7 +8,7 @@ module Api
         if bookmark.save
           user_bookmarks = current_api_v1_user.bookmarks
           render json: {
-            message: "complete",
+            message: 'complete',
             userBookmarks: user_bookmarks
           }, status: :ok
         end
@@ -18,10 +18,9 @@ module Api
         bookmark = Bookmark.find_by(advice_id: params[:advice_id], user_id: current_api_v1_user.id)
         bookmark.destroy
         render json: {
-          message: "削除完了"
+          message: '削除完了'
         }, status: :ok
       end
-
     end
   end
 end
