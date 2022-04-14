@@ -25,16 +25,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build-development": "dotenv -e .env.development react-scripts build",
-    "build-production": "dotenv -e .env.production react-scripts build", 
+    "build-production": "dotenv -e .env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "lint": "eslint ./src",
+    "format": "prettier --check ./src",
+    "format:fix": "prettier --write ./src"
   },
   "browserslist": {
     "production": [
@@ -49,6 +45,8 @@
     ]
   },
   "devDependencies": {
-    "dotenv-cli": "^5.0.0"
+    "dotenv-cli": "^5.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "2.6.2"
   }
 }
