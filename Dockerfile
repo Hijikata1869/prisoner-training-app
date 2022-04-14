@@ -1,4 +1,4 @@
-FROM ruby:2.7.0
+FROM ruby:2.7.5
 
 RUN apt-get update && apt-get install -y curl apt-transport-https wget && \
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -13,7 +13,7 @@ COPY ./Gemfile /prisoner-training-app/Gemfile
 COPY ./Gemfile.lock /prisoner-training-app/Gemfile.lock
 
 RUN gem install bundler
-RUN bundle install
+RUN bundle install --path=vendor/bundle
 
 VOLUME /tmp
 
