@@ -25,6 +25,8 @@ jobs:
           paths:
             - ~/prisoner-training-app/vendor/bundle
 
+      - run: bundle exec rubocop --fail-level W --display-only-fail-level-offenses
+
       - run: mv config/database.yml.ci config/database.yml
 
       - run: bundle exec rails db:create
