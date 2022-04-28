@@ -1,8 +1,8 @@
 version: 2.1
 
 jobs:
-  build:
-    working_directory: ~/prisoner-training-app
+  test_backend:
+    working_directory: ~/api
     docker:
       - image: cimg/ruby:2.7.5-node
         environment:
@@ -23,7 +23,7 @@ jobs:
       - save_cache:
           key: gem-cache-v1-{{ checksum "Gemfile.lock" }}
           paths:
-            - ~/prisoner-training-app/vendor/bundle
+            - ~/api/vendor/bundle
 
       - run: bundle exec rubocop --fail-level W --display-only-fail-level-offenses
 
@@ -33,9 +33,46 @@ jobs:
       - run: bundle exec rails db:migrate
       - run: bundle exec rspec
 
+  test_frontend:
+    working_directory: ~/web
+    docker:
+      - image: cimg/node:14.4.0
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "./frontend/package-lock.json" }}
+            - v1-dependencies-
+      - run: npm --prefix ./frontend install ./frontend
+      - save_cache:
+          key: v1-dependencies-{{ checksum "./frontend/package-lock.json" }}
+          paths:
+            - ~/web/frontend/node_modules
+      - run:
+          name: run eslint
+          command: |
+            cd frontend
+            npm run lint
+      - run:
+          name: run prettier check
+          command: |
+            cd frontend
+            npm run format
+      - run:
+          name: run prettier fix
+          command: |
+            cd frontend
+            npm run format:fix
+      - run:
+          name: run test
+          command: |
+            cd frontend
+            npm run test
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - test_backend
+      - test_frontend
