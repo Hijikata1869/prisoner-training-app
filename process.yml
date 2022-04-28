@@ -1,110 +1,73 @@
-# Orb 'circleci/ruby@1.1.0' resolved to 'circleci/ruby@1.1.0'
-# Orb 'circleci/node@2' resolved to 'circleci/node@2.1.1'
 version: 2
 jobs:
   build:
+    working_directory: ~/prisoner-trianing-app
     docker:
     - image: cimg/ruby:2.7.5-node
+      environment:
+        BUNDLER_VERSION: 2.1.4
+        RAILS_ENV: test
+    - image: cimg/mysql:8.0
     steps:
     - checkout
     - restore_cache:
         keys:
-        - gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
-        - gems-v1-{{ checksum "./Gemfile.lock"  }}
+        - gem-cache-v1-{{ checksum "~/prisoner-training-app/Gemfile.lock" }}
+        - gem-cache-v1-
     - run:
-        command: |
-          if test -f "Gemfile.lock"; then
-            APP_BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")
-            if [ -z "$APP_BUNDLER_VERSION" ]; then
-              echo "Could not find bundler version from Gemfile.lock. Please use bundler-version parameter"
-            else
-              echo "Gemfile.lock is bundled with bundler version $APP_BUNDLER_VERSION"
-            fi
-          fi
-
-          if ! [ -z  ]; then
-            echo "Found bundler-version parameter to override"
-            APP_BUNDLER_VERSION=
-          fi
-
-          if ! echo $(bundle version)  | grep -q $APP_BUNDLER_VERSION; then
-            echo "Installing bundler $APP_BUNDLER_VERSION"
-            gem install bundler:$APP_BUNDLER_VERSION
-          else
-            echo "bundler $APP_BUNDLER_VERSION is already installed."
-          fi
-
-          if "./vendor/bundle" == "./vendor/bundle"; then
-            bundle check --path ./vendor/bundle || bundle install --deployment
-          else
-            bundle check --path ./vendor/bundle || bundle install --path=./vendor/bundle
-          fi
-        name: 'Bundle Install '
+        command: bundle install --path=vendor/bundle --jobs=4 --retry=3
     - save_cache:
-        key: gems-v1-{{ checksum "./Gemfile.lock"  }}-{{ .Branch }}
+        key: gem-cache-v1-{{ checksum "~/prisoner-training-app/Gemfile.lock" }}
         paths:
-        - ./vendor/bundle
-    - restore_cache:
-        keys:
-        - node-deps-v1-{{ .Branch }}-{{ checksum "~/project/yarn.lock" }}
+        - ~/prisoner-training-app/vendor/bundle
     - run:
-        command: |
-          if [ ! -f "package.json" ]; then
-            echo
-            echo "---"
-            echo "Unable to find your package.json file. Did you forget to set the app-dir parameter?"
-            echo "---"
-            echo
-            echo "Current directory: $(pwd)"
-            echo
-            echo
-            echo "List directory: "
-            echo
-            ls
-            exit 1
-          fi
-          case yarn in
-            npm)
-              if [[ "false" == "true" ]]; then
-                npm install
-              else
-                npm ci
-              fi
-            ;;
-            yarn)
-              if [[ "false" == "true" ]]; then
-                yarn install
-              else
-                yarn install --frozen-lockfile
-              fi
-            ;;
-          esac
-        name: Installing Node Modules.
-        working_directory: ~/project
-    - save_cache:
-        key: node-deps-v1-{{ .Branch }}-{{ checksum "~/project/yarn.lock" }}
-        paths:
-        - ~/project/node_modules
+        command: mv ~/prisoner-training-app/config/database.yml.ci ~/prisoner-training-app/config/database.yml
+    - run:
+        command: bundle exec rails db:create
+    - run:
+        command: bundle exec rails db:migrate
+    - run:
+        command: bundle exec rspec
 workflows:
   version: 2
-  workflow:
+  build_and_test:
     jobs:
     - build
 
 # Original config.yml file:
 # version: 2.1
 # 
-# orbs:
-#   ruby: circleci/ruby@1.1.0
-#   node: circleci/node@2
-# 
 # jobs:
 #   build:
+#     working_directory: ~/prisoner-trianing-app
 #     docker:
 #       - image: cimg/ruby:2.7.5-node
+#         environment:
+#           BUNDLER_VERSION: 2.1.4
+#           RAILS_ENV: 'test'
+#       - image: cimg/mysql:8.0
 #     steps:
 #       - checkout
-#       - ruby/install-deps
-#       - node/install-packages:
-#           pkg-manager: yarn
-#           cache-key: \"yarn.lock\"
+# 
+#       - restore_cache:
+#           keys:
+#             - gem-cache-v1-{{ checksum \"~/prisoner-training-app/Gemfile.lock\" }}
+#             - gem-cache-v1-
+#       - run: bundle install --path=vendor/bundle --jobs=4 --retry=3
+#       - save_cache:
+#           key: gem-cache-v1-{{ checksum \"~/prisoner-training-app/Gemfile.lock\" }}
+#           paths:
+#             - ~/prisoner-training-app/vendor/bundle
+# 
+#       - run: mv ~/prisoner-training-app/config/database.yml.ci ~/prisoner-training-app/config/database.yml
+# 
+#       - run: bundle exec rails db:create
+#       - run: bundle exec rails db:migrate
+#       - run: bundle exec rspec
+# 
+# 
+# workflows:
+#   version: 2
+#   build_and_test:
+#     jobs:
+#       - build
