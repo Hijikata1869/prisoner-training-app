@@ -10,6 +10,8 @@ jobs:
           RAILS_ENV: 'test'
       - image: cimg/mysql:8.0
         command: mysqld --default-authentication-plugin=mysql_native_password
+        environment:
+          MYSQL_ROOT_PASSWORD: password
     steps:
       - checkout
 
