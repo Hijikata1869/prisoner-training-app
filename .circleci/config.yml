@@ -2,13 +2,14 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/prisoner-trianing-app
+    working_directory: ~/prisoner-training-app
     docker:
       - image: cimg/ruby:2.7.5-node
         environment:
           BUNDLER_VERSION: 2.1.4
           RAILS_ENV: 'test'
       - image: cimg/mysql:8.0
+        command: mysqld --default-authentication-plugin=mysql_native_password
     steps:
       - checkout
 
