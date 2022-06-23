@@ -1,6 +1,6 @@
 version: '3'
 
-services: 
+services:
   db:
     image: mysql:8.0
     environment:
@@ -13,7 +13,7 @@ services:
   api:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     volumes:
       - .:/prisoner-training-app
       - ignore-sample:/prisoner-training-app/frontend
