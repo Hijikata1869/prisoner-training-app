@@ -1,0 +1,34 @@
+name: "Build and Test"
+on:
+  push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: mysql:8.0
+        ports:
+          - "3306:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: password
+    env:
+      RAILS_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.5'
+          bundler-cache: true
+      - name: Install dependencies
+        run: bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - name: Run rubocop
+        run: bundle exec rubocop --fail-level W --display-only-fail-level-offenses
+      - name: Setup database
+        run: |
+          mv config/database.yml.ci config/database.yml
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
+      - name: Run RSpec
+        run : bundle exec rspec
