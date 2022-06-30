@@ -53,3 +53,6 @@ jobs:
       - name: run prettier fix
         run: npm run format:fix
         working-directory: ./frontend
+      - name: npm run test
+        run: npm run test
+        working-directory: ./frontend
