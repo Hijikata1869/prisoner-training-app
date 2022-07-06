@@ -28,6 +28,7 @@ jobs:
         REPOSITORY: pta_api
         IMAGE_TAG: ${{ github.sha }}
       run: |
+        echo $IMAGE_TAG
         docker build --no-cache -f ./Dockerfile -t pta_api .
         docker tag pta_api:latest 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
         docker push 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
