@@ -30,7 +30,7 @@ jobs:
         REPOSITORY: pta_api
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build --no-cache -f ./Dockerfile -t pta_api .
+        docker build --no-cache --build-arg RAILS_MASTER_KEY=${{ env.RAILS_MASTER_KEY }} -f ./Dockerfile -t pta_api .
     
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
