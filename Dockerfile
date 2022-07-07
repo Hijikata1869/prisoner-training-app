@@ -7,6 +7,8 @@ apt-get update && apt-get install -y yarn
 
 RUN apt-get update -qq && apt-get install -y nodejs yarn
 
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
 ENV RAILS_ENV=production
 
 WORKDIR /prisoner-training-app
