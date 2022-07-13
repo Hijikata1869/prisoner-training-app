@@ -13,6 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Create env file
+    - shell: bash
+      run: |
+        touch ./frontend/.env.production
+        echo "PRODUCTION_SERVER_URL=${{ secrets.PRODUCTION_SERVER_URL }}" >> ./frontend/.env.production
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with: 
