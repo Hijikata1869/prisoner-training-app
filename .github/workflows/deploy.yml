@@ -44,5 +44,5 @@ jobs:
     #     docker tag pta_frontend:latest 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
     #     docker push 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3 
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3 
