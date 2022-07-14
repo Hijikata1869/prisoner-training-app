@@ -113,7 +113,6 @@
         }
       ],
       "stopTimeout": null,
-      "image": "748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": [
