@@ -53,9 +53,17 @@ jobs:
       id: render-api-container
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ./deploy/task-definition.json
+        task-definition: deploy/task-definition.json
         container-name: pta_api
         image: 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
+    
+    - name: Modify Amazon ECS task definition with frontend container
+      id: render-frontend-container
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ steps.render-api-container.outputs.task-definition }}
+        container-name: pta_frontend
+        image: 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
     
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
