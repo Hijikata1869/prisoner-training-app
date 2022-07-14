@@ -29,25 +29,27 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Build, tag, and push docker image to Amazon ECR(backend)
-    #   env:
-    #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     REPOSITORY: pta_api
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   run: |
-    #     docker build --no-cache --build-arg RAILS_MASTER_KEY=${{ env.RAILS_MASTER_KEY }} -f ./Dockerfile -t pta_api .
-    #     docker tag pta_api:latest 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
-    #     docker push 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
+    - name: Build, tag, and push docker image to Amazon ECR(backend)
+      id: build-api-image
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: pta_api
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build --no-cache --build-arg RAILS_MASTER_KEY=${{ env.RAILS_MASTER_KEY }} -f ./Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       
-    # - name: Build, tag, and push docker image to Amazon ECR(frontend)
-    #   env:
-    #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     REPOSITORY: pta_frontend
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   run: |
-    #     docker build --no-cache -f ./frontend/Dockerfile -t pta_frontend ./frontend
-    #     docker tag pta_frontend:latest 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
-    #     docker push 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
+    - name: Build, tag, and push docker image to Amazon ECR(frontend)
+      id: build-frontend-image
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: pta_frontend
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build --no-cache -f ./frontend/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./frontend
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     
     - name: Render Amazon ECS task definition for api container
       id: render-api-container
@@ -55,7 +57,7 @@ jobs:
       with:
         task-definition: deploy/task-definition.json
         container-name: pta_api
-        image: 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
+        image: ${{ steps.build-api-image.outputs.image }}
     
     - name: Modify Amazon ECS task definition with frontend container
       id: render-frontend-container
@@ -63,15 +65,13 @@ jobs:
       with:
         task-definition: ${{ steps.render-api-container.outputs.task-definition }}
         container-name: pta_frontend
-        image: 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
+        image: ${{ steps.build-frontend-image.outputs.image }}
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3 
-
-    # - name: Deploy to Amazon ECS service
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #   with:
-    #     task-definition: ${{ steps.render-frontend-container.outputs.task-definition }}
-    #     service: pta-service
-    #     cluster: pta-cluster
-    #     force-new-deployment: true
+    - name: Deploy to Amazon ECS service
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.render-frontend-container.outputs.task-definition }}
+        service: pta-service
+        cluster: pta-cluster
+        force-new-deployment: true
+        wait-for-service-stability: true
