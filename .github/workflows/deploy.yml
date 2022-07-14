@@ -32,8 +32,8 @@ jobs:
     - name: Build, tag, and push docker image to Amazon ECR(backend)
       id: build-api-image
       env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: pta_api
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: pta_api
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build --no-cache --build-arg RAILS_MASTER_KEY=${{ env.RAILS_MASTER_KEY }} -f ./Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -43,8 +43,8 @@ jobs:
     - name: Build, tag, and push docker image to Amazon ECR(frontend)
       id: build-frontend-image
       env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: pta_frontend
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: pta_frontend
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build --no-cache -f ./frontend/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./frontend
