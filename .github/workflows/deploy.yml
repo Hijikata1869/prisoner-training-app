@@ -58,4 +58,4 @@ jobs:
         image: 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
     
     - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      uses: mxschmitt/action-tmate@v3
