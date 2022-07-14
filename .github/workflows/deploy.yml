@@ -48,3 +48,11 @@ jobs:
         docker build --no-cache -f ./frontend/Dockerfile -t pta_frontend ./frontend
         docker tag pta_frontend:latest 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
         docker push 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:latest
+    
+    - name: Render Amazon ECS task definition for api container
+      id: render-api-container
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ./deploy/task-definition.json
+        container-name: pta_api
+        image: 748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:latest
