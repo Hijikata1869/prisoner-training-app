@@ -2,7 +2,8 @@ name: "Build and Test"
 on:
   push:
     branches:
-      - master
+      - '**'
+      - '!master'
 jobs:
   backend-test:
     runs-on: ubuntu-latest
