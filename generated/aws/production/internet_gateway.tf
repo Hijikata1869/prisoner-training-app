@@ -9,5 +9,5 @@ resource "aws_internet_gateway" "tfer--igw-0f9864e58bc3a0ecc" {
     Name        = "pta-gateway"
   }
 
-  vpc_id = "${data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id}"
+  vpc_id = data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id
 }

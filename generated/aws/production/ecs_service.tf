@@ -28,8 +28,8 @@ resource "aws_ecs_service" "tfer--pta-cluster_pta-service" {
 
   network_configuration {
     assign_public_ip = "true"
-    security_groups  = ["${data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta_ecs_sg_sg-02075dc1149208821_id}"]
-    subnets          = ["${data.terraform_remote_state.local.outputs.aws_subnet_tfer--subnet-0635816e36cc79294_id}", "${data.terraform_remote_state.local.outputs.aws_subnet_tfer--subnet-0f5ed940db4881191_id}"]
+    security_groups  = [data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta_ecs_sg_sg-02075dc1149208821_id]
+    subnets          = [data.terraform_remote_state.local.outputs.aws_subnet_tfer--subnet-0635816e36cc79294_id, data.terraform_remote_state.local.outputs.aws_subnet_tfer--subnet-0f5ed940db4881191_id]
   }
 
   platform_version    = "1.4.0"

@@ -4,7 +4,7 @@ resource "aws_security_group" "tfer--pta-alb-sg_sg-09a1fbce35a5ef1c5" {
   egress {
     from_port       = "80"
     protocol        = "tcp"
-    security_groups = ["${data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta_ecs_sg_sg-02075dc1149208821_id}"]
+    security_groups = [data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta_ecs_sg_sg-02075dc1149208821_id]
     self            = "false"
     to_port         = "80"
   }
@@ -52,7 +52,7 @@ resource "aws_security_group" "tfer--pta-db-sg_sg-0bbf6cdd7121cb715" {
   ingress {
     from_port       = "3306"
     protocol        = "tcp"
-    security_groups = ["${data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta_ecs_sg_sg-02075dc1149208821_id}"]
+    security_groups = [data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta_ecs_sg_sg-02075dc1149208821_id]
     self            = "false"
     to_port         = "3306"
   }

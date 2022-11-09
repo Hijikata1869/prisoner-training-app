@@ -5,7 +5,6 @@ resource "aws_subnet" "tfer--subnet-0635816e36cc79294" {
   enable_resource_name_dns_a_record_on_launch    = "false"
   enable_resource_name_dns_aaaa_record_on_launch = "false"
   ipv6_native                                    = "false"
-  map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "false"
   private_dns_hostname_type_on_launch            = "ip-name"
 
@@ -19,7 +18,7 @@ resource "aws_subnet" "tfer--subnet-0635816e36cc79294" {
     Name        = "public-subnet-c"
   }
 
-  vpc_id = "${data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id}"
+  vpc_id = data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id
 }
 
 resource "aws_subnet" "tfer--subnet-0a66ccfff9e5ab0ba" {
@@ -29,7 +28,6 @@ resource "aws_subnet" "tfer--subnet-0a66ccfff9e5ab0ba" {
   enable_resource_name_dns_a_record_on_launch    = "false"
   enable_resource_name_dns_aaaa_record_on_launch = "false"
   ipv6_native                                    = "false"
-  map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "false"
   private_dns_hostname_type_on_launch            = "ip-name"
 
@@ -43,7 +41,7 @@ resource "aws_subnet" "tfer--subnet-0a66ccfff9e5ab0ba" {
     Name        = "プライベートサブネット"
   }
 
-  vpc_id = "${data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id}"
+  vpc_id = data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id
 }
 
 resource "aws_subnet" "tfer--subnet-0e8479f86a3a382b8" {
@@ -53,7 +51,6 @@ resource "aws_subnet" "tfer--subnet-0e8479f86a3a382b8" {
   enable_resource_name_dns_a_record_on_launch    = "false"
   enable_resource_name_dns_aaaa_record_on_launch = "false"
   ipv6_native                                    = "false"
-  map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "false"
   private_dns_hostname_type_on_launch            = "ip-name"
 
@@ -67,7 +64,7 @@ resource "aws_subnet" "tfer--subnet-0e8479f86a3a382b8" {
     Name        = "RDS用サブネット"
   }
 
-  vpc_id = "${data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id}"
+  vpc_id = data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id
 }
 
 resource "aws_subnet" "tfer--subnet-0f5ed940db4881191" {
@@ -77,7 +74,6 @@ resource "aws_subnet" "tfer--subnet-0f5ed940db4881191" {
   enable_resource_name_dns_a_record_on_launch    = "false"
   enable_resource_name_dns_aaaa_record_on_launch = "false"
   ipv6_native                                    = "false"
-  map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "false"
   private_dns_hostname_type_on_launch            = "ip-name"
 
@@ -91,5 +87,5 @@ resource "aws_subnet" "tfer--subnet-0f5ed940db4881191" {
     Name        = "public-subnet-a"
   }
 
-  vpc_id = "${data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id}"
+  vpc_id = data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id
 }

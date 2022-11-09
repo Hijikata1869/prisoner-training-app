@@ -9,6 +9,7 @@ resource "aws_db_instance" "tfer--pta-db" {
   customer_owned_ip_enabled             = "false"
   db_subnet_group_name                  = "pta-rds-group"
   deletion_protection                   = "false"
+  delete_automated_backups              = "false"
   engine                                = "mysql"
   engine_version                        = "8.0.28"
   iam_database_authentication_enabled   = "false"
@@ -39,5 +40,5 @@ resource "aws_db_instance" "tfer--pta-db" {
   }
 
   username               = "root"
-  vpc_security_group_ids = ["${data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta-db-sg_sg-0bbf6cdd7121cb715_id}"]
+  vpc_security_group_ids = [data.terraform_remote_state.local.outputs.aws_security_group_tfer--pta-db-sg_sg-0bbf6cdd7121cb715_id]
 }

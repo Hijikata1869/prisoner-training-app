@@ -14,5 +14,5 @@ resource "aws_route_table" "tfer--rtb-036f24e2b4d658c56" {
     Name        = "pta-route-table"
   }
 
-  vpc_id = "${data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id}"
+  vpc_id = data.terraform_remote_state.local.outputs.aws_vpc_tfer--vpc-0afaa249c2c5abb82_id
 }
