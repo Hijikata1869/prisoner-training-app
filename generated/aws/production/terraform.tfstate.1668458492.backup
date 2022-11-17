@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.2.5",
-  "serial": 13,
+  "serial": 5,
   "lineage": "b595b8f8-d001-aad4-e210-fd9d625a701e",
   "outputs": {
     "aws_acm_certificate_tfer--688542ef-16c5-4885-b626-3621458d880e_www-002E-prisoner-training-app-002E-com_id": {
@@ -248,7 +248,7 @@
             "instance_class": "db.t2.micro",
             "iops": 0,
             "kms_key_id": "",
-            "latest_restorable_time": "2022-11-16T10:25:00Z",
+            "latest_restorable_time": "2022-11-09T11:30:00Z",
             "license_model": "general-public-license",
             "maintenance_window": "fri:18:30-fri:19:00",
             "max_allocated_storage": 0,
@@ -509,16 +509,15 @@
             "tags_all": {
               "Environment": "production"
             },
-            "task_definition": "arn:aws:ecs:ap-northeast-1:748732166031:task-definition/ecs_pta_task:24",
+            "task_definition": "arn:aws:ecs:ap-northeast-1:748732166031:task-definition/ecs_pta_task:22",
             "timeouts": {
               "create": null,
               "delete": null,
               "update": null
             },
-            "wait_for_steady_state": false
+            "wait_for_steady_state": null
           },
           "sensitive_attributes": [],
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
           "dependencies": [
             "data.terraform_remote_state.local"
           ]
@@ -534,8 +533,8 @@
         {
           "schema_version": 1,
           "attributes": {
-            "arn": "arn:aws:ecs:ap-northeast-1:748732166031:task-definition/ecs_pta_task:24",
-            "container_definitions": "[{\"cpu\":0,\"environment\":[{\"name\":\"RAILS_ENV\",\"value\":\"production\"}],\"essential\":true,\"image\":\"748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ecs_pta_task\",\"awslogs-region\":\"ap-northeast-1\",\"awslogs-stream-prefix\":\"ecs\"}},\"mountPoints\":[],\"name\":\"pta_api\",\"portMappings\":[{\"containerPort\":3000,\"hostPort\":3000,\"protocol\":\"tcp\"}],\"secrets\":[{\"name\":\"DB_HOST\",\"valueFrom\":\"pta-db-host\"},{\"name\":\"DB_PASSWORD\",\"valueFrom\":\"pta-db-password\"},{\"name\":\"DB_USERNAME\",\"valueFrom\":\"pta-db-username\"}],\"volumesFrom\":[]},{\"cpu\":0,\"dependsOn\":[{\"condition\":\"START\",\"containerName\":\"pta_api\"}],\"environment\":[],\"essential\":true,\"image\":\"748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ecs_pta_task\",\"awslogs-region\":\"ap-northeast-1\",\"awslogs-stream-prefix\":\"ecs\"}},\"mountPoints\":[],\"name\":\"pta_frontend\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80,\"protocol\":\"tcp\"}],\"volumesFrom\":[{\"sourceContainer\":\"pta_api\"}]}]",
+            "arn": "arn:aws:ecs:ap-northeast-1:748732166031:task-definition/ecs_pta_task:22",
+            "container_definitions": "[{\"cpu\":0,\"environment\":[{\"name\":\"RAILS_ENV\",\"value\":\"production\"}],\"essential\":true,\"image\":\"748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:6b78d4eea6fa8b363bf4619513f2c28359e5d3e8\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ecs_pta_task\",\"awslogs-region\":\"ap-northeast-1\",\"awslogs-stream-prefix\":\"ecs\"}},\"mountPoints\":[],\"name\":\"pta_api\",\"portMappings\":[{\"containerPort\":3000,\"hostPort\":3000,\"protocol\":\"tcp\"}],\"secrets\":[{\"name\":\"DB_HOST\",\"valueFrom\":\"pta-db-host\"},{\"name\":\"DB_PASSWORD\",\"valueFrom\":\"pta-db-password\"},{\"name\":\"DB_USERNAME\",\"valueFrom\":\"pta-db-username\"}],\"volumesFrom\":[]},{\"cpu\":0,\"dependsOn\":[{\"condition\":\"START\",\"containerName\":\"pta_api\"}],\"environment\":[],\"essential\":true,\"image\":\"748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:6b78d4eea6fa8b363bf4619513f2c28359e5d3e8\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ecs_pta_task\",\"awslogs-region\":\"ap-northeast-1\",\"awslogs-stream-prefix\":\"ecs\"}},\"mountPoints\":[],\"name\":\"pta_frontend\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80,\"protocol\":\"tcp\"}],\"volumesFrom\":[{\"sourceContainer\":\"pta_api\"}]}]",
             "cpu": "256",
             "ephemeral_storage": [],
             "execution_role_arn": "arn:aws:iam::748732166031:role/ecsTaskExecutionRole",
@@ -551,14 +550,14 @@
             "requires_compatibilities": [
               "FARGATE"
             ],
-            "revision": 24,
+            "revision": 22,
             "runtime_platform": [
               {
                 "cpu_architecture": "",
                 "operating_system_family": "LINUX"
               }
             ],
-            "skip_destroy": false,
+            "skip_destroy": null,
             "tags": {
               "Environment": "production"
             },
@@ -568,8 +567,7 @@
             "task_role_arn": "arn:aws:iam::748732166031:role/ecsTaskExecutionRole",
             "volume": []
           },
-          "sensitive_attributes": [],
-          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+          "sensitive_attributes": []
         }
       ]
     },

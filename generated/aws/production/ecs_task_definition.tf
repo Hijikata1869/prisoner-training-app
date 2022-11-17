@@ -1,5 +1,40 @@
+locals {
+  ecr_registory = "748732166031.dkr.ecr.ap-northeast-1.amazonaws.com"
+  ecr_backend_repository_name = "pta_api"
+  ecr_frontend_repository_name = "pta_frontend"
+}
+
+data "external" "ecr_image_pta_api_newest" {
+  program = [
+    "aws", "ecr", "describe-images",
+  "--repository-name", local.ecr_backend_repository_name,
+  "--query", "{\"tags\": to_string(sort_by(imageDetails,& imagePushedAt)[-1].imageTags)}",
+  ]
+}
+
+data "external" "ecr_image_pta_frontend_newest" {
+  program = [
+    "aws", "ecr", "describe-images",
+  "--repository-name", local.ecr_frontend_repository_name,
+  "--query", "{\"tags\": to_string(sort_by(imageDetails,& imagePushedAt)[-1].imageTags)}",
+  ]
+}
+
+locals {
+  ecr_backend_image_newest_tags = jsondecode(data.external.ecr_image_pta_api_newest.result.tags)
+  ecr_frontend_image_newest_tags = jsondecode(data.external.ecr_image_pta_frontend_newest.result.tags)
+}
+
+locals {
+  pta_api_newest_image = "${local.ecr_registory}/${local.ecr_backend_repository_name}:${local.ecr_backend_image_newest_tags[0]}"
+  pta_frontend_newest_image = "${local.ecr_registory}/${local.ecr_frontend_repository_name}:${local.ecr_frontend_image_newest_tags[0]}"
+}
+
 resource "aws_ecs_task_definition" "tfer--task-definition-002F-ecs_pta_task" {
-  container_definitions    = "[{\"cpu\":0,\"environment\":[{\"name\":\"RAILS_ENV\",\"value\":\"production\"}],\"essential\":true,\"image\":\"748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_api:6b78d4eea6fa8b363bf4619513f2c28359e5d3e8\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ecs_pta_task\",\"awslogs-region\":\"ap-northeast-1\",\"awslogs-stream-prefix\":\"ecs\"}},\"mountPoints\":[],\"name\":\"pta_api\",\"portMappings\":[{\"containerPort\":3000,\"hostPort\":3000,\"protocol\":\"tcp\"}],\"secrets\":[{\"name\":\"DB_HOST\",\"valueFrom\":\"pta-db-host\"},{\"name\":\"DB_PASSWORD\",\"valueFrom\":\"pta-db-password\"},{\"name\":\"DB_USERNAME\",\"valueFrom\":\"pta-db-username\"}],\"volumesFrom\":[]},{\"cpu\":0,\"dependsOn\":[{\"condition\":\"START\",\"containerName\":\"pta_api\"}],\"environment\":[],\"essential\":true,\"image\":\"748732166031.dkr.ecr.ap-northeast-1.amazonaws.com/pta_frontend:6b78d4eea6fa8b363bf4619513f2c28359e5d3e8\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ecs_pta_task\",\"awslogs-region\":\"ap-northeast-1\",\"awslogs-stream-prefix\":\"ecs\"}},\"mountPoints\":[],\"name\":\"pta_frontend\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80,\"protocol\":\"tcp\"}],\"volumesFrom\":[{\"sourceContainer\":\"pta_api\"}]}]"
+  container_definitions    = templatefile("./task-definition.json",{
+    pta_api_newest_image = local.pta_api_newest_image
+    pta_frontend_newest_image = local.pta_frontend_newest_image
+  })
   cpu                      = "256"
   execution_role_arn       = "arn:aws:iam::748732166031:role/ecsTaskExecutionRole"
   family                   = "ecs_pta_task"

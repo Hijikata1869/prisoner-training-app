@@ -43,5 +43,5 @@ resource "aws_ecs_service" "tfer--pta-cluster_pta-service" {
     Environment = "production"
   }
 
-  task_definition = "arn:aws:ecs:ap-northeast-1:748732166031:task-definition/ecs_pta_task:22"
+  task_definition = "arn:aws:ecs:ap-northeast-1:748732166031:task-definition/ecs_pta_task"
 }
