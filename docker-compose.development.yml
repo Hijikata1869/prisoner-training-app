@@ -14,6 +14,9 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.development
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
     volumes:
       - .:/prisoner-training-app
       - ignore-sample:/prisoner-training-app/frontend
@@ -24,10 +27,11 @@ services:
     build:
       context: ./frontend/
       dockerfile: Dockerfile.development
+    command: sh -c "cd /home/node/app && npm install && npm run build-development && npm start"
     ports:
-      - "3001:80"
-    volumes_from:
-      - api
+      - "3001:3000"
+    volumes:
+      - ./frontend:/home/node/app
     depends_on:
       - api
 

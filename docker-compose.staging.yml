@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - pta-db-data:/var/lib/mysql
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.staging
+    volumes:
+      - ignore-sample:/prisoner-training-app/frontend
+      - bundle:/usr/local/bundle
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.staging
+    ports:
+      - "3001:80"
+    volumes_from:
+      - api
+    depends_on:
+      - api
+
+volumes:
+  pta-db-data:
+  bundle:
+  ignore-sample:
