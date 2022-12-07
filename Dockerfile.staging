@@ -9,15 +9,17 @@ RUN apt-get update -qq && apt-get install -y nodejs yarn
 
 WORKDIR /prisoner-training-app
 
-COPY ./Gemfile /prisoner-training-app/Gemfile
-COPY ./Gemfile.lock /prisoner-training-app/Gemfile.lock
+COPY . /prisoner-training-app
 
 RUN gem install bundler
 RUN bundle install --path=vendor/bundle
 
+VOLUME /prisoner-training-app/tmp
+
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+COPY startup.sh /usr/bin
+RUN chmod +x /usr/bin/startup.sh
+CMD ["startup.sh"]

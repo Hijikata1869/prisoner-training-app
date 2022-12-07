@@ -18,6 +18,7 @@ import { Contact } from "./containers/Contact";
 import { UserFollowings } from "./containers/UserFollowings";
 import { UserFollowers } from "./containers/UserFollowers";
 import { TrainingLogs } from "./containers/TrainingLogs";
+import { Page404 } from "./containers/Page404";
 
 // components
 import { Header } from "./components/Header";
@@ -113,6 +114,9 @@ function App() {
         </Route>
         <Route exact path="/training_logs">
           <TrainingLogs />
+        </Route>
+        <Route path="*">
+          <Page404 />
         </Route>
       </Switch>
     </Router>
