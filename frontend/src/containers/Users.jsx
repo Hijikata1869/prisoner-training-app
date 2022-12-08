@@ -32,7 +32,6 @@ import { fetchUser, imageUpdate, fetchCurrentUser } from "../apis/users";
 import { SuccessModal } from "../components/SuccessModal";
 import { FailedAlert } from "../components/FailedAlert";
 import { ReloadButton } from "../components/ReloadButton";
-import { UserMenu } from "../components/UserMenu";
 
 const useStyles = makeStyles((theme) => ({
   largeAvatar: {

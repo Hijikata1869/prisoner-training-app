@@ -84,6 +84,9 @@ function App() {
                   mainComponent={<UserFollowers match={match} />}
                 />
               </Route>
+              <Route path="*">
+                <Page404 />
+              </Route>
             </Switch>
           )}
         />
@@ -105,6 +108,9 @@ function App() {
             <Switch>
               <Route exact path={`${match.path}/advices`}>
                 <Advices match={match} />
+              </Route>
+              <Route path="*">
+                <Page404 />
               </Route>
             </Switch>
           )}
