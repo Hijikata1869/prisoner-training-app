@@ -19,6 +19,7 @@ import { UserFollowings } from "./containers/UserFollowings";
 import { UserFollowers } from "./containers/UserFollowers";
 import { TrainingLogs } from "./containers/TrainingLogs";
 import { Page404 } from "./containers/Page404";
+import { UserBodyComposition } from "./containers/UserBodyComposition";
 
 // components
 import { Header } from "./components/Header";
@@ -82,6 +83,12 @@ function App() {
                 <UsersContainer
                   match={match}
                   mainComponent={<UserFollowers match={match} />}
+                />
+              </Route>
+              <Route exact path={`${match.path}/body_compositions`}>
+                <UsersContainer 
+                  match={match}
+                  mainComponent={<UserBodyComposition match={match} />}
                 />
               </Route>
               <Route path="*">

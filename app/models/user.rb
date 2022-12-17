@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :bookmarks, dependent: :destroy
   has_many :liked_training_logs, through: :likes, source: :training_log
   has_many :bookmark_advices, through: :bookmarks, source: :advice
+  has_many :body_compositions, dependent: :destroy
 
   has_many :active_relationships, class_name: 'Relationship', foreign_key: :following_id
   has_many :followings, through: :active_relationships, source: :follower

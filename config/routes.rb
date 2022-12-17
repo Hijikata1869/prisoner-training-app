@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       end
 
       resources :users do
+        resource :body_compositions, only: %i[show]
         resource :relationships, only: %i[create destroy]
         get :follows, on: :member
         get :followers, on: :member
@@ -22,9 +23,12 @@ Rails.application.routes.draw do
       resources :training_logs do
         resource :likes, only: %i[create destroy]
       end
+
       resources :advices do
         resource :bookmarks, only: %i[create destroy]
       end
+
+      resources :body_compositions, only: %i[create destroy]
 
       get '/likes', to: 'likes#index'
       get '/current_user', to: 'current_users#show'

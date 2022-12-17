@@ -19,6 +19,7 @@ module Api
         user_followers = user.followers
         user_questions = user.questions.order(id: 'DESC')
         user_advices = user.advices
+        user_body_compositions = user.body_compositions
 
         render json: {
           user: user,
@@ -27,7 +28,8 @@ module Api
           userFollowings: user_followings,
           userFollowers: user_followers,
           userQuestions: user_questions,
-          userAdvices: user_advices
+          userAdvices: user_advices,
+          bodyCompositions: user_body_compositions
         }, status: :ok
       end
 
