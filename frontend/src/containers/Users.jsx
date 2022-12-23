@@ -24,6 +24,7 @@ import FitnessCenterOutlinedIcon from "@material-ui/icons/FitnessCenterOutlined"
 import BookmarkOutlinedIcon from "@material-ui/icons/BookmarkOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
+import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
 
 // apis
 import { fetchUser, imageUpdate, fetchCurrentUser } from "../apis/users";
@@ -311,6 +312,15 @@ export const Users = ({ match }) => {
         >
           <FitnessCenterOutlinedIcon className={classes.menuIcon} />
           <Typography>トレーニング記録</Typography>
+        </ButtonBase>
+      </Grid>
+      <Grid item>
+        <ButtonBase 
+          className={classes.menuContent}
+          onClick={() => history.push(`/users/${user.id}/body_compositions`)}
+        >
+          <AccessibilityNewOutlinedIcon className={classes.menuIcon} />
+          <Typography>体組成記録</Typography>
         </ButtonBase>
       </Grid>
       <Grid item className={classes.bookmarkButtonWrapper}>
