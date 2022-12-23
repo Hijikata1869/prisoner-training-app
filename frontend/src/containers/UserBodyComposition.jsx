@@ -20,13 +20,29 @@ const useStyles = makeStyles(() => ({
     marginTop: "2rem"
   },
   weightArea: {
-    marginBottom: '2rem'
+    marginBottom: '2rem',
+    marginRight: '2rem',
+    marginLeft: '2rem'
   },
   bodyFatArea: {
-    marginBottom: '2rem'
+    marginBottom: '2rem',
+    marginRight: '2rem'
   },
   alertContainer: {
     paddingBottom: '2rem'
+  },
+  submitButton: {
+    marginBottom: '1rem'
+  },
+  sfSubmitArea: {
+    marginTop: '2rem',
+    marginBottom: '2rem'
+  },
+  sfWeightArea: {
+    marginBottom: '1rem'
+  },
+  sfBodyFatArea: {
+    marginBottom: '1rem'
   }
 }));
 
@@ -239,40 +255,88 @@ export const UserBodyComposition = ({ match }) => {
           </LineChart>
         </Hidden>
       </Grid>
-      <Grid container item direction='row' justifyContent='center' alignItems='center'>
-        <Grid item className={classes.weightArea}>
-          <Typography variant='subtitle2'>体重</Typography>
-          <TextField 
-            value={weight} 
-            onChange={hundleWeightChange}
-            variant='outlined'
-            placeholder='20.0 ~ 100.0'
-            InputProps={{
-              endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
-            }}
-            helperText='数値を入力してください'
-           />
+      <Hidden xsDown>
+        <Grid container item direction='row' justifyContent='flex-start' alignItems='center'>
+          <Grid item className={classes.weightArea}>
+            <Typography variant='subtitle2'>体重</Typography>
+            <TextField 
+              value={weight} 
+              onChange={hundleWeightChange}
+              variant='outlined'
+              placeholder='20.0 ~ 100.0'
+              InputProps={{
+                endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
+              }}
+              helperText='数値を入力してください'
+            />
+          </Grid>
+          <Grid item className={classes.bodyFatArea}>
+            <Typography variant='subtitle2'>体脂肪</Typography>
+            <TextField
+              value={bodyFat} 
+              onChange={hundleBodyFatChange}
+              variant="outlined"
+              placeholder='1.0 ~ 50.0'
+              InputProps={{
+                endAdornment: <InputAdornment position='end'>%</InputAdornment>,
+              }}
+              helperText='数値を入力してください'
+            />
+          </Grid>
+          <Grid item>
+            <Button 
+              className={classes.submitButton}
+              variant="outlined" 
+              color='primary' 
+              size="large" 
+              onClick={hundleSubmit}
+            >
+              送信
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item className={classes.bodyFatArea}>
-          <Typography variant='subtitle2'>体脂肪</Typography>
-          <TextField
-            value={bodyFat} 
-            onChange={hundleBodyFatChange}
-            variant="outlined"
-            placeholder='1.0 ~ 50.0'
-            InputProps={{
-              endAdornment: <InputAdornment position='end'>%</InputAdornment>,
-            }}
-            helperText='数値を入力してください'
-           />
+      </Hidden>
+      <Hidden smUp>
+        <Grid className={classes.sfSubmitArea} container item direction='column' alignItems='center'>
+          <Grid item className={classes.sfWeightArea}>
+            <Typography variant='subtitle2'>体重</Typography>
+            <TextField 
+              value={weight} 
+              onChange={hundleWeightChange}
+              variant='outlined'
+              placeholder='20.0 ~ 100.0'
+              InputProps={{
+                endAdornment: <InputAdornment position="end">Kg</InputAdornment>,
+              }}
+              helperText='数値を入力してください'
+            />
+          </Grid>
+          <Grid item className={classes.sfBodyFatArea}>
+            <Typography variant='subtitle2'>体脂肪</Typography>
+            <TextField
+              value={bodyFat} 
+              onChange={hundleBodyFatChange}
+              variant="outlined"
+              placeholder='1.0 ~ 50.0'
+              InputProps={{
+                endAdornment: <InputAdornment position='end'>%</InputAdornment>,
+              }}
+              helperText='数値を入力してください'
+            />
+          </Grid>
+          <Grid item>
+            <Button 
+              className={classes.sfSubmitButton}
+              variant="contained" 
+              color='primary' 
+              size="large" 
+              onClick={hundleSubmit}
+            >
+              送信
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button variant="contained" color='primary' onClick={hundleSubmit}>送信</Button>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" color="secondary" onClick={() => console.log(formatedBodyCompositions)}>console</Button>
-        </Grid>
-      </Grid>
+      </Hidden>
     </>
   );
 }
