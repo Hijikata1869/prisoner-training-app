@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, TextField, Typography, InputAdornment } from '@material-ui/core';
+import { Button, Grid, TextField, Typography, InputAdornment, Hidden } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import moment from "moment";
 
 // charts
-import { LineChart, XAxis, YAxis, Tooltip, Legend, Line, ResponsiveContainer } from 'recharts';
+import { LineChart, XAxis, YAxis, Tooltip, Legend, Line } from 'recharts';
 
 // api
 import { fetchCurrentUser, postBodyComposition, fetchUserBodyCompositions } from '../apis/users';
@@ -112,7 +112,7 @@ export const UserBodyComposition = ({ match }) => {
       }
       {
         alertOpen ?
-        <Grid className={classes.alertContainer} container>
+        <Grid className={classes.alertContainer} container item>
           <Grid item>
             <FailedAlert 
               message="体組成を記録できませんでした"
@@ -123,12 +123,14 @@ export const UserBodyComposition = ({ match }) => {
         null
       }
       <Typography variant="h4">体組成記録</Typography>
-      <Grid className={classes.lineChartsContainer} container>
-        <ResponsiveContainer height="100%" width="80%">
+      <Grid className={classes.lineChartsContainer} container item>
+        <Hidden mdDown>
           <LineChart
+            width={1000}
+            height={300}
             data={formatedBodyCompositions}
           >
-            <XAxis dataKey="created_at" interval={1} />
+            <XAxis dataKey="created_at" interval={2} />
             <YAxis 
               yAxisId="left" 
               label={{ value: '体重(kg)', dx: -10, angle: -90 }}
@@ -159,9 +161,85 @@ export const UserBodyComposition = ({ match }) => {
               dot={false}
             />
           </LineChart>
-        </ResponsiveContainer>
+        </Hidden>
+        <Hidden lgUp xsDown>
+          <LineChart
+            width={700}
+            height={300}
+            data={formatedBodyCompositions}
+          >
+            <XAxis dataKey="created_at" interval={2} />
+            <YAxis 
+              yAxisId="left" 
+              label={{ value: '体重(kg)', dx: -10, angle: -90 }}
+              padding={{ top: 30, bottom: 30 }}
+            />
+            <YAxis 
+              yAxisId="right" 
+              orientation="right" 
+              label={{ value: '体脂肪(%)', dx: 10, angle: -90 }}
+              padding={{ top: 30, bottom: 30 }}
+            />
+            <Tooltip />
+            <Legend 
+              iconType={"plainline"}
+            />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="体重"
+              stroke="#8884db"
+              dot={false}
+            />
+            <Line 
+              yAxisId="right"
+              type="monotone"
+              dataKey="体脂肪"
+              stroke="#82ca9d"
+              dot={false}
+            />
+          </LineChart>
+        </Hidden>
+        <Hidden smUp>
+          <LineChart
+            width={350}
+            height={300}
+            data={formatedBodyCompositions}
+          >
+            <XAxis dataKey="created_at" interval={9} />
+            <YAxis 
+              yAxisId="left" 
+              label={{ value: '体重(kg)', dx: -10, angle: -90 }}
+              padding={{ top: 30, bottom: 30 }}
+            />
+            <YAxis 
+              yAxisId="right" 
+              orientation="right" 
+              label={{ value: '体脂肪(%)', dx: 10, angle: -90 }}
+              padding={{ top: 30, bottom: 30 }}
+            />
+            <Tooltip />
+            <Legend 
+              iconType={"plainline"}
+            />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="体重"
+              stroke="#8884db"
+              dot={false}
+            />
+            <Line 
+              yAxisId="right"
+              type="monotone"
+              dataKey="体脂肪"
+              stroke="#82ca9d"
+              dot={false}
+            />
+          </LineChart>
+        </Hidden>
       </Grid>
-      <Grid container direction='row' alignItems='center' spacing={5}>
+      <Grid container item direction='row' justifyContent='center' alignItems='center'>
         <Grid item className={classes.weightArea}>
           <Typography variant='subtitle2'>体重</Typography>
           <TextField 

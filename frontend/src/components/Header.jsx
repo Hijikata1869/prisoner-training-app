@@ -304,7 +304,7 @@ export const Header = () => {
           <ButtonBase onClick={() => history.push("/")}>
             <Typography variant="h6">Prisoner Training App</Typography>
           </ButtonBase>
-          <Hidden only="xs">
+          <Hidden only={["xs", "sm"]}>
             {currentUser.length === 0 ? (
               <Button
                 className={classes.signInAndOutButton}
@@ -323,7 +323,7 @@ export const Header = () => {
               </Button>
             )}
           </Hidden>
-          <Hidden only={["xl", "lg", "md", "sm"]}>
+          <Hidden only={["xl", "lg", "md"]}>
             <IconButton
               className={classes.menuIcon}
               color="inherit"
@@ -332,7 +332,7 @@ export const Header = () => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Hidden smUp>
+          <Hidden mdUp>
             <Drawer open={mobileOpen} onClose={hundleDrawerToggle}>
               {currentUser.length !== 0 ? (
                 <Fragment>{logedInUserDrawer}</Fragment>
