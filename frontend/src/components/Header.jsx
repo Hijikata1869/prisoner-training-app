@@ -30,6 +30,7 @@ import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import HomeIcon from "@material-ui/icons/Home";
+import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
 
 // apis
 import { signOut, fetchCurrentUser, fetchUsers } from "../apis/users";
@@ -191,6 +192,18 @@ export const Header = () => {
             <FitnessCenterOutlinedIcon />
           </ListItemAvatar>
           <ListItemText>トレーニング記録</ListItemText>
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            history.push(`/users/${currentUser.id}/body_compositions`);
+            hundleDrawerToggle();
+          }}
+        >
+          <ListItemAvatar>
+            <AccessibilityNewOutlinedIcon />
+          </ListItemAvatar>
+          <ListItemText>体組成記録</ListItemText>
         </ListItem>
         <ListItem
           button
