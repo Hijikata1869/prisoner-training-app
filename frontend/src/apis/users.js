@@ -484,7 +484,14 @@ export const guestLogin = (nickname, email, password) => {
     .catch((e) => console.error(e));
 };
 
-export const postBodyComposition = (token, client, uid, currentUserId, weight, bodyFat) => {
+export const postBodyComposition = (
+  token,
+  client,
+  uid,
+  currentUserId,
+  weight,
+  bodyFat
+) => {
   return axios
     .post(postBodyCompositionPath, {
       "access-token": token,
@@ -492,29 +499,29 @@ export const postBodyComposition = (token, client, uid, currentUserId, weight, b
       uid: uid,
       user_id: currentUserId,
       weight: weight,
-      body_fat: bodyFat
+      body_fat: bodyFat,
     })
     .then((res) => {
-      return{
+      return {
         data: res.data,
         status: res.status,
       };
     })
     .catch((e) => {
       console.error(e);
-    })
+    });
 };
 
 export const fetchUserBodyCompositions = (userId) => {
   return axios
-  .get(showUserBodyCompositionPath(userId))
-  .then((res) => {
-    return{
-      data: res.data,
-      status: res.status,
-    };
-  })
-  .catch((e) => {
-    console.error(e);
-  })
-}
+    .get(showUserBodyCompositionPath(userId))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};

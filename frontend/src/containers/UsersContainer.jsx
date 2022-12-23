@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     padding: "4rem",
-  }
+  },
 }));
 
 export const UsersContainer = ({ match, mainComponent }) => {
@@ -26,49 +26,50 @@ export const UsersContainer = ({ match, mainComponent }) => {
 
   useEffect(() => {
     fetchUser(match.params.userId)
-    .then((res) => {
-      setUser(res.data.user);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setUser(res.data.user);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const userNickname = user.nickname;
 
   return (
     <Fragment>
-    {
-      userNickname ?
-      <>
-        <div className={classes.PageWrapper}>
-          <Grid container>
-            <Hidden only={["sm", "xs"]}>
-              <Grid container item lg={3} md={3}>
-                <UserMenu match={match} />
+      {userNickname ? (
+        <>
+          <div className={classes.PageWrapper}>
+            <Grid container>
+              <Hidden only={["sm", "xs"]}>
+                <Grid container item lg={3} md={3}>
+                  <UserMenu match={match} />
+                </Grid>
+              </Hidden>
+              <Grid container item lg={9} md={9} sm={12}>
+                {/* このコンテナの中にコンポーネントとしてそれぞれのページを追加する */}
+                {mainComponent}
               </Grid>
-            </Hidden>
-            <Grid container item lg={9} md={9} sm={12}>
-              {/* このコンテナの中にコンポーネントとしてそれぞれのページを追加する */}
-              {mainComponent}
+            </Grid>
+          </div>
+        </>
+      ) : (
+        <>
+          <Grid container direction="column" alignItems="center">
+            <Grid item>
+              <Typography className={classes.title} variant="h6">
+                存在しないユーザーです
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" onClick={() => history.goBack()}>
+                前のページに戻る
+              </Button>
             </Grid>
           </Grid>
-        </div>
-      </>
-      :
-      <>
-        <Grid container direction="column" alignItems="center">
-          <Grid item>
-            <Typography className={classes.title} variant="h6">存在しないユーザーです</Typography>
-          </Grid>
-          <Grid item>
-            <Button variant="outlined" onClick={() => history.goBack()}>
-              前のページに戻る
-            </Button>
-          </Grid>
-        </Grid>
-      </>
-    }
+        </>
+      )}
     </Fragment>
   );
 };

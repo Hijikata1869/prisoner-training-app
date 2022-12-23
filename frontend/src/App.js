@@ -86,7 +86,7 @@ function App() {
                 />
               </Route>
               <Route exact path={`${match.path}/body_compositions`}>
-                <UsersContainer 
+                <UsersContainer
                   match={match}
                   mainComponent={<UserBodyComposition match={match} />}
                 />

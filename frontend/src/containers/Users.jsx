@@ -24,7 +24,7 @@ import FitnessCenterOutlinedIcon from "@material-ui/icons/FitnessCenterOutlined"
 import BookmarkOutlinedIcon from "@material-ui/icons/BookmarkOutlined";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
 import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
+import AccessibilityNewOutlinedIcon from "@material-ui/icons/AccessibilityNewOutlined";
 
 // apis
 import { fetchUser, imageUpdate, fetchCurrentUser } from "../apis/users";
@@ -315,7 +315,7 @@ export const Users = ({ match }) => {
         </ButtonBase>
       </Grid>
       <Grid item>
-        <ButtonBase 
+        <ButtonBase
           className={classes.menuContent}
           onClick={() => history.push(`/users/${user.id}/body_compositions`)}
         >

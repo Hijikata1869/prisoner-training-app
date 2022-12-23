@@ -30,7 +30,7 @@ import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import HomeIcon from "@material-ui/icons/Home";
-import AccessibilityNewOutlinedIcon from '@material-ui/icons/AccessibilityNewOutlined';
+import AccessibilityNewOutlinedIcon from "@material-ui/icons/AccessibilityNewOutlined";
 
 // apis
 import { signOut, fetchCurrentUser, fetchUsers } from "../apis/users";
