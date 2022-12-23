@@ -43,6 +43,12 @@ const useStyles = makeStyles(() => ({
   },
   sfBodyFatArea: {
     marginBottom: '1rem'
+  },
+  title: {
+    marginLeft: '1rem'
+  },
+  sfTitle: {
+    marginLeft: '1rem'
   }
 }));
 
@@ -138,7 +144,12 @@ export const UserBodyComposition = ({ match }) => {
         :
         null
       }
-      <Typography variant="h4">体組成記録</Typography>
+      <Hidden xsDown>
+        <Typography className={classes.title} variant="h4">体組成記録</Typography>
+      </Hidden>
+      <Hidden smUp>
+        <Typography className={classes.sfTitle} variant="h6">体組成記録</Typography>
+      </Hidden>
       <Grid className={classes.lineChartsContainer} container item>
         <Hidden mdDown>
           <LineChart
