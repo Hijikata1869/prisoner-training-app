@@ -53,6 +53,18 @@ export const UserMenu = ({ match }) => {
               <Typography variant="h5">
                 <Link
                   className={classes.link}
+                  href={`${match.url}/body_compositions`}
+                  color="textSecondary"
+                  underline="none"
+                >
+                  体組成記録
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid className={classes.linkMenu} item>
+              <Typography variant="h5">
+                <Link
+                  className={classes.link}
                   href={`${match.url}/bookmarks`}
                   color="textSecondary"
                   underline="none"

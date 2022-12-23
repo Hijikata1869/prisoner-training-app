@@ -30,6 +30,7 @@ import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import HomeIcon from "@material-ui/icons/Home";
+import AccessibilityNewOutlinedIcon from "@material-ui/icons/AccessibilityNewOutlined";
 
 // apis
 import { signOut, fetchCurrentUser, fetchUsers } from "../apis/users";
@@ -195,6 +196,18 @@ export const Header = () => {
         <ListItem
           button
           onClick={() => {
+            history.push(`/users/${currentUser.id}/body_compositions`);
+            hundleDrawerToggle();
+          }}
+        >
+          <ListItemAvatar>
+            <AccessibilityNewOutlinedIcon />
+          </ListItemAvatar>
+          <ListItemText>体組成記録</ListItemText>
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
             history.push(`/users/${currentUser.id}/bookmarks`);
             hundleDrawerToggle();
           }}
@@ -304,7 +317,7 @@ export const Header = () => {
           <ButtonBase onClick={() => history.push("/")}>
             <Typography variant="h6">Prisoner Training App</Typography>
           </ButtonBase>
-          <Hidden only="xs">
+          <Hidden only={["xs", "sm"]}>
             {currentUser.length === 0 ? (
               <Button
                 className={classes.signInAndOutButton}
@@ -323,7 +336,7 @@ export const Header = () => {
               </Button>
             )}
           </Hidden>
-          <Hidden only={["xl", "lg", "md", "sm"]}>
+          <Hidden only={["xl", "lg", "md"]}>
             <IconButton
               className={classes.menuIcon}
               color="inherit"
@@ -332,7 +345,7 @@ export const Header = () => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Hidden smUp>
+          <Hidden mdUp>
             <Drawer open={mobileOpen} onClose={hundleDrawerToggle}>
               {currentUser.length !== 0 ? (
                 <Fragment>{logedInUserDrawer}</Fragment>

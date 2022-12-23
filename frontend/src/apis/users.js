@@ -24,6 +24,8 @@ import {
   hundleLikesUrl,
   showCurrentUserUrl,
   guestLoginUrl,
+  postBodyCompositionPath,
+  showUserBodyCompositionPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -480,4 +482,46 @@ export const guestLogin = (nickname, email, password) => {
       return res;
     })
     .catch((e) => console.error(e));
+};
+
+export const postBodyComposition = (
+  token,
+  client,
+  uid,
+  currentUserId,
+  weight,
+  bodyFat
+) => {
+  return axios
+    .post(postBodyCompositionPath, {
+      "access-token": token,
+      client: client,
+      uid: uid,
+      user_id: currentUserId,
+      weight: weight,
+      body_fat: bodyFat,
+    })
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserBodyCompositions = (userId) => {
+  return axios
+    .get(showUserBodyCompositionPath(userId))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 };

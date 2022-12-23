@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_30_175251) do
+ActiveRecord::Schema.define(version: 2022_12_11_092212) do
 
   create_table "advices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(version: 2021_10_30_175251) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_advices_on_question_id"
     t.index ["user_id"], name: "index_advices_on_user_id"
+  end
+
+  create_table "body_compositions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.float "weight", null: false
+    t.float "body_fat", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_body_compositions_on_user_id"
   end
 
   create_table "bookmarks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -91,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_10_30_175251) do
 
   add_foreign_key "advices", "questions"
   add_foreign_key "advices", "users"
+  add_foreign_key "body_compositions", "users"
   add_foreign_key "bookmarks", "advices"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "likes", "training_logs"

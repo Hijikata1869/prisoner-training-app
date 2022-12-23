@@ -37,3 +37,6 @@ export const showTrainingLogUrl = (id) =>
 export const hundleLikesUrl = `${process.env.REACT_APP_SERVER_URL}/likes`;
 export const showCurrentUserUrl = `${process.env.REACT_APP_SERVER_URL}/current_user`;
 export const guestLoginUrl = `${process.env.REACT_APP_SERVER_URL}/auth/guest_sign_in`;
+export const postBodyCompositionPath = `${process.env.REACT_APP_SERVER_URL}/body_compositions`;
+export const showUserBodyCompositionPath = (userId) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${userId}/body_compositions`;
