@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get :followers, on: :member
         get :training_logs, on: :member
         get :questions, on: :member
+        get :advices, on: :member
       end
 
       resources :questions

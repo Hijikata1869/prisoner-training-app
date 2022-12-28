@@ -42,3 +42,4 @@ export const showUserBodyCompositionPath = (userId) =>
   `${process.env.REACT_APP_SERVER_URL}/users/${userId}/body_compositions`;
 export const showUserTrainingLogsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/training_logs`;
 export const showUserQuestionsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/questions`;
+export const showUserAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/advices`;

@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions]
+      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices]
       before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
@@ -16,14 +16,12 @@ module Api
         bookmarked_advices = user.bookmark_advices
         user_followings = user.followings
         user_followers = user.followers
-        user_advices = user.advices
 
         render json: {
           user: user,
           bookmarkedAdvices: bookmarked_advices,
           userFollowings: user_followings,
           userFollowers: user_followers,
-          userAdvices: user_advices,
         }, status: :ok
       end
 
@@ -79,6 +77,19 @@ module Api
         else
           render json: {
             message: '質問が存在しません'
+          }, status: :bad_request
+        end
+      end
+
+      def advices
+        user_advices = Advice.where(user_id: params[:id])
+        if user_advices.present?
+          render json: {
+            userAdvices: user_advices
+          }, status: :ok
+        else
+          render json: {
+            message: 'アドバイスは存在しません'
           }, status: :bad_request
         end
       end

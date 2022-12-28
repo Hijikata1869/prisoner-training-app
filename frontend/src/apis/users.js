@@ -27,7 +27,8 @@ import {
   postBodyCompositionPath,
   showUserBodyCompositionPath,
   showUserTrainingLogsPath,
-  showUserQuestionsPath
+  showUserQuestionsPath,
+  showUserAdvicesPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -545,6 +546,20 @@ export const fetchUserTrainingLogs = (id) => {
 export const fetchUserQuestions = (id) => {
   return axios
     .get(showUserQuestionsPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+export const fetchUserAdvices = (id) => {
+  return axios
+    .get(showUserAdvicesPath(id))
     .then((res) => {
       return {
         data: res.data,
