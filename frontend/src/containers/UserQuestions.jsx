@@ -22,6 +22,7 @@ import {
   fetchUser,
   fetchUsers,
   deleteQuestion,
+  fetchUserQuestions
 } from "../apis/users";
 
 // components
@@ -69,17 +70,17 @@ export const UserQuestions = ({ match }) => {
 
   const [user, setUser] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
-  const [userQuestions, setUserQuestions] = useState([]);
   const [usersArr, setUsersArr] = useState([]);
   const [targetQuestionId, setTargetQuestionId] = useState();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+  const [userQuestions, setUserQuestions] = useState([]);
+
 
   useEffect(() => {
     fetchUser(match.params.userId)
       .then((res) => {
         setUser(res.data.user);
-        setUserQuestions(res.data.userQuestions);
       })
       .catch((e) => {
         console.error(e);
@@ -104,6 +105,16 @@ export const UserQuestions = ({ match }) => {
       .catch((e) => {
         console.error(e);
       });
+  }, []);
+
+  useEffect(() => {
+    fetchUserQuestions(match.params.userId)
+    .then((res) => {
+      setUserQuestions(res.data.userQuestions)
+    })
+    .catch((e) => {
+      console.error(e);
+    });
   }, []);
 
   const showUserImage = (userId) => {

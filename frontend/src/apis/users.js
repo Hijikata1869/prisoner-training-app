@@ -26,7 +26,8 @@ import {
   guestLoginUrl,
   postBodyCompositionPath,
   showUserBodyCompositionPath,
-  showUserTrainingLogsPath
+  showUserTrainingLogsPath,
+  showUserQuestionsPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -530,6 +531,20 @@ export const fetchUserBodyCompositions = (userId) => {
 export const fetchUserTrainingLogs = (id) => {
   return axios
     .get(showUserTrainingLogsPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+export const fetchUserQuestions = (id) => {
+  return axios
+    .get(showUserQuestionsPath(id))
     .then((res) => {
       return {
         data: res.data,
