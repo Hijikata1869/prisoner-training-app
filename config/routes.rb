@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         resource :relationships, only: %i[create destroy]
         get :follows, on: :member
         get :followers, on: :member
+        get :training_logs, on: :member
       end
 
       resources :questions

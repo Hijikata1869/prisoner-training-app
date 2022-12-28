@@ -40,3 +40,4 @@ export const guestLoginUrl = `${process.env.REACT_APP_SERVER_URL}/auth/guest_sig
 export const postBodyCompositionPath = `${process.env.REACT_APP_SERVER_URL}/body_compositions`;
 export const showUserBodyCompositionPath = (userId) =>
   `${process.env.REACT_APP_SERVER_URL}/users/${userId}/body_compositions`;
+export const showUserTrainingLogsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/training_logs`;
