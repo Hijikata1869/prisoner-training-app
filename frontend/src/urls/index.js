@@ -46,3 +46,4 @@ export const showUserAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/
 export const showUserBookmarkAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/bookmark_advices`;
 export const showUserFollowingsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/follows`;
 export const showUserFollowersPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/followers`;
+export const showCurrentUserFollowingsPath = `${process.env.REACT_APP_SERVER_URL}/current_user/followings`;

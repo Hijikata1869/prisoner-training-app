@@ -31,7 +31,8 @@ import {
   showUserAdvicesPath,
   showUserBookmarkAdvicesPath,
   showUserFollowingsPath,
-  showUserFollowersPath
+  showUserFollowersPath,
+  showCurrentUserFollowingsPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -614,4 +615,21 @@ export const fetchUserFollowers = (id) => {
     .catch((e) => {
       console.error(e);
     });
+}
+
+export const fetchCurrentUserFollowings = (token, client, uid) => {
+  return axios
+  .get(showCurrentUserFollowingsPath, {
+    headers: {
+      "access-token": token,
+      client: client,
+      uid: uid,
+    },
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  });
 }
