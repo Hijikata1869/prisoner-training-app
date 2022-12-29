@@ -28,7 +28,8 @@ import {
   showUserBodyCompositionPath,
   showUserTrainingLogsPath,
   showUserQuestionsPath,
-  showUserAdvicesPath
+  showUserAdvicesPath,
+  showUserBookmarkAdvicesPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -564,6 +565,20 @@ export const fetchUserAdvices = (id) => {
       return {
         data: res.data,
         status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+export const fetchUserBookmarkAdvices = (id) => {
+  return axios
+    .get(showUserBookmarkAdvicesPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status
       };
     })
     .catch((e) => {

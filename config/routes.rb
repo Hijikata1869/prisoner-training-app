@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         get :training_logs, on: :member
         get :questions, on: :member
         get :advices, on: :member
+        get :bookmark_advices, on: :member
       end
 
       resources :questions

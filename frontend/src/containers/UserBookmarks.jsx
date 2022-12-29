@@ -26,6 +26,7 @@ import {
   fetchUser,
   fetchCurrentUser,
   fetchQuestions,
+  fetchUserBookmarkAdvices
 } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
@@ -54,25 +55,15 @@ export const UserBookmarks = ({ match }) => {
   const uid = Cookies.get("uid");
 
   const [usersArr, setUsersArr] = useState([]);
-  const [bookmarkedAdvicesArr, setBookmaredkAdvicesArr] = useState([]);
   const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
   const [allQuestionsArr, setAllQuestionsArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
+  const [userBookmarkAdvices, setUserBookmarkAdvices] = useState([]);
 
   useEffect(() => {
     fetchUsers()
       .then((res) => {
         setUsersArr(res.data.users);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetchUser(match.params.userId, token, client, uid)
-      .then((res) => {
-        setBookmaredkAdvicesArr(res.data.bookmarkedAdvices);
       })
       .catch((e) => {
         console.error(e);
@@ -99,6 +90,16 @@ export const UserBookmarks = ({ match }) => {
         console.error(e);
       });
   }, []);
+
+  useEffect(() => {
+    fetchUserBookmarkAdvices(match.params.userId)
+    .then((res) => {
+      setUserBookmarkAdvices(res.data.userBookmarkAdvices);
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+  }, [])
 
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
@@ -163,6 +164,7 @@ export const UserBookmarks = ({ match }) => {
 
   return (
     <Fragment>
+      {console.log("レンダリング")}
       <Grid container item direction="column">
         <Hidden only="xs">
           <Typography className={classes.pageTitle} variant="h4">
@@ -179,9 +181,9 @@ export const UserBookmarks = ({ match }) => {
           </Typography>
         </Hidden>
         <Grid className={classes.adviceCardWrapper} item>
-          {bookmarkedAdvicesArr.length !== 0 ? (
+          {userBookmarkAdvices.length !== 0 ? (
             <Fragment>
-              {bookmarkedAdvicesArr.map((adviceData, index) => {
+              {userBookmarkAdvices.map((adviceData, index) => {
                 return (
                   <Card className={classes.adviceCard} key={index}>
                     <CardHeader
