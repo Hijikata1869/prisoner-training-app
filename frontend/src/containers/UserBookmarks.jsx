@@ -23,7 +23,6 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 // apis
 import {
   fetchUsers,
-  fetchUser,
   fetchCurrentUser,
   fetchQuestions,
   fetchUserBookmarkAdvices

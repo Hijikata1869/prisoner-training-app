@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       end
 
       resources :users do
-        resource :body_compositions, only: %i[show]
         resource :relationships, only: %i[create destroy]
         get :follows, on: :member
         get :followers, on: :member
@@ -20,6 +19,7 @@ Rails.application.routes.draw do
         get :questions, on: :member
         get :advices, on: :member
         get :bookmark_advices, on: :member
+        get :body_compositions, on: :member
       end
 
       resources :questions

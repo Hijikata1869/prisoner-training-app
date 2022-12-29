@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices]
+      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices body_compositions]
       before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
@@ -98,6 +98,19 @@ module Api
         else
           render json: {
             message: 'ブックマークしたアドバイスはありません'
+          }, status: :bad_request
+        end
+      end
+
+      def body_compositions
+        user_body_compositions = BodyComposition.where(user_id: params[:id])
+        if user_body_compositions.present?
+          render json: {
+            userBodyCompositions: user_body_compositions
+          }, status: :ok
+        else
+          render json: {
+            message: '体組成記録が存在しません'
           }, status: :bad_request
         end
       end

@@ -92,6 +92,7 @@ export const UserBodyComposition = ({ match }) => {
     fetchUserBodyCompositions(userId)
       .then((res) => {
         setUserBodyCompositions(res.data.userBodyCompositions);
+        console.log(res.data.userBodyCompositions);
       })
       .catch((e) => {
         console.error(e);

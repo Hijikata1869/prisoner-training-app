@@ -518,9 +518,9 @@ export const postBodyComposition = (
     });
 };
 
-export const fetchUserBodyCompositions = (userId) => {
+export const fetchUserBodyCompositions = (id) => {
   return axios
-    .get(showUserBodyCompositionPath(userId))
+    .get(showUserBodyCompositionPath(id))
     .then((res) => {
       return {
         data: res.data,
