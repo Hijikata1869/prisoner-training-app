@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Avatar,
-  Button,
   ButtonBase,
   Card,
   CardActions,
@@ -13,10 +12,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Cookies from "js-cookie";
 
 // apis
-import { fetchUser } from "../apis/users";
+import { fetchUserFollowers } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
@@ -40,17 +38,12 @@ export const UserFollowers = ({ match }) => {
   const history = useHistory();
   const classes = useStyles();
 
-  const token = Cookies.get("access-token");
-  const client = Cookies.get("client");
-  const uid = Cookies.get("uid");
-
-  const [followerUsersArr, setFollowerUsersArr] = useState([]);
+  const [userFollowers, setUserFollowers] = useState([]);
 
   useEffect(() => {
-    fetchUser(match.params.userId)
+    fetchUserFollowers(match.params.userId)
       .then((res) => {
-        setFollowerUsersArr(res.data.userFollowers);
-        console.log(res);
+        setUserFollowers(res.data.userFollowers);
       })
       .catch((e) => {
         console.error(e);
@@ -71,8 +64,8 @@ export const UserFollowers = ({ match }) => {
           </Typography>
         </Hidden>
         <Grid className={classes.cardWrapper} item>
-          {followerUsersArr.length !== 0 ? (
-            followerUsersArr.map((followerUser, index) => {
+          {userFollowers.length !== 0 ? (
+            userFollowers.map((followerUser, index) => {
               return (
                 <Card className={classes.followerUserCard} key={index}>
                   <CardHeader

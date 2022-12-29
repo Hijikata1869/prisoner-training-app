@@ -44,3 +44,5 @@ export const showUserTrainingLogsPath = (id) => `${process.env.REACT_APP_SERVER_
 export const showUserQuestionsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/questions`;
 export const showUserAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/advices`;
 export const showUserBookmarkAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/bookmark_advices`;
+export const showUserFollowingsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/follows`;
+export const showUserFollowersPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/followers`;

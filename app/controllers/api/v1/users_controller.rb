@@ -13,13 +13,9 @@ module Api
 
       def show
         user = User.find(params[:id])
-        user_followings = user.followings
-        user_followers = user.followers
 
         render json: {
-          user: user,
-          userFollowings: user_followings,
-          userFollowers: user_followers,
+          user: user
         }, status: :ok
       end
 

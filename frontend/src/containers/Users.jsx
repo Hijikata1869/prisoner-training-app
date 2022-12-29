@@ -27,7 +27,7 @@ import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
 import AccessibilityNewOutlinedIcon from "@material-ui/icons/AccessibilityNewOutlined";
 
 // apis
-import { fetchUser, imageUpdate, fetchCurrentUser } from "../apis/users";
+import { fetchUser, imageUpdate, fetchCurrentUser, fetchUserFollowers, fetchUserFollowings } from "../apis/users";
 
 // components
 import { SuccessModal } from "../components/SuccessModal";
@@ -142,16 +142,14 @@ export const Users = ({ match }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
-  const [userFollowingsArr, setUserFollowingsArr] = useState([]);
-  const [userFollowersArr, setUserFollowersArr] = useState([]);
+  const [userFollowings, setUserFollowings] = useState([]);
+  const [userFollowers, setUserFollowers] = useState([]);
 
   useEffect(() => {
     fetchUser(match.params.userId, token, client, uid)
       .then((res) => {
         setUser(res.data.user);
         setUserImage(res.data.user.image.url);
-        setUserFollowingsArr(res.data.userFollowings);
-        setUserFollowersArr(res.data.userFollowers);
       })
       .catch((e) => console.error(e));
   }, []);
@@ -165,6 +163,26 @@ export const Users = ({ match }) => {
       .catch((e) => {
         console.error(e);
       });
+  }, []);
+
+  useEffect(() => {
+    fetchUserFollowings(match.params.userId)
+    .then((res) => {
+      setUserFollowings(res.data.userFollowings);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchUserFollowers(match.params.userId)
+    .then((res) => {
+      setUserFollowers(res.data.userFollowers);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
   }, []);
 
   const onLoad = useCallback((img) => {
@@ -388,13 +406,13 @@ export const Users = ({ match }) => {
               className={classes.toFollowingButton}
               onClick={() => history.push(`/users/${user.id}/followings`)}
             >
-              <Typography>{`${userFollowingsArr.length}フォロー`}</Typography>
+              <Typography>{`${userFollowings.length}フォロー`}</Typography>
             </ButtonBase>
             <ButtonBase
               className={classes.toFollowerButton}
               onClick={() => history.push(`/users/${user.id}/followers`)}
             >
-              <Typography>{`${userFollowersArr.length}フォロワー`}</Typography>
+              <Typography>{`${userFollowers.length}フォロワー`}</Typography>
             </ButtonBase>
           </Grid>
           <Grid item className={classes.followButton}>

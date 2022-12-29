@@ -29,7 +29,9 @@ import {
   showUserTrainingLogsPath,
   showUserQuestionsPath,
   showUserAdvicesPath,
-  showUserBookmarkAdvicesPath
+  showUserBookmarkAdvicesPath,
+  showUserFollowingsPath,
+  showUserFollowersPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -575,6 +577,34 @@ export const fetchUserAdvices = (id) => {
 export const fetchUserBookmarkAdvices = (id) => {
   return axios
     .get(showUserBookmarkAdvicesPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+export const fetchUserFollowings = (id) => {
+  return axios
+    .get(showUserFollowingsPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
+
+export const fetchUserFollowers = (id) => {
+  return axios
+    .get(showUserFollowersPath(id))
     .then((res) => {
       return {
         data: res.data,
