@@ -25,7 +25,8 @@ import {
   fetchUsers,
   fetchCurrentUser,
   fetchQuestions,
-  fetchUserBookmarkAdvices
+  fetchUserBookmarkAdvices,
+  fetchCurrentUserBookmarks
 } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
@@ -54,10 +55,10 @@ export const UserBookmarks = ({ match }) => {
   const uid = Cookies.get("uid");
 
   const [usersArr, setUsersArr] = useState([]);
-  const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
   const [allQuestionsArr, setAllQuestionsArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [userBookmarkAdvices, setUserBookmarkAdvices] = useState([]);
+  const [currentUserBookmarks, setCurrentUserBookmarks] = useState([]);
 
   useEffect(() => {
     fetchUsers()
@@ -73,7 +74,6 @@ export const UserBookmarks = ({ match }) => {
     fetchCurrentUser(token, client, uid)
       .then((res) => {
         setCurrentUser(res.data.currentUser);
-        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
       })
       .catch((e) => {
         console.error(e);
@@ -100,6 +100,16 @@ export const UserBookmarks = ({ match }) => {
     })
   }, [])
 
+  useEffect(() => {
+    fetchCurrentUserBookmarks(token, client, uid)
+    .then((res) => {
+      setCurrentUserBookmarks(res.data.currentUserBookmarks);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+  }, []);
+
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
     return user?.nickname;
@@ -121,9 +131,9 @@ export const UserBookmarks = ({ match }) => {
       },
     })
       .then(() => {
-        fetchCurrentUser(token, client, uid)
+        fetchCurrentUserBookmarks(token, client, uid)
           .then((res) => {
-            setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+            setCurrentUserBookmarks(res.data.currentUserBookmarks);
           })
           .catch((e) => {
             console.error(e);
@@ -143,9 +153,9 @@ export const UserBookmarks = ({ match }) => {
       },
     })
       .then(() => {
-        fetchCurrentUser(token, client, uid)
+        fetchCurrentUserBookmarks(token, client, uid)
           .then((res) => {
-            setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+            setCurrentUserBookmarks(res.data.currentUserBookmarks);
           })
           .catch((e) => {
             console.error(e);
@@ -225,7 +235,7 @@ export const UserBookmarks = ({ match }) => {
                     </CardContent>
                     <CardActions>
                       {currentUser.length !== 0 ? (
-                        currentUserBookmarksArr.find(
+                        currentUserBookmarks?.find(
                           (element) => element.advice_id === adviceData.id
                         ) ? (
                           <Fragment>

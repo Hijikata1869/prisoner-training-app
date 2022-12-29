@@ -5,12 +5,10 @@ module Api
 
       def show
         current_user = current_api_v1_user
-        current_user_bookmarks = current_api_v1_user.bookmarks
         current_user_likes = current_api_v1_user.likes
 
         render json: {
           currentUser: current_user,
-          currentUserBookmarks: current_user_bookmarks,
           currentUserLikes: current_user_likes,
         }, status: :ok
       end
@@ -25,6 +23,19 @@ module Api
           render json: {
             message: 'フォローしているユーザーはいません'
           }, staus: :bad_request
+        end
+      end
+
+      def bookmarks
+        current_user_bookmarks = current_api_v1_user.bookmarks
+        if current_user_bookmarks.present?
+          render json: {
+            currentUserBookmarks: current_user_bookmarks
+          }, status: :ok
+        else
+          render json: {
+            message: 'ブックマークはありません'
+          }, status: :bad_request
         end
       end
 

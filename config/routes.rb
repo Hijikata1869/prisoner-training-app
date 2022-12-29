@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       get '/likes', to: 'likes#index'
       get '/current_user', to: 'current_users#show'
       get '/current_user/followings', to: 'current_users#followings'
+      get '/current_user/bookmarks', to: 'current_users#bookmarks'
 
       root to: 'homes#index'
     end
