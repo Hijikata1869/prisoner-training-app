@@ -33,7 +33,8 @@ import {
   showUserFollowingsPath,
   showUserFollowersPath,
   showCurrentUserFollowingsPath,
-  showCurrentUserBookmarks
+  showCurrentUserBookmarksPath,
+  showCurrentUserLikesPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -637,7 +638,24 @@ export const fetchCurrentUserFollowings = (token, client, uid) => {
 
 export const fetchCurrentUserBookmarks = (token, client, uid) => {
   return axios
-  .get(showCurrentUserBookmarks, {
+  .get(showCurrentUserBookmarksPath, {
+    headers: {
+      "access-token": token,
+      client: client,
+      uid: uid,
+    },
+  })
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  });
+}
+
+export const fetchCurrentUserLikes = (token, client, uid) => {
+  return axios
+  .get(showCurrentUserLikesPath, {
     headers: {
       "access-token": token,
       client: client,

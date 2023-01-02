@@ -5,11 +5,8 @@ module Api
 
       def show
         current_user = current_api_v1_user
-        current_user_likes = current_api_v1_user.likes
-
         render json: {
           currentUser: current_user,
-          currentUserLikes: current_user_likes,
         }, status: :ok
       end
 
@@ -37,6 +34,13 @@ module Api
             message: 'ブックマークはありません'
           }, status: :bad_request
         end
+      end
+
+      def likes
+        current_user_likes = current_api_v1_user.likes
+        render json: {
+          currentUserLikes: current_user_likes
+        }, stauts: :ok
       end
 
     end
