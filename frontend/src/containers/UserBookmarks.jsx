@@ -26,7 +26,7 @@ import {
   fetchCurrentUser,
   fetchQuestions,
   fetchUserBookmarkAdvices,
-  fetchCurrentUserBookmarks
+  fetchCurrentUserBookmarks,
 } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
@@ -92,22 +92,22 @@ export const UserBookmarks = ({ match }) => {
 
   useEffect(() => {
     fetchUserBookmarkAdvices(match.params.userId)
-    .then((res) => {
-      setUserBookmarkAdvices(res.data.userBookmarkAdvices);
-    })
-    .catch((e) => {
-      console.error(e);
-    })
-  }, [])
+      .then((res) => {
+        setUserBookmarkAdvices(res.data.userBookmarkAdvices);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
 
   useEffect(() => {
     fetchCurrentUserBookmarks(token, client, uid)
-    .then((res) => {
-      setCurrentUserBookmarks(res.data.currentUserBookmarks);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setCurrentUserBookmarks(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const showUserName = (userId) => {

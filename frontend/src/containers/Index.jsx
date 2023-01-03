@@ -19,7 +19,13 @@ import { ThumbUp, ThumbUpAltOutlined } from "@material-ui/icons";
 import Cookies from "js-cookie";
 
 // apis
-import { fetchCurrentUser, fetchTrainingLogs, fetchLikes, fetchCurrentUserFollowings, fetchCurrentUserLikes } from "../apis/users";
+import {
+  fetchCurrentUser,
+  fetchTrainingLogs,
+  fetchLikes,
+  fetchCurrentUserFollowings,
+  fetchCurrentUserLikes,
+} from "../apis/users";
 import { fetchHome } from "../apis/home";
 
 // styles
@@ -91,23 +97,23 @@ export const Index = () => {
 
   useEffect(() => {
     fetchCurrentUserFollowings(token, client, uid)
-    .then((res) => {
-      setCurrentUserFollowings(res.data.currentUserFollowings)
-    })
-    .catch((e) => {
-      console.error(e);
-    })
+      .then((res) => {
+        setCurrentUserFollowings(res.data.currentUserFollowings);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   useEffect(() => {
     fetchCurrentUserLikes(token, client, uid)
-    .then((res) => {
-      setCurrentUserLikes(res.data.currentUserLikes);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
-  }, [])
+      .then((res) => {
+        setCurrentUserLikes(res.data.currentUserLikes);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
 
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);

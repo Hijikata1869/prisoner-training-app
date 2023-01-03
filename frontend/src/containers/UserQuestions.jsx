@@ -22,7 +22,7 @@ import {
   fetchUser,
   fetchUsers,
   deleteQuestion,
-  fetchUserQuestions
+  fetchUserQuestions,
 } from "../apis/users";
 
 // components
@@ -76,7 +76,6 @@ export const UserQuestions = ({ match }) => {
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
   const [userQuestions, setUserQuestions] = useState([]);
 
-
   useEffect(() => {
     fetchUser(match.params.userId)
       .then((res) => {
@@ -109,12 +108,12 @@ export const UserQuestions = ({ match }) => {
 
   useEffect(() => {
     fetchUserQuestions(match.params.userId)
-    .then((res) => {
-      setUserQuestions(res.data.userQuestions)
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setUserQuestions(res.data.userQuestions);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const showUserImage = (userId) => {

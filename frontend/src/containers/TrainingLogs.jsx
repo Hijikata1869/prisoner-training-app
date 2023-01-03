@@ -24,7 +24,7 @@ import {
   fetchUsers,
   fetchCurrentUser,
   fetchLikes,
-  fetchCurrentUserLikes
+  fetchCurrentUserLikes,
 } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
@@ -101,12 +101,12 @@ export const TrainingLogs = () => {
 
   useEffect(() => {
     fetchCurrentUserLikes(token, client, uid)
-    .then((res) => {
-      setCurrentUserLikes(res.data.currentUserLikes);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setCurrentUserLikes(res.data.currentUserLikes);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const showUserImage = (userId) => {

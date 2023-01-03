@@ -28,7 +28,7 @@ import {
   fetchQuestions,
   fetchCurrentUser,
   deleteAdvice,
-  fetchUserAdvices
+  fetchUserAdvices,
 } from "../apis/users";
 
 // components
@@ -122,12 +122,12 @@ export const UserAdvices = ({ match }) => {
 
   useEffect(() => {
     fetchUserAdvices(match.params.userId)
-    .then((res) => {
-      setUserAdvices(res.data.userAdvices);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setUserAdvices(res.data.userAdvices);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const showUserImage = (userId) => {

@@ -27,7 +27,14 @@ import MessageOutlinedIcon from "@material-ui/icons/MessageOutlined";
 import AccessibilityNewOutlinedIcon from "@material-ui/icons/AccessibilityNewOutlined";
 
 // apis
-import { fetchUser, imageUpdate, fetchCurrentUser, fetchUserFollowers, fetchUserFollowings, fetchCurrentUserFollowings } from "../apis/users";
+import {
+  fetchUser,
+  imageUpdate,
+  fetchCurrentUser,
+  fetchUserFollowers,
+  fetchUserFollowings,
+  fetchCurrentUserFollowings,
+} from "../apis/users";
 
 // components
 import { SuccessModal } from "../components/SuccessModal";
@@ -166,33 +173,33 @@ export const Users = ({ match }) => {
 
   useEffect(() => {
     fetchUserFollowings(match.params.userId)
-    .then((res) => {
-      setUserFollowings(res.data.userFollowings);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setUserFollowings(res.data.userFollowings);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   useEffect(() => {
     fetchUserFollowers(match.params.userId)
-    .then((res) => {
-      setUserFollowers(res.data.userFollowers);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setUserFollowers(res.data.userFollowers);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   useEffect(() => {
     fetchCurrentUserFollowings(token, client, uid)
-    .then((res) => {
-      setCurrentUserFollowings(res.data.currentUserFollowings);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
-  }, [])
+      .then((res) => {
+        setCurrentUserFollowings(res.data.currentUserFollowings);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
 
   const onLoad = useCallback((img) => {
     imgRef.current = img;

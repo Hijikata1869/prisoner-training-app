@@ -46,7 +46,7 @@ export const UserFollowings = ({ match }) => {
       .catch((e) => {
         console.error(e);
       });
-  }, [])
+  }, []);
 
   return (
     <Fragment>

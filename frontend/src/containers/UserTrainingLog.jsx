@@ -130,12 +130,12 @@ export const UserTrainingLog = ({ match }) => {
 
   useEffect(() => {
     fetchUserTrainingLogs(match.params.userId)
-    .then((res) => {
-      setUserTrainingLogs(res.data.userTrainingLogs);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setUserTrainingLogs(res.data.userTrainingLogs);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const hundleMenuChange = (e) => {

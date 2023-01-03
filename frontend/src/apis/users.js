@@ -34,7 +34,7 @@ import {
   showUserFollowersPath,
   showCurrentUserFollowingsPath,
   showCurrentUserBookmarksPath,
-  showCurrentUserLikesPath
+  showCurrentUserLikesPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -547,7 +547,7 @@ export const fetchUserTrainingLogs = (id) => {
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 export const fetchUserQuestions = (id) => {
   return axios
@@ -561,7 +561,7 @@ export const fetchUserQuestions = (id) => {
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 export const fetchUserAdvices = (id) => {
   return axios
@@ -575,7 +575,7 @@ export const fetchUserAdvices = (id) => {
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 export const fetchUserBookmarkAdvices = (id) => {
   return axios
@@ -583,13 +583,13 @@ export const fetchUserBookmarkAdvices = (id) => {
     .then((res) => {
       return {
         data: res.data,
-        status: res.status
+        status: res.status,
       };
     })
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 export const fetchUserFollowings = (id) => {
   return axios
@@ -597,13 +597,13 @@ export const fetchUserFollowings = (id) => {
     .then((res) => {
       return {
         data: res.data,
-        status: res.status
+        status: res.status,
       };
     })
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 export const fetchUserFollowers = (id) => {
   return axios
@@ -611,61 +611,61 @@ export const fetchUserFollowers = (id) => {
     .then((res) => {
       return {
         data: res.data,
-        status: res.status
+        status: res.status,
       };
     })
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 export const fetchCurrentUserFollowings = (token, client, uid) => {
   return axios
-  .get(showCurrentUserFollowingsPath, {
-    headers: {
-      "access-token": token,
-      client: client,
-      uid: uid,
-    },
-  })
-  .then((res) => {
-    return res;
-  })
-  .catch((e) => {
-    console.error(e);
-  });
-}
+    .get(showCurrentUserFollowingsPath, {
+      headers: {
+        "access-token": token,
+        client: client,
+        uid: uid,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
 
 export const fetchCurrentUserBookmarks = (token, client, uid) => {
   return axios
-  .get(showCurrentUserBookmarksPath, {
-    headers: {
-      "access-token": token,
-      client: client,
-      uid: uid,
-    },
-  })
-  .then((res) => {
-    return res;
-  })
-  .catch((e) => {
-    console.error(e);
-  });
-}
+    .get(showCurrentUserBookmarksPath, {
+      headers: {
+        "access-token": token,
+        client: client,
+        uid: uid,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
 
 export const fetchCurrentUserLikes = (token, client, uid) => {
   return axios
-  .get(showCurrentUserLikesPath, {
-    headers: {
-      "access-token": token,
-      client: client,
-      uid: uid,
-    },
-  })
-  .then((res) => {
-    return res;
-  })
-  .catch((e) => {
-    console.error(e);
-  });
-}
+    .get(showCurrentUserLikesPath, {
+      headers: {
+        "access-token": token,
+        client: client,
+        uid: uid,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};

@@ -40,12 +40,18 @@ export const guestLoginUrl = `${process.env.REACT_APP_SERVER_URL}/auth/guest_sig
 export const postBodyCompositionPath = `${process.env.REACT_APP_SERVER_URL}/body_compositions`;
 export const showUserBodyCompositionPath = (id) =>
   `${process.env.REACT_APP_SERVER_URL}/users/${id}/body_compositions`;
-export const showUserTrainingLogsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/training_logs`;
-export const showUserQuestionsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/questions`;
-export const showUserAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/advices`;
-export const showUserBookmarkAdvicesPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/bookmark_advices`;
-export const showUserFollowingsPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/follows`;
-export const showUserFollowersPath = (id) => `${process.env.REACT_APP_SERVER_URL}/users/${id}/followers`;
+export const showUserTrainingLogsPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/training_logs`;
+export const showUserQuestionsPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/questions`;
+export const showUserAdvicesPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/advices`;
+export const showUserBookmarkAdvicesPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/bookmark_advices`;
+export const showUserFollowingsPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/follows`;
+export const showUserFollowersPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/followers`;
 export const showCurrentUserFollowingsPath = `${process.env.REACT_APP_SERVER_URL}/current_user/followings`;
 export const showCurrentUserBookmarksPath = `${process.env.REACT_APP_SERVER_URL}/current_user/bookmarks`;
 export const showCurrentUserLikesPath = `${process.env.REACT_APP_SERVER_URL}/current_user/likes`;
