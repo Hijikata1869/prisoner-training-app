@@ -5,8 +5,10 @@ module Api
 
       def show
         current_user = current_api_v1_user
+        current_user_likes = current_api_v1_user.likes
         render json: {
           currentUser: current_user,
+          currentUserLikes: current_user_likes
         }, status: :ok
       end
 

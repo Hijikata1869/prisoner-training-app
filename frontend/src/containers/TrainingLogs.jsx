@@ -24,6 +24,7 @@ import {
   fetchUsers,
   fetchCurrentUser,
   fetchLikes,
+  fetchCurrentUserLikes
 } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
@@ -55,8 +56,8 @@ export const TrainingLogs = () => {
   const [trainingLogsArr, setTrainingLogsArr] = useState([]);
   const [usersArr, setUsersArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
-  const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
   const [allLikesArr, setAllLikesArr] = useState([]);
+  const [currentUserLikes, setCurrentUserLikes] = useState([]);
 
   useEffect(() => {
     fetchTrainingLogs()
@@ -82,7 +83,6 @@ export const TrainingLogs = () => {
     fetchCurrentUser(token, client, uid)
       .then((res) => {
         setCurrentUser(res.data.currentUser);
-        setCurrentUserLikesArr(res.data.currentUserLikes);
       })
       .catch((e) => {
         console.error(e);
@@ -97,6 +97,16 @@ export const TrainingLogs = () => {
       .catch((e) => {
         console.error(e);
       });
+  }, []);
+
+  useEffect(() => {
+    fetchCurrentUserLikes(token, client, uid)
+    .then((res) => {
+      setCurrentUserLikes(res.data.currentUserLikes);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
   }, []);
 
   const showUserImage = (userId) => {
@@ -125,7 +135,7 @@ export const TrainingLogs = () => {
       .then(() => {
         fetchCurrentUser(token, client, uid)
           .then((res) => {
-            setCurrentUserLikesArr(res.data.currentUserLikes);
+            setCurrentUserLikes(res.data.currentUserLikes);
           })
           .catch((e) => {
             console.error(e);
@@ -159,7 +169,7 @@ export const TrainingLogs = () => {
       .then(() => {
         fetchCurrentUser(token, client, uid)
           .then((res) => {
-            setCurrentUserLikesArr(res.data.currentUserLikes);
+            setCurrentUserLikes(res.data.currentUserLikes);
           })
           .catch((e) => {
             console.error(e);
@@ -246,7 +256,7 @@ export const TrainingLogs = () => {
                   <CardActions>
                     {currentUser.length !== 0 ? (
                       <Fragment>
-                        {currentUserLikesArr.find(
+                        {currentUserLikes.find(
                           (like) => like.training_log_id == trainingData.id
                         ) ? (
                           <Fragment>
