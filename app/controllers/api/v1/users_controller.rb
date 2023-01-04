@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index show follows followers]
+      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices body_compositions]
       before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
@@ -13,23 +13,9 @@ module Api
 
       def show
         user = User.find(params[:id])
-        user_training_logs = TrainingLog.where(user_id: user.id).order(id: 'DESC').limit(6)
-        bookmarked_advices = user.bookmark_advices
-        user_followings = user.followings
-        user_followers = user.followers
-        user_questions = user.questions.order(id: 'DESC')
-        user_advices = user.advices
-        user_body_compositions = user.body_compositions
 
         render json: {
-          user: user,
-          userTrainingLogs: user_training_logs,
-          bookmarkedAdvices: bookmarked_advices,
-          userFollowings: user_followings,
-          userFollowers: user_followers,
-          userQuestions: user_questions,
-          userAdvices: user_advices,
-          bodyCompositions: user_body_compositions
+          user: user
         }, status: :ok
       end
 
@@ -61,6 +47,72 @@ module Api
         render json: {
           userFollowers: user_followers
         }, status: :ok
+      end
+
+      def training_logs
+        user_training_logs = TrainingLog.where(user_id: params[:id]).order(id: 'DESC')
+        if user_training_logs.present?
+          render json: {
+            userTrainingLogs: user_training_logs
+          }, status: :ok
+        else
+          render json: {
+            message: 'トレーニング記録が存在しません'
+          }, status: :bad_request
+        end
+      end
+
+      def questions
+        user_questions = Question.where(user_id: params[:id]).order(id: 'DESC')
+        if user_questions.present?
+          render json: {
+            userQuestions: user_questions
+          }, status: :ok
+        else
+          render json: {
+            message: '質問が存在しません'
+          }, status: :bad_request
+        end
+      end
+
+      def advices
+        user_advices = Advice.where(user_id: params[:id])
+        if user_advices.present?
+          render json: {
+            userAdvices: user_advices
+          }, status: :ok
+        else
+          render json: {
+            message: 'アドバイスは存在しません'
+          }, status: :bad_request
+        end
+      end
+
+      def bookmark_advices
+        user = User.find(params[:id])
+        user_bookmark_advices = user.bookmark_advices
+        if user_bookmark_advices.present?
+          render json: {
+            userBookmarkAdvices: user_bookmark_advices
+          }, status: :ok
+        else
+          render json: {
+            message: 'ブックマークしたアドバイスはありません'
+          }, status: :bad_request
+        end
+      end
+
+      def body_compositions
+        user_body_compositions = BodyComposition.where(user_id: params[:id])
+        if user_body_compositions.present?
+          render json: {
+            userBodyCompositions: user_body_compositions
+          }, status: :ok
+        else
+          render json: {
+            message: '体組成記録が存在しません'
+          }, status: :bad_request
+        end
       end
 
       private

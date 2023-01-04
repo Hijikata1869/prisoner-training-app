@@ -26,6 +26,15 @@ import {
   guestLoginUrl,
   postBodyCompositionPath,
   showUserBodyCompositionPath,
+  showUserTrainingLogsPath,
+  showUserQuestionsPath,
+  showUserAdvicesPath,
+  showUserBookmarkAdvicesPath,
+  showUserFollowingsPath,
+  showUserFollowersPath,
+  showCurrentUserFollowingsPath,
+  showCurrentUserBookmarksPath,
+  showCurrentUserLikesPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -512,14 +521,149 @@ export const postBodyComposition = (
     });
 };
 
-export const fetchUserBodyCompositions = (userId) => {
+export const fetchUserBodyCompositions = (id) => {
   return axios
-    .get(showUserBodyCompositionPath(userId))
+    .get(showUserBodyCompositionPath(id))
     .then((res) => {
       return {
         data: res.data,
         status: res.status,
       };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserTrainingLogs = (id) => {
+  return axios
+    .get(showUserTrainingLogsPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserQuestions = (id) => {
+  return axios
+    .get(showUserQuestionsPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserAdvices = (id) => {
+  return axios
+    .get(showUserAdvicesPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserBookmarkAdvices = (id) => {
+  return axios
+    .get(showUserBookmarkAdvicesPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserFollowings = (id) => {
+  return axios
+    .get(showUserFollowingsPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchUserFollowers = (id) => {
+  return axios
+    .get(showUserFollowersPath(id))
+    .then((res) => {
+      return {
+        data: res.data,
+        status: res.status,
+      };
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchCurrentUserFollowings = (token, client, uid) => {
+  return axios
+    .get(showCurrentUserFollowingsPath, {
+      headers: {
+        "access-token": token,
+        client: client,
+        uid: uid,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchCurrentUserBookmarks = (token, client, uid) => {
+  return axios
+    .get(showCurrentUserBookmarksPath, {
+      headers: {
+        "access-token": token,
+        client: client,
+        uid: uid,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchCurrentUserLikes = (token, client, uid) => {
+  return axios
+    .get(showCurrentUserLikesPath, {
+      headers: {
+        "access-token": token,
+        client: client,
+        uid: uid,
+      },
+    })
+    .then((res) => {
+      return res;
     })
     .catch((e) => {
       console.error(e);

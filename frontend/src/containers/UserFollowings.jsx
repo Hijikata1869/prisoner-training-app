@@ -2,20 +2,17 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Avatar,
-  Button,
   ButtonBase,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   Grid,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Cookies from "js-cookie";
 
 // apis
-import { fetchUser } from "../apis/users";
+import { fetchUserFollowings } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
   pageTitle: {
@@ -39,17 +36,12 @@ export const UserFollowings = ({ match }) => {
   const history = useHistory();
   const classes = useStyles();
 
-  const token = Cookies.get("access-token");
-  const client = Cookies.get("client");
-  const uid = Cookies.get("uid");
-
-  const [followingUsersArr, setFollowingUsersArr] = useState([]);
+  const [followingUsers, setFollowingUsers] = useState([]);
 
   useEffect(() => {
-    fetchUser(match.params.userId)
+    fetchUserFollowings(match.params.userId)
       .then((res) => {
-        setFollowingUsersArr(res.data.userFollowings);
-        console.log(res);
+        setFollowingUsers(res.data.userFollowings);
       })
       .catch((e) => {
         console.error(e);
@@ -64,8 +56,8 @@ export const UserFollowings = ({ match }) => {
           フォロー中のユーザー
         </Typography>
         <Grid className={classes.cardWrapper} item>
-          {followingUsersArr.length !== 0 ? (
-            followingUsersArr.map((followingUser, index) => {
+          {followingUsers.length !== 0 ? (
+            followingUsers.map((followingUser, index) => {
               return (
                 <Card className={classes.followingUserCard} key={index}>
                   <CardHeader
@@ -96,7 +88,6 @@ export const UserFollowings = ({ match }) => {
                       </Typography>
                     )}
                   </CardContent>
-                  <CardActions></CardActions>
                 </Card>
               );
             })

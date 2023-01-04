@@ -31,19 +31,6 @@ module Api
         end
       end
 
-      def show
-        user_body_compositions = BodyComposition.where(user_id: params[:user_id])
-        if user_body_compositions.present?
-          render json: {
-            userBodyCompositions: user_body_compositions
-          }, status: :ok
-        else
-          render json: {
-            message: 'データが存在しません'
-          }, status: :bad_request
-        end
-      end
-
       private
       def post_params
         params.permit(:user_id, :weight, :body_fat)

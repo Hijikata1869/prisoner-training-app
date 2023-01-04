@@ -28,6 +28,7 @@ import {
   fetchQuestions,
   fetchCurrentUser,
   deleteAdvice,
+  fetchUserAdvices,
 } from "../apis/users";
 
 // components
@@ -69,7 +70,6 @@ export const UserAdvices = ({ match }) => {
   const uid = Cookies.get("uid");
 
   const [user, setUser] = useState([]);
-  const [userAdvicesArr, setUserAdvicesArr] = useState([]);
   const [allUsersArr, setAllUsersArr] = useState([]);
   const [allQuestionsArr, setAllQuestionsArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
@@ -77,13 +77,12 @@ export const UserAdvices = ({ match }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [targetAdviceId, setTargetAdviceId] = useState();
   const [alertOpen, setAlertOpen] = useState(false);
+  const [userAdvices, setUserAdvices] = useState([]);
 
   useEffect(() => {
     fetchUser(match.params.userId)
       .then((res) => {
         setUser(res.data.user);
-        setUserAdvicesArr(res.data.userAdvices);
-        console.log(res);
       })
       .catch((e) => {
         console.error(e);
@@ -115,6 +114,16 @@ export const UserAdvices = ({ match }) => {
       .then((res) => {
         setCurrentUser(res.data.currentUser);
         setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchUserAdvices(match.params.userId)
+      .then((res) => {
+        setUserAdvices(res.data.userAdvices);
       })
       .catch((e) => {
         console.error(e);
@@ -225,9 +234,9 @@ export const UserAdvices = ({ match }) => {
           >{`${user.nickname}さんのアドバイス一覧`}</Typography>
         </Hidden>
         <Grid className={classes.adviceCardWrapper} item>
-          {userAdvicesArr.length !== 0 ? (
+          {userAdvices.length !== 0 ? (
             <Fragment>
-              {userAdvicesArr.map((data, index) => {
+              {userAdvices.map((data, index) => {
                 return (
                   <Card className={classes.adviceCard} key={index}>
                     <CardHeader

@@ -23,9 +23,10 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 // apis
 import {
   fetchUsers,
-  fetchUser,
   fetchCurrentUser,
   fetchQuestions,
+  fetchUserBookmarkAdvices,
+  fetchCurrentUserBookmarks,
 } from "../apis/users";
 
 const useStyles = makeStyles(() => ({
@@ -54,10 +55,10 @@ export const UserBookmarks = ({ match }) => {
   const uid = Cookies.get("uid");
 
   const [usersArr, setUsersArr] = useState([]);
-  const [bookmarkedAdvicesArr, setBookmaredkAdvicesArr] = useState([]);
-  const [currentUserBookmarksArr, setCurrentUserBookmarksArr] = useState([]);
   const [allQuestionsArr, setAllQuestionsArr] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
+  const [userBookmarkAdvices, setUserBookmarkAdvices] = useState([]);
+  const [currentUserBookmarks, setCurrentUserBookmarks] = useState([]);
 
   useEffect(() => {
     fetchUsers()
@@ -70,20 +71,9 @@ export const UserBookmarks = ({ match }) => {
   }, []);
 
   useEffect(() => {
-    fetchUser(match.params.userId, token, client, uid)
-      .then((res) => {
-        setBookmaredkAdvicesArr(res.data.bookmarkedAdvices);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  useEffect(() => {
     fetchCurrentUser(token, client, uid)
       .then((res) => {
         setCurrentUser(res.data.currentUser);
-        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
       })
       .catch((e) => {
         console.error(e);
@@ -94,6 +84,26 @@ export const UserBookmarks = ({ match }) => {
     fetchQuestions()
       .then((res) => {
         setAllQuestionsArr(res.data.questions);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchUserBookmarkAdvices(match.params.userId)
+      .then((res) => {
+        setUserBookmarkAdvices(res.data.userBookmarkAdvices);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchCurrentUserBookmarks(token, client, uid)
+      .then((res) => {
+        setCurrentUserBookmarks(res.data.currentUserBookmarks);
       })
       .catch((e) => {
         console.error(e);
@@ -121,9 +131,9 @@ export const UserBookmarks = ({ match }) => {
       },
     })
       .then(() => {
-        fetchCurrentUser(token, client, uid)
+        fetchCurrentUserBookmarks(token, client, uid)
           .then((res) => {
-            setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+            setCurrentUserBookmarks(res.data.currentUserBookmarks);
           })
           .catch((e) => {
             console.error(e);
@@ -143,9 +153,9 @@ export const UserBookmarks = ({ match }) => {
       },
     })
       .then(() => {
-        fetchCurrentUser(token, client, uid)
+        fetchCurrentUserBookmarks(token, client, uid)
           .then((res) => {
-            setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+            setCurrentUserBookmarks(res.data.currentUserBookmarks);
           })
           .catch((e) => {
             console.error(e);
@@ -163,6 +173,7 @@ export const UserBookmarks = ({ match }) => {
 
   return (
     <Fragment>
+      {console.log("レンダリング")}
       <Grid container item direction="column">
         <Hidden only="xs">
           <Typography className={classes.pageTitle} variant="h4">
@@ -179,9 +190,9 @@ export const UserBookmarks = ({ match }) => {
           </Typography>
         </Hidden>
         <Grid className={classes.adviceCardWrapper} item>
-          {bookmarkedAdvicesArr.length !== 0 ? (
+          {userBookmarkAdvices.length !== 0 ? (
             <Fragment>
-              {bookmarkedAdvicesArr.map((adviceData, index) => {
+              {userBookmarkAdvices.map((adviceData, index) => {
                 return (
                   <Card className={classes.adviceCard} key={index}>
                     <CardHeader
@@ -224,7 +235,7 @@ export const UserBookmarks = ({ match }) => {
                     </CardContent>
                     <CardActions>
                       {currentUser.length !== 0 ? (
-                        currentUserBookmarksArr.find(
+                        currentUserBookmarks?.find(
                           (element) => element.advice_id === adviceData.id
                         ) ? (
                           <Fragment>

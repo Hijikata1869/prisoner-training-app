@@ -19,7 +19,13 @@ import { ThumbUp, ThumbUpAltOutlined } from "@material-ui/icons";
 import Cookies from "js-cookie";
 
 // apis
-import { fetchCurrentUser, fetchTrainingLogs, fetchLikes } from "../apis/users";
+import {
+  fetchCurrentUser,
+  fetchTrainingLogs,
+  fetchLikes,
+  fetchCurrentUserFollowings,
+  fetchCurrentUserLikes,
+} from "../apis/users";
 import { fetchHome } from "../apis/home";
 
 // styles
@@ -43,19 +49,15 @@ export const Index = () => {
   const [currentUser, setCurrentUser] = useState([]);
   const [usersArr, setUsersArr] = useState([]);
   const [trainingLogsArr, setTrainingLogsArr] = useState([]);
-  const [currentUserLikesArr, setCurrentUserLikesArr] = useState([]);
   const [allTrainingLogsArr, setAllTrainingLogsArr] = useState([]);
-  const [currentUserFollowingsArr, setCurrentUserFollowingsArr] = useState([]);
   const [allLikesArr, setAllLikesArr] = useState([]);
-  const [followingUserTrainingLogsArr, setFollowingUserTrainingLogsArr] =
-    useState([]);
+  const [currentUserFollowings, setCurrentUserFollowings] = useState([]);
+  const [currentUserLikes, setCurrentUserLikes] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
       .then((res) => {
         setCurrentUser(res.data.currentUser);
-        setCurrentUserLikesArr(res.data.currentUserLikes);
-        setCurrentUserFollowingsArr(res.data.currentUserFollowings);
       })
       .catch((e) => {
         console.error(e);
@@ -93,6 +95,26 @@ export const Index = () => {
       });
   }, []);
 
+  useEffect(() => {
+    fetchCurrentUserFollowings(token, client, uid)
+      .then((res) => {
+        setCurrentUserFollowings(res.data.currentUserFollowings);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchCurrentUserLikes(token, client, uid)
+      .then((res) => {
+        setCurrentUserLikes(res.data.currentUserLikes);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
   const showUserName = (userId) => {
     const user = usersArr.find((user) => user.id === userId);
     return user?.nickname;
@@ -117,9 +139,9 @@ export const Index = () => {
       }
     )
       .then(() => {
-        fetchCurrentUser(token, client, uid)
+        fetchCurrentUserLikes(token, client, uid)
           .then((res) => {
-            setCurrentUserLikesArr(res.data.currentUserLikes);
+            setCurrentUserLikes(res.data.currentUserLikes);
           })
           .catch((e) => {
             console.error(e);
@@ -151,9 +173,9 @@ export const Index = () => {
       }
     )
       .then(() => {
-        fetchCurrentUser(token, client, uid)
+        fetchCurrentUserLikes(token, client, uid)
           .then((res) => {
-            setCurrentUserLikesArr(res.data.currentUserLikes);
+            setCurrentUserLikes(res.data.currentUserLikes);
           })
           .catch((e) => {
             console.error(e);
@@ -179,7 +201,7 @@ export const Index = () => {
   };
 
   const fetchFollowingUserIds = () => {
-    const followingUserIds = currentUserFollowingsArr.map((followingUser) => {
+    const followingUserIds = currentUserFollowings.map((followingUser) => {
       return followingUser.id;
     });
     return followingUserIds;
@@ -414,7 +436,7 @@ export const Index = () => {
       </div>
       <div className={classes.thirdWrapper}>
         <Container maxWidth="lg">
-          {currentUser.length !== 0 && currentUserFollowingsArr.length !== 0 ? (
+          {currentUser.length !== 0 && currentUserFollowings.length !== 0 ? (
             <Typography
               variant="h5"
               className={classes.thirdWrapperTitle}
@@ -431,7 +453,7 @@ export const Index = () => {
               みんなの最新トレーニング記録
             </Typography>
           )}
-          {currentUser.length !== 0 && currentUserFollowingsArr.length !== 0 ? (
+          {currentUser.length !== 0 && currentUserFollowings.length !== 0 ? (
             <Grid container spacing={4}>
               {fetchFollowingUserTrainingLogs().map((trainingLog, index) => {
                 if (index < 4) {
@@ -479,7 +501,7 @@ export const Index = () => {
                           <Typography variant="body1">{`${trainingLog.repetition}回`}</Typography>
                         </CardContent>
                         <CardActions>
-                          {currentUserLikesArr.find(
+                          {currentUserLikes.find(
                             (like) => like.training_log_id === trainingLog.id
                           ) ? (
                             <Fragment>

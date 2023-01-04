@@ -12,10 +12,14 @@ Rails.application.routes.draw do
       end
 
       resources :users do
-        resource :body_compositions, only: %i[show]
         resource :relationships, only: %i[create destroy]
         get :follows, on: :member
         get :followers, on: :member
+        get :training_logs, on: :member
+        get :questions, on: :member
+        get :advices, on: :member
+        get :bookmark_advices, on: :member
+        get :body_compositions, on: :member
       end
 
       resources :questions
@@ -32,6 +36,9 @@ Rails.application.routes.draw do
 
       get '/likes', to: 'likes#index'
       get '/current_user', to: 'current_users#show'
+      get '/current_user/followings', to: 'current_users#followings'
+      get '/current_user/bookmarks', to: 'current_users#bookmarks'
+      get '/current_user/likes', to: 'current_users#likes'
 
       root to: 'homes#index'
     end

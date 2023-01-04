@@ -24,6 +24,7 @@ import {
   fetchUser,
   deleteTrainingLog,
   fetchLikes,
+  fetchUserTrainingLogs,
 } from "../apis/users";
 
 // components
@@ -90,12 +91,12 @@ export const UserTrainingLog = ({ match }) => {
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [pastTrainingLogsArr, setPastTrainingLogsArr] = useState([]);
   const [user, setUser] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
   const [targetTrainingLogId, setTargetTrainingLogId] = useState();
   const [allLikesArr, setAllLikesArr] = useState([]);
+  const [userTrainingLogs, setUserTrainingLogs] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -110,7 +111,6 @@ export const UserTrainingLog = ({ match }) => {
   useEffect(() => {
     fetchUser(match.params.userId, token, client, uid)
       .then((res) => {
-        setPastTrainingLogsArr(res.data.userTrainingLogs);
         setUser(res.data.user);
       })
       .catch((e) => {
@@ -122,6 +122,16 @@ export const UserTrainingLog = ({ match }) => {
     fetchLikes()
       .then((res) => {
         setAllLikesArr(res.data.likes);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchUserTrainingLogs(match.params.userId)
+      .then((res) => {
+        setUserTrainingLogs(res.data.userTrainingLogs);
       })
       .catch((e) => {
         console.error(e);
@@ -341,9 +351,9 @@ export const UserTrainingLog = ({ match }) => {
               これまでの記録
             </Typography>
           </Hidden>
-          {pastTrainingLogsArr.length !== 0 ? (
+          {userTrainingLogs.length !== 0 ? (
             <Fragment>
-              {pastTrainingLogsArr.map((data, index) => {
+              {userTrainingLogs.map((data, index) => {
                 return (
                   <Grid
                     key={index}
