@@ -20,12 +20,14 @@ Rails.application.routes.draw do
         get :advices, on: :member
         get :bookmark_advices, on: :member
         get :body_compositions, on: :member
+        get :recent_training_logs, on: :member
       end
 
       resources :questions
 
       resources :training_logs do
         resource :likes, only: %i[create destroy]
+        get :number_of_likes, on: :member
       end
 
       resources :advices do

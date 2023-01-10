@@ -1,7 +1,7 @@
 module Api
   module V1
     class TrainingLogsController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index show]
+      before_action :authenticate_api_v1_user!, except: %i[index show number_of_likes]
 
       def index
         training_logs = TrainingLog.all.order(id: 'DESC')
@@ -47,6 +47,13 @@ module Api
             message: '削除できませんでした'
           }, status: :bad_request
         end
+      end
+
+      def number_of_likes
+        the_number_of_likes = TrainingLog.number_of_likes(params[:id])
+        render json: {
+          numberOfLikes: the_number_of_likes
+        }, status: :ok
       end
 
       private

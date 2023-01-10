@@ -35,6 +35,8 @@ import {
   showCurrentUserFollowingsPath,
   showCurrentUserBookmarksPath,
   showCurrentUserLikesPath,
+  showRecentTrainingLogsPath,
+  showNumberOfLikesPath
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -668,4 +670,26 @@ export const fetchCurrentUserLikes = (token, client, uid) => {
     .catch((e) => {
       console.error(e);
     });
+};
+
+export const fetchUserRecentTrainingLogs = (id) => {
+  return axios
+  .get(showRecentTrainingLogsPath(id))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  });
+};
+
+export const fetchNumberOfLikes = (id) => {
+  return axios
+  .get(showNumberOfLikesPath(id))
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  });
 };
