@@ -278,7 +278,7 @@ export const UserTrainingLog = ({ match }) => {
       setHandstandPushUpLikes(recentHandstandPushUpLikes);
     };
     fetchRecentHandstandPushUpData();
-  }, []);
+  }, [recentHandstandPushUp]);
 
   const hundleMenuChange = (e) => {
     setTrainingMenu(e.target.value);
@@ -330,6 +330,13 @@ export const UserTrainingLog = ({ match }) => {
     setDialogOpen(true);
   };
 
+  const returnTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const trainingLogDeleteAction = () => {
     const trainingLogId = targetTrainingLogId;
     deleteTrainingLog(token, client, uid, trainingLogId)
@@ -342,6 +349,7 @@ export const UserTrainingLog = ({ match }) => {
       .catch((e) => {
         console.error(e);
       });
+      returnTop();
   };
 
 
