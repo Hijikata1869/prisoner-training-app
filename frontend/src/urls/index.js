@@ -55,3 +55,7 @@ export const showUserFollowersPath = (id) =>
 export const showCurrentUserFollowingsPath = `${process.env.REACT_APP_SERVER_URL}/current_user/followings`;
 export const showCurrentUserBookmarksPath = `${process.env.REACT_APP_SERVER_URL}/current_user/bookmarks`;
 export const showCurrentUserLikesPath = `${process.env.REACT_APP_SERVER_URL}/current_user/likes`;
+export const showRecentTrainingLogsPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/users/${id}/recent_training_logs`;
+export const showNumberOfLikesPath = (id) =>
+  `${process.env.REACT_APP_SERVER_URL}/training_logs/${id}/number_of_likes`;

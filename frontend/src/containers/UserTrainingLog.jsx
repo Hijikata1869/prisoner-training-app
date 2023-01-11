@@ -9,6 +9,9 @@ import {
   MenuItem,
   TextField,
   Hidden,
+  Card,
+  CardContent,
+  CardActions,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
@@ -23,8 +26,9 @@ import {
   fetchCurrentUser,
   fetchUser,
   deleteTrainingLog,
-  fetchLikes,
   fetchUserTrainingLogs,
+  fetchUserRecentTrainingLogs,
+  fetchNumberOfLikes,
 } from "../apis/users";
 
 // components
@@ -39,31 +43,29 @@ const useStyles = makeStyles(() => ({
     paddingRight: "2rem",
     paddingLeft: "2rem",
   },
-  pastTrainingLogWrapper: {},
-  pastTrainingLogTitle: {
-    marginTop: "5rem",
-    marginBottom: "2rem",
+  trainingLogTitle: {
+    marginTop: "4rem",
   },
-  pastTrainingLog: {
+  trainingLogWrapper: {
+    marginTop: "0.25rem",
     marginBottom: "3rem",
-    border: "1px solid gray",
-    borderRadius: "10px",
   },
-  trainingLogNotes: {
-    borderTop: "1px solid gray",
+  trainingLogCard: {},
+  cardActionArea: {
+    display: "flex",
+    justifyContent: "flex-start",
   },
-  deleteButtonWrapper: {
-    margin: "0 0 0 auto",
+  likesNumber: {
+    marginRight: "auto",
   },
-  deleteButton: {},
-  numberOfLikes: {
-    margin: "0 0 0 auto",
+  deleteButton: {
+    marginRight: "1rem",
   },
-  likeIconWrapper: {
-    textAlign: "right",
-  },
-  likeNumber: {
+  likeIcon: {
     marginLeft: "0.5rem",
+  },
+  notPresentText: {
+    marginTop: "1rem",
   },
 }));
 
@@ -95,8 +97,19 @@ export const UserTrainingLog = ({ match }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [successAlertOpen, setSuccessAlertOpen] = useState(false);
   const [targetTrainingLogId, setTargetTrainingLogId] = useState();
-  const [allLikesArr, setAllLikesArr] = useState([]);
   const [userTrainingLogs, setUserTrainingLogs] = useState([]);
+  const [recentPushUp, setRecentPushUp] = useState([]);
+  const [recentSquat, setRecentSquat] = useState([]);
+  const [recentPullUp, setRecentPullUp] = useState([]);
+  const [recentLegRaise, setRecentLegRaise] = useState([]);
+  const [recentBridge, setRecentBridge] = useState([]);
+  const [recentHandstandPushUp, setRecentHandstandPushUp] = useState([]);
+  const [pushUpLikes, setPushUpLikes] = useState(0);
+  const [squatLikes, setSquatLikes] = useState(0);
+  const [pullUpLikes, setPullUpLikes] = useState(0);
+  const [legRaiseLikes, setLegRaiseLikes] = useState(0);
+  const [bridgeLikes, setBridgeLikes] = useState(0);
+  const [handstandPushUpLikes, setHandstandPushUpLikes] = useState(0);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -119,16 +132,6 @@ export const UserTrainingLog = ({ match }) => {
   }, []);
 
   useEffect(() => {
-    fetchLikes()
-      .then((res) => {
-        setAllLikesArr(res.data.likes);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  useEffect(() => {
     fetchUserTrainingLogs(match.params.userId)
       .then((res) => {
         setUserTrainingLogs(res.data.userTrainingLogs);
@@ -136,6 +139,158 @@ export const UserTrainingLog = ({ match }) => {
       .catch((e) => {
         console.error(e);
       });
+  }, []);
+
+  useEffect(() => {
+    const fetchRecentPushUpData = async () => {
+      const recentPushUpId = await fetchUserRecentTrainingLogs(
+        match.params.userId
+      )
+        .then((res) => {
+          setRecentPushUp(res.data.recentPushUp);
+          return res.data.recentPushUp.id;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const recentPushUpLikes = await fetchNumberOfLikes(recentPushUpId)
+        .then((res) => {
+          return res.data.numberOfLikes;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      setPushUpLikes(recentPushUpLikes);
+    };
+    fetchRecentPushUpData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecentSquatData = async () => {
+      const recentSquatId = await fetchUserRecentTrainingLogs(
+        match.params.userId
+      )
+        .then((res) => {
+          setRecentSquat(res.data.recentSquat);
+          return res.data.recentSquat.id;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const recentSquatLikes = await fetchNumberOfLikes(recentSquatId)
+        .then((res) => {
+          return res.data.numberOfLikes;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      setSquatLikes(recentSquatLikes);
+    };
+    fetchRecentSquatData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecentPullUpData = async () => {
+      const recentPullUpId = await fetchUserRecentTrainingLogs(
+        match.params.userId
+      )
+        .then((res) => {
+          setRecentPullUp(res.data.recentPullUp);
+          return res.data.recentPullUp.id;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const recentPullUpLikes = await fetchNumberOfLikes(recentPullUpId)
+        .then((res) => {
+          return res.data.numberOfLikes;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      setPullUpLikes(recentPullUpLikes);
+    };
+    fetchRecentPullUpData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecentLegRaiseData = async () => {
+      const recentLegRaiseId = await fetchUserRecentTrainingLogs(
+        match.params.userId
+      )
+        .then((res) => {
+          setRecentLegRaise(res.data.recentLegRaise);
+          return res.data.recentLegRaise.id;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const recentLegRaiseLikes = await fetchNumberOfLikes(recentLegRaiseId)
+        .then((res) => {
+          return res.data.numberOfLikes;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      setLegRaiseLikes(recentLegRaiseLikes);
+    };
+    fetchRecentLegRaiseData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecentBridgeData = async () => {
+      const recentBridgeId = await fetchUserRecentTrainingLogs(
+        match.params.userId
+      )
+        .then((res) => {
+          setRecentBridge(res.data.recentBridge);
+          return res.data.recentBridge.id;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const recentBridgeLikes = await fetchNumberOfLikes(recentBridgeId)
+        .then((res) => {
+          return res.data.numberOfLikes;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      setBridgeLikes(recentBridgeLikes);
+    };
+    fetchRecentBridgeData();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecentHandstandPushUpData = async () => {
+      const recentHandstandPushUpId = await fetchUserRecentTrainingLogs(
+        match.params.userId
+      )
+        .then((res) => {
+          setRecentHandstandPushUp(res.data.recentHandstandPushUp);
+          return res.data.recentHandstandPushUp.id;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const recentHandstandPushUpLikes = await fetchNumberOfLikes(
+        recentHandstandPushUpId
+      )
+        .then((res) => {
+          return res.data.numberOfLikes;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+      setHandstandPushUpLikes(recentHandstandPushUpLikes);
+    };
+    fetchRecentHandstandPushUpData();
   }, []);
 
   const hundleMenuChange = (e) => {
@@ -188,6 +343,13 @@ export const UserTrainingLog = ({ match }) => {
     setDialogOpen(true);
   };
 
+  const returnTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const trainingLogDeleteAction = () => {
     const trainingLogId = targetTrainingLogId;
     deleteTrainingLog(token, client, uid, trainingLogId)
@@ -200,13 +362,7 @@ export const UserTrainingLog = ({ match }) => {
       .catch((e) => {
         console.error(e);
       });
-  };
-
-  const numberOfLikes = (trainingLogId) => {
-    const targetLikes = allLikesArr.filter(
-      (like) => like.training_log_id == trainingLogId
-    );
-    return targetLikes?.length;
+    returnTop();
   };
 
   return (
@@ -335,109 +491,372 @@ export const UserTrainingLog = ({ match }) => {
             </Grid>
           </Grid>
         ) : null}
-        <Grid
-          className={classes.pastTrainingLogWrapper}
-          container
-          item
-          direction="column"
-        >
-          <Hidden only="xs">
-            <Typography className={classes.pastTrainingLogTitle} variant="h4">
-              これまでの記録
-            </Typography>
-          </Hidden>
-          <Hidden smUp>
-            <Typography className={classes.pastTrainingLogTitle} variant="h5">
-              これまでの記録
-            </Typography>
-          </Hidden>
-          {userTrainingLogs.length !== 0 ? (
-            <Fragment>
-              {userTrainingLogs.map((data, index) => {
-                return (
-                  <Grid
-                    key={index}
-                    className={classes.pastTrainingLog}
-                    container
-                    item
-                    spacing={4}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <Grid item md="auto" xs={12}>
-                      <Typography variant="subtitle2">日付</Typography>
-                      <Typography variant="h6">{`${moment(
-                        data.updated_at
-                      ).format("YYYY-MM-DD")}`}</Typography>
-                    </Grid>
-                    <Grid item md="auto" xs={12}>
-                      <Typography variant="subtitle2">メニュー</Typography>
-                      <Typography variant="h6">{`${data.training_menu}`}</Typography>
-                    </Grid>
-                    <Grid item md="auto" xs={12}>
-                      <Typography variant="subtitle2">ステップ</Typography>
-                      <Typography variant="h6">{`${data.step}`}</Typography>
-                    </Grid>
-                    <Grid item md="auto" xs={12}>
-                      <Typography variant="subtitle2">回数</Typography>
-                      <Typography variant="h6">{`${data.repetition}回`}</Typography>
-                    </Grid>
-                    <Grid item md="auto" xs={12}>
-                      <Typography variant="subtitle2">セット数</Typography>
-                      <Typography variant="h6">{`${data.set}`}</Typography>
-                    </Grid>
-                    <Grid className={classes.deleteButtonWrapper} item>
-                      {currentUser.id === data.user_id ? (
-                        <Button
-                          className={classes.deleteButton}
-                          variant="text"
-                          color="secondary"
-                          size="small"
-                          onClick={() => dialogOpenAction(data.id)}
-                        >
-                          削除する
-                        </Button>
-                      ) : null}
-                    </Grid>
-                    <Grid
-                      className={classes.trainingLogNotes}
-                      container
-                      item
-                      alignItems="center"
+        <Typography className={classes.trainingLogTitle} variant="h4">
+          これまでの記録
+        </Typography>
+        <Grid className={classes.trainingLogWrapper} container item spacing={5}>
+          <Grid item md={4} sm={6} xs={12}>
+            <Typography color="textSecondary">プッシュアップ</Typography>
+            {recentPushUp ? (
+              <Card className={classes.trainingLogCard} variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    トレーニング日
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>{`${moment(
+                    recentPushUp.updated_at
+                  ).format("YYYY-MM-DD")}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    ステップ
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentPushUp.step}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    回数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentPushUp.repetition}回`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    セット数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentPushUp.set}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    メモ
+                  </Typography>
+                  <Typography variant="h6">{`${recentPushUp.memo}`}</Typography>
+                </CardContent>
+                <CardActions className={classes.cardActionArea}>
+                  <ThumbUp className={classes.likeIcon} />
+                  <Typography>{`${pushUpLikes}`}</Typography>
+                  <Typography className={classes.likesNumber}></Typography>
+                  {currentUser.id === recentPushUp.user_id ? (
+                    <Button
+                      className={classes.deleteButton}
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={() => dialogOpenAction(recentPushUp.id)}
                     >
-                      <Grid
-                        className={classes.trianingLogNotes}
-                        item
-                        md={10}
-                        sm={10}
-                        xs={12}
-                      >
-                        <Typography variant="body1">{`一言メモ：${data.memo}`}</Typography>
-                      </Grid>
-                      <Grid
-                        className={classes.likeIconWrapper}
-                        item
-                        md={1}
-                        sm={1}
-                      >
-                        <ThumbUp className={classes.likeIcon} />
-                      </Grid>
-                      <Grid className={classes.likeWrapper} item md={1} sm={1}>
-                        <Typography
-                          className={classes.likeNumber}
-                          color="textSecondary"
-                        >
-                          {numberOfLikes(data.id)}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                );
-              })}
-            </Fragment>
-          ) : (
-            <Typography>まだトレーニング記録がありません</Typography>
-          )}
+                      削除する
+                    </Button>
+                  ) : null}
+                </CardActions>
+              </Card>
+            ) : (
+              <Typography className={classes.notPresentText}>
+                まだ記録がありません
+              </Typography>
+            )}
+          </Grid>
+          <Grid item md={4} sm={6} xs={12}>
+            <Typography color="textSecondary">スクワット</Typography>
+            {recentSquat ? (
+              <Card className={classes.trainingLogCard} variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    トレーニング日
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>{`${moment(
+                    recentSquat.updated_at
+                  ).format("YYYY-MM-DD")}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    ステップ
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentSquat.step}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    回数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentSquat.repetition}回`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    セット数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentSquat.set}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    メモ
+                  </Typography>
+                  <Typography variant="h6">{`${recentSquat.memo}`}</Typography>
+                </CardContent>
+                <CardActions className={classes.cardActionArea}>
+                  <ThumbUp className={classes.likeIcon} />
+                  <Typography>{`${squatLikes}`}</Typography>
+                  <Typography className={classes.likesNumber}></Typography>
+                  {currentUser.id === recentSquat.user_id ? (
+                    <Button
+                      className={classes.deleteButton}
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={() => dialogOpenAction(recentSquat.id)}
+                    >
+                      削除する
+                    </Button>
+                  ) : null}
+                </CardActions>
+              </Card>
+            ) : (
+              <Typography className={classes.notPresentText}>
+                まだ記録がありません
+              </Typography>
+            )}
+          </Grid>
+          <Grid item md={4} sm={6} xs={12}>
+            <Typography color="textSecondary">プルアップ</Typography>
+            {recentPullUp ? (
+              <Card className={classes.trainingLogCard} variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    トレーニング日
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>{`${moment(
+                    recentPullUp.updated_at
+                  ).format("YYYY-MM-DD")}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    ステップ
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentPullUp.step}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    回数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentPullUp.repetition}回`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    セット数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentPullUp.set}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    メモ
+                  </Typography>
+                  <Typography variant="h6">{`${recentPullUp.memo}`}</Typography>
+                </CardContent>
+                <CardActions className={classes.cardActionArea}>
+                  <ThumbUp className={classes.likeIcon} />
+                  <Typography>{`${pullUpLikes}`}</Typography>
+                  <Typography className={classes.likesNumber}></Typography>
+                  {currentUser.id === recentPullUp.user_id ? (
+                    <Button
+                      className={classes.deleteButton}
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={() => dialogOpenAction(recentPullUp.id)}
+                    >
+                      削除する
+                    </Button>
+                  ) : null}
+                </CardActions>
+              </Card>
+            ) : (
+              <Typography className={classes.notPresentText}>
+                まだ記録がありません
+              </Typography>
+            )}
+          </Grid>
+          <Grid item md={4} sm={6} xs={12}>
+            <Typography color="textSecondary">レッグレイズ</Typography>
+            {recentLegRaise ? (
+              <Card className={classes.trainingLogCard} variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    トレーニング日
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>{`${moment(
+                    recentLegRaise.updated_at
+                  ).format("YYYY-MM-DD")}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    ステップ
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentLegRaise.step}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    回数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentLegRaise.repetition}回`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    セット数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentLegRaise.set}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    メモ
+                  </Typography>
+                  <Typography variant="h6">{`${recentLegRaise.memo}`}</Typography>
+                </CardContent>
+                <CardActions className={classes.cardActionArea}>
+                  <ThumbUp className={classes.likeIcon} />
+                  <Typography>{`${legRaiseLikes}`}</Typography>
+                  <Typography className={classes.likesNumber}></Typography>
+                  {currentUser.id === recentLegRaise.user_id ? (
+                    <Button
+                      className={classes.deleteButton}
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={() => dialogOpenAction(recentLegRaise.id)}
+                    >
+                      削除する
+                    </Button>
+                  ) : null}
+                </CardActions>
+              </Card>
+            ) : (
+              <Typography className={classes.notPresentText}>
+                まだ記録がありません
+              </Typography>
+            )}
+          </Grid>
+          <Grid item md={4} sm={6} xs={12}>
+            <Typography color="textSecondary">ブリッジ</Typography>
+            {recentBridge ? (
+              <Card className={classes.trainingLogCard} variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    トレーニング日
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>{`${moment(
+                    recentBridge.updated_at
+                  ).format("YYYY-MM-DD")}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    ステップ
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentBridge.step}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    回数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentBridge.repetition}回`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    セット数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentBridge.set}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    メモ
+                  </Typography>
+                  <Typography variant="h6">{`${recentBridge.memo}`}</Typography>
+                </CardContent>
+                <CardActions className={classes.cardActionArea}>
+                  <ThumbUp className={classes.likeIcon} />
+                  <Typography>{`${bridgeLikes}`}</Typography>
+                  <Typography className={classes.likesNumber}></Typography>
+                  {currentUser.id === recentBridge.user_id ? (
+                    <Button
+                      className={classes.deleteButton}
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={() => dialogOpenAction(recentBridge.id)}
+                    >
+                      削除する
+                    </Button>
+                  ) : null}
+                </CardActions>
+              </Card>
+            ) : (
+              <Typography className={classes.notPresentText}>
+                まだ記録がありません
+              </Typography>
+            )}
+          </Grid>
+          <Grid item md={4} sm={6} xs={12}>
+            <Typography color="textSecondary">
+              ハンドスタンドプッシュアップ
+            </Typography>
+            {recentHandstandPushUp ? (
+              <Card className={classes.trainingLogCard} variant="outlined">
+                <CardContent>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    トレーニング日
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>{`${moment(
+                    recentHandstandPushUp.updated_at
+                  ).format("YYYY-MM-DD")}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    ステップ
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentHandstandPushUp.step}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    回数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentHandstandPushUp.repetition}回`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    セット数
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                  >{`${recentHandstandPushUp.set}`}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    メモ
+                  </Typography>
+                  <Typography variant="h6">{`${recentHandstandPushUp.memo}`}</Typography>
+                </CardContent>
+                <CardActions className={classes.cardActionArea}>
+                  <ThumbUp className={classes.likeIcon} />
+                  <Typography>{`${handstandPushUpLikes}`}</Typography>
+                  <Typography className={classes.likesNumber}></Typography>
+                  {currentUser.id === recentHandstandPushUp.user_id ? (
+                    <Button
+                      className={classes.deleteButton}
+                      variant="text"
+                      color="secondary"
+                      size="small"
+                      onClick={() => dialogOpenAction(recentHandstandPushUp.id)}
+                    >
+                      削除する
+                    </Button>
+                  ) : null}
+                </CardActions>
+              </Card>
+            ) : (
+              <Typography className={classes.notPresentText}>
+                まだ記録がありません
+              </Typography>
+            )}
+          </Grid>
         </Grid>
       </Grid>
     </Fragment>

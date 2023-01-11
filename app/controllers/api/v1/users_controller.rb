@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices body_compositions]
+      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices body_compositions recent_training_logs]
       before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
@@ -113,6 +113,18 @@ module Api
             message: '体組成記録が存在しません'
           }, status: :bad_request
         end
+      end
+
+      def recent_training_logs
+        recent_push_up, recent_squat, recent_pull_up, recent_leg_raise, recent_bridge, recent_handstand_push_up = User.recent_training_logs(params[:id])
+        render json: {
+          recentPushUp: recent_push_up[0],
+          recentSquat: recent_squat[0],
+          recentPullUp: recent_pull_up[0],
+          recentLegRaise: recent_leg_raise[0],
+          recentBridge: recent_bridge[0],
+          recentHandstandPushUp: recent_handstand_push_up[0]
+        }, status: :ok
       end
 
       private
