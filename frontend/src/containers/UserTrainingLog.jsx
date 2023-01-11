@@ -278,7 +278,7 @@ export const UserTrainingLog = ({ match }) => {
       setHandstandPushUpLikes(recentHandstandPushUpLikes);
     };
     fetchRecentHandstandPushUpData();
-  }, [recentHandstandPushUp]);
+  }, []);
 
   const hundleMenuChange = (e) => {
     setTrainingMenu(e.target.value);
@@ -481,7 +481,7 @@ export const UserTrainingLog = ({ match }) => {
         ) : null}
         <Typography className={classes.trainingLogTitle} variant="h4">これまでの記録</Typography>
         <Grid className={classes.trainingLogWrapper} container item spacing={5}>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={12}>
           <Typography color="textSecondary">プッシュアップ</Typography>
           {recentPushUp ? (
           <Card className={classes.trainingLogCard} variant="outlined">
@@ -519,7 +519,7 @@ export const UserTrainingLog = ({ match }) => {
            }
             
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={12}>
             <Typography color="textSecondary">スクワット</Typography>
             {recentSquat ? (
             <Card className={classes.trainingLogCard} variant="outlined">
@@ -555,7 +555,7 @@ export const UserTrainingLog = ({ match }) => {
             :
             <Typography className={classes.notPresentText}>まだ記録がありません</Typography>}
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={12}>
             <Typography color="textSecondary">プルアップ</Typography>
             {recentPullUp ? (
             <Card className={classes.trainingLogCard} variant="outlined">
@@ -591,7 +591,7 @@ export const UserTrainingLog = ({ match }) => {
             :
             <Typography className={classes.notPresentText}>まだ記録がありません</Typography>}
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={12}>
             <Typography color="textSecondary">レッグレイズ</Typography>
             {recentLegRaise ? (
             <Card className={classes.trainingLogCard} variant="outlined">
@@ -628,7 +628,7 @@ export const UserTrainingLog = ({ match }) => {
             <Typography className={classes.notPresentText}>まだ記録がありません</Typography>
             }
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={12}>
             <Typography color="textSecondary">ブリッジ</Typography>
             {recentBridge ? (
             <Card className={classes.trainingLogCard} variant="outlined">
@@ -665,7 +665,7 @@ export const UserTrainingLog = ({ match }) => {
             <Typography className={classes.notPresentText}>まだ記録がありません</Typography>
             }
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={6} xs={12}>
             <Typography color="textSecondary">ハンドスタンドプッシュアップ</Typography>
             {recentHandstandPushUp ? (
             <Card className={classes.trainingLogCard} variant="outlined">
