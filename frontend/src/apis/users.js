@@ -37,6 +37,7 @@ import {
   showCurrentUserLikesPath,
   showRecentTrainingLogsPath,
   showNumberOfLikesPath,
+  showRecentQuestionsPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -692,4 +693,15 @@ export const fetchNumberOfLikes = (id) => {
     .catch((e) => {
       console.error(e);
     });
+};
+
+export const fetchRecentQuestions = () => {
+  return axios
+  .get(showRecentQuestionsPath)
+  .then((res) => {
+    return res;
+  })
+  .catch((e) => {
+    console.error(e);
+  });
 };
