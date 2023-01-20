@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import moment from "moment";
 
@@ -27,7 +27,7 @@ import {
   fetchQuestions,
   fetchUsers,
   fetchRecentQuestions,
-  fetchUser
+  fetchUser,
 } from "../apis/users";
 
 // components
@@ -78,9 +78,9 @@ const useStyles = makeStyles(() => ({
     margin: "0 auto",
   },
   prymaryTitle: {
-    paddingLeft: '2rem',
-    marginBottom: '0.5rem'
-  }
+    paddingLeft: "2rem",
+    marginBottom: "0.5rem",
+  },
 }));
 
 export const Questions = () => {
@@ -110,7 +110,8 @@ export const Questions = () => {
   const [bridgeQuestion, setBridgeQuestion] = useState([]);
   const [bridgeQuestionUser, setBridgeQuestionUser] = useState([]);
   const [handstandPushUpQuestion, setHandstandPushUpQuestion] = useState([]);
-  const [handstandPushUpQuestionUser, setHandstandPushUpQuestionUser] = useState([]);
+  const [handstandPushUpQuestionUser, setHandstandPushUpQuestionUser] =
+    useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -144,23 +145,23 @@ export const Questions = () => {
 
   useEffect(() => {
     fetchRecentQuestions()
-    .then((res) => {
-      setPushUpQuestion(res.data.pushUpQuestion[0]);
-      setSquatQuestion(res.data.squatQuestion[0]);
-      setPullUpQuestion(res.data.pullUpQuestion[0]);
-      setLegRaiseQuestion(res.data.legRaiseQuestion[0]);
-      setBridgeQuestion(res.data.bridgeQuestion[0]);
-      setHandstandPushUpQuestion(res.data.handstandPushUpQuestion[0]);
-      setPushUpQuestionUser(res.data.pushUpQuestion[1]);
-      setSquatQuestionUser(res.data.squatQuestion[1]);
-      setPullUpQuestionUser(res.data.pullUpQuestion[1]);
-      setLegRaiseQuestionUser(res.data.legRaiseQuestion[1]);
-      setBridgeQuestionUser(res.data.bridgeQuestion[1]);
-      setHandstandPushUpQuestionUser(res.data.handstandPushUpQuestion[1]);
-    })
-    .catch((e) => {
-      console.error(e)
-    });
+      .then((res) => {
+        setPushUpQuestion(res.data.pushUpQuestion[0]);
+        setSquatQuestion(res.data.squatQuestion[0]);
+        setPullUpQuestion(res.data.pullUpQuestion[0]);
+        setLegRaiseQuestion(res.data.legRaiseQuestion[0]);
+        setBridgeQuestion(res.data.bridgeQuestion[0]);
+        setHandstandPushUpQuestion(res.data.handstandPushUpQuestion[0]);
+        setPushUpQuestionUser(res.data.pushUpQuestion[1]);
+        setSquatQuestionUser(res.data.squatQuestion[1]);
+        setPullUpQuestionUser(res.data.pullUpQuestion[1]);
+        setLegRaiseQuestionUser(res.data.legRaiseQuestion[1]);
+        setBridgeQuestionUser(res.data.bridgeQuestion[1]);
+        setHandstandPushUpQuestionUser(res.data.handstandPushUpQuestion[1]);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const showUserImage = (targetUser) => {
@@ -291,14 +292,20 @@ export const Questions = () => {
           xs={12}
           direction="column"
         >
-          <Typography className={classes.viewQuestionTitle} variant="h4">質問一覧</Typography>
+          <Typography className={classes.viewQuestionTitle} variant="h4">
+            質問一覧
+          </Typography>
           <Grid item>
-            <Typography className={classes.prymaryTitle} color="textSecondary">最新のプッシュアップに関する質問</Typography>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のプッシュアップに関する質問
+            </Typography>
             <Card className={classes.questionCard}>
-              <CardHeader 
+              <CardHeader
                 avatar={
                   <ButtonBase
-                    onClick={() => history.push(`/users/${pushUpQuestion.user_id}`)}
+                    onClick={() =>
+                      history.push(`/users/${pushUpQuestion.user_id}`)
+                    }
                   >
                     <Avatar
                       className={classes.userImage}
@@ -340,14 +347,21 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
+            <Link to="/questions/push_up?training_menu=push_up">
+              プッシュアップの質問一覧はこちら
+            </Link>
           </Grid>
           <Grid item>
-            <Typography className={classes.prymaryTitle} color="textSecondary">最新のスクワットに関する質問</Typography>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のスクワットに関する質問
+            </Typography>
             <Card className={classes.questionCard}>
-              <CardHeader 
+              <CardHeader
                 avatar={
                   <ButtonBase
-                    onClick={() => history.push(`/users/${squatQuestion.user_id}`)}
+                    onClick={() =>
+                      history.push(`/users/${squatQuestion.user_id}`)
+                    }
                   >
                     <Avatar
                       className={classes.userImage}
@@ -389,14 +403,21 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
+            <Link to="/questions/squat?training_menu=squat">
+              スクワットの質問一覧はこちら
+            </Link>
           </Grid>
           <Grid item>
-            <Typography className={classes.prymaryTitle} color="textSecondary">最新のプルアップに関する質問</Typography>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のプルアップに関する質問
+            </Typography>
             <Card className={classes.questionCard}>
-              <CardHeader 
+              <CardHeader
                 avatar={
                   <ButtonBase
-                    onClick={() => history.push(`/users/${pullUpQuestion.user_id}`)}
+                    onClick={() =>
+                      history.push(`/users/${pullUpQuestion.user_id}`)
+                    }
                   >
                     <Avatar
                       className={classes.userImage}
@@ -438,14 +459,21 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
+            <Link to="/questions/pull_up?training_menu=pull_up">
+              プルアップの質問一覧はこちら
+            </Link>
           </Grid>
           <Grid item>
-            <Typography className={classes.prymaryTitle} color="textSecondary">最新のレッグレイズに関する質問</Typography>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のレッグレイズに関する質問
+            </Typography>
             <Card className={classes.questionCard}>
-              <CardHeader 
+              <CardHeader
                 avatar={
                   <ButtonBase
-                    onClick={() => history.push(`/users/${legRaiseQuestion.user_id}`)}
+                    onClick={() =>
+                      history.push(`/users/${legRaiseQuestion.user_id}`)
+                    }
                   >
                     <Avatar
                       className={classes.userImage}
@@ -458,9 +486,9 @@ export const Questions = () => {
                 title={
                   <Typography variant="h5">{`${legRaiseQuestionUser.nickname}`}</Typography>
                 }
-                subheader={`投稿日：${moment(legRaiseQuestion.created_at).format(
-                  "YYYY-MM-DD"
-                )}`}
+                subheader={`投稿日：${moment(
+                  legRaiseQuestion.created_at
+                ).format("YYYY-MM-DD")}`}
               />
               <CardContent>
                 <Typography variant="subtitle2" color="textSecondary">
@@ -487,14 +515,21 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
+            <Link to="/questions/leg_raise?training_menu=leg_raise">
+              レッグレイズの質問一覧はこちら
+            </Link>
           </Grid>
           <Grid item>
-            <Typography className={classes.prymaryTitle} color="textSecondary">最新のブリッジに関する質問</Typography>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のブリッジに関する質問
+            </Typography>
             <Card className={classes.questionCard}>
-              <CardHeader 
+              <CardHeader
                 avatar={
                   <ButtonBase
-                    onClick={() => history.push(`/users/${bridgeQuestion.user_id}`)}
+                    onClick={() =>
+                      history.push(`/users/${bridgeQuestion.user_id}`)
+                    }
                   >
                     <Avatar
                       className={classes.userImage}
@@ -536,14 +571,21 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
+            <Link to="/questions/bridge?training_menu=bridge">
+              ブリッジの質問一覧はこちら
+            </Link>
           </Grid>
           <Grid item>
-            <Typography className={classes.prymaryTitle} color="textSecondary">最新のハンドスタンドプッシュアップに関する質問</Typography>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のハンドスタンドプッシュアップに関する質問
+            </Typography>
             <Card className={classes.questionCard}>
-              <CardHeader 
+              <CardHeader
                 avatar={
                   <ButtonBase
-                    onClick={() => history.push(`/users/${handstandPushUpQuestion.user_id}`)}
+                    onClick={() =>
+                      history.push(`/users/${handstandPushUpQuestion.user_id}`)
+                    }
                   >
                     <Avatar
                       className={classes.userImage}
@@ -556,9 +598,9 @@ export const Questions = () => {
                 title={
                   <Typography variant="h5">{`${handstandPushUpQuestionUser.nickname}`}</Typography>
                 }
-                subheader={`投稿日：${moment(handstandPushUpQuestion.created_at).format(
-                  "YYYY-MM-DD"
-                )}`}
+                subheader={`投稿日：${moment(
+                  handstandPushUpQuestion.created_at
+                ).format("YYYY-MM-DD")}`}
               />
               <CardContent>
                 <Typography variant="subtitle2" color="textSecondary">
@@ -578,13 +620,18 @@ export const Questions = () => {
                   variant="contained"
                   color="primary"
                   onClick={() =>
-                    history.push(`/questions/${handstandPushUpQuestion.id}/advices`)
+                    history.push(
+                      `/questions/${handstandPushUpQuestion.id}/advices`
+                    )
                   }
                 >
                   アドバイスをする
                 </Button>
               </CardActions>
             </Card>
+            <Link to="/questions/handstand_push_up?training_menu=handstand_push_up">
+              ハンドスタンドプッシュアップの質問一覧はこちら
+            </Link>
           </Grid>
         </Grid>
       </Grid>

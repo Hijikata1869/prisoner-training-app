@@ -1,7 +1,7 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index recent_questions]
+      before_action :authenticate_api_v1_user!, except: %i[index recent_questions fetch_one_kind_questions]
 
       def index
         questions = Question.all.order(id: 'DESC')
@@ -61,6 +61,14 @@ module Api
           legRaiseQuestion: recent_leg_raise_question,
           bridgeQuestion: recent_bridge_question,
           handstandPushUpQuestion: recent_handstand_push_up_question,
+        }, status: :ok
+      end
+
+      def fetch_one_kind_questions
+        training_menu = params[:training_menu]
+        questions = Question.fetch_one_kind_questions(training_menu)
+        render json: {
+          questions: questions
         }, status: :ok
       end
 

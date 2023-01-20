@@ -60,3 +60,4 @@ export const showRecentTrainingLogsPath = (id) =>
 export const showNumberOfLikesPath = (id) =>
   `${process.env.REACT_APP_SERVER_URL}/training_logs/${id}/number_of_likes`;
 export const showRecentQuestionsPath = `${process.env.REACT_APP_SERVER_URL}/recent_questions`;
+export const showOneKindQuestionPath = `${process.env.REACT_APP_SERVER_URL}/one_kind_questions`;

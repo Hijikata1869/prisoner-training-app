@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       get '/current_user/bookmarks', to: 'current_users#bookmarks'
       get '/current_user/likes', to: 'current_users#likes'
       get '/recent_questions', to: 'questions#recent_questions'
+      get '/one_kind_questions', to: 'questions#fetch_one_kind_questions'
 
       root to: 'homes#index'
     end

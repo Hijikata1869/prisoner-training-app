@@ -38,6 +38,7 @@ import {
   showRecentTrainingLogsPath,
   showNumberOfLikesPath,
   showRecentQuestionsPath,
+  showOneKindQuestionPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -697,11 +698,26 @@ export const fetchNumberOfLikes = (id) => {
 
 export const fetchRecentQuestions = () => {
   return axios
-  .get(showRecentQuestionsPath)
-  .then((res) => {
-    return res;
-  })
-  .catch((e) => {
-    console.error(e);
-  });
+    .get(showRecentQuestionsPath)
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchOneKindQuestions = (trainingMenu) => {
+  return axios
+    .get(showOneKindQuestionPath, {
+      params: {
+        training_menu: trainingMenu,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 };
