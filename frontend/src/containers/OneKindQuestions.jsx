@@ -11,6 +11,8 @@ export const OneKindQuestions = () => {
 
   const trainingMenu = query.get("training_menu");
 
+  console.log(`search: ${search}, query: ${query}, trainingMenu: ${trainingMenu}`);
+
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {

@@ -62,7 +62,6 @@ const useStyles = makeStyles(() => ({
     marginBottom: "2rem",
   },
   questionCard: {
-    marginBottom: "3rem",
     padding: "1rem",
     marginLeft: "2rem",
   },
@@ -71,7 +70,6 @@ const useStyles = makeStyles(() => ({
     height: "60px",
   },
   viewQuestionTitle: {
-    marginBottom: "2rem",
     paddingLeft: "2rem",
   },
   adviceButton: {
@@ -81,6 +79,12 @@ const useStyles = makeStyles(() => ({
     paddingLeft: "2rem",
     marginBottom: "0.5rem",
   },
+  toOneKindQuestionsButtonArea: {
+    marginLeft: "auto"
+  },
+  questionCardArea: {
+    marginTop: "2rem"
+  }
 }));
 
 export const Questions = () => {
@@ -295,7 +299,7 @@ export const Questions = () => {
           <Typography className={classes.viewQuestionTitle} variant="h4">
             質問一覧
           </Typography>
-          <Grid item>
+          <Grid item className={classes.questionCardArea}>
             <Typography className={classes.prymaryTitle} color="textSecondary">
               最新のプッシュアップに関する質問
             </Typography>
@@ -347,11 +351,15 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
-            <Link to="/questions/push_up?training_menu=push_up">
-              プッシュアップの質問一覧はこちら
-            </Link>
           </Grid>
-          <Grid item>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() => history.push("/questions/push_up?training_menu=push_up")}
+            >
+              プッシュアップの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
             <Typography className={classes.prymaryTitle} color="textSecondary">
               最新のスクワットに関する質問
             </Typography>
@@ -403,11 +411,15 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
-            <Link to="/questions/squat?training_menu=squat">
-              スクワットの質問一覧はこちら
-            </Link>
           </Grid>
-          <Grid item>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() => history.push("/questions/squat?training_menu=squat")}
+            >
+              スクワットの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
             <Typography className={classes.prymaryTitle} color="textSecondary">
               最新のプルアップに関する質問
             </Typography>
@@ -459,11 +471,15 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
-            <Link to="/questions/pull_up?training_menu=pull_up">
-              プルアップの質問一覧はこちら
-            </Link>
           </Grid>
-          <Grid item>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() => history.push("/questions/pull_up?training_menu=pull_up")}
+            >
+              プルアップの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
             <Typography className={classes.prymaryTitle} color="textSecondary">
               最新のレッグレイズに関する質問
             </Typography>
@@ -515,11 +531,15 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
-            <Link to="/questions/leg_raise?training_menu=leg_raise">
-              レッグレイズの質問一覧はこちら
-            </Link>
           </Grid>
-          <Grid item>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() => history.push("/questions/leg_raise?training_menu=leg_raise")}
+            >
+              レッグレイズの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
             <Typography className={classes.prymaryTitle} color="textSecondary">
               最新のブリッジに関する質問
             </Typography>
@@ -571,11 +591,15 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
-            <Link to="/questions/bridge?training_menu=bridge">
-              ブリッジの質問一覧はこちら
-            </Link>
           </Grid>
-          <Grid item>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() => history.push("/questions/bridge?training_menu=bridge")}
+            >
+              ブリッジの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
             <Typography className={classes.prymaryTitle} color="textSecondary">
               最新のハンドスタンドプッシュアップに関する質問
             </Typography>
@@ -629,9 +653,13 @@ export const Questions = () => {
                 </Button>
               </CardActions>
             </Card>
-            <Link to="/questions/handstand_push_up?training_menu=handstand_push_up">
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() => history.push("/questions/handstand_push_up?training_menu=handstand_push_up")}
+            >
               ハンドスタンドプッシュアップの質問一覧はこちら
-            </Link>
+            </Button>
           </Grid>
         </Grid>
       </Grid>
