@@ -80,11 +80,11 @@ const useStyles = makeStyles(() => ({
     marginBottom: "0.5rem",
   },
   toOneKindQuestionsButtonArea: {
-    marginLeft: "auto"
+    marginLeft: "auto",
   },
   questionCardArea: {
-    marginTop: "2rem"
-  }
+    marginTop: "2rem",
+  },
 }));
 
 export const Questions = () => {
@@ -326,7 +326,9 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.toOneKindQuestionsButtonArea} item>
             <Button
-              onClick={() => history.push("/questions/push_up?training_menu=push_up")}
+              onClick={() =>
+                history.push("/questions/push_up?training_menu=push_up")
+              }
             >
               プッシュアップの質問一覧はこちら
             </Button>
@@ -386,7 +388,9 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.toOneKindQuestionsButtonArea} item>
             <Button
-              onClick={() => history.push("/questions/squat?training_menu=squat")}
+              onClick={() =>
+                history.push("/questions/squat?training_menu=squat")
+              }
             >
               スクワットの質問一覧はこちら
             </Button>
@@ -446,7 +450,9 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.toOneKindQuestionsButtonArea} item>
             <Button
-              onClick={() => history.push("/questions/pull_up?training_menu=pull_up")}
+              onClick={() =>
+                history.push("/questions/pull_up?training_menu=pull_up")
+              }
             >
               プルアップの質問一覧はこちら
             </Button>
@@ -506,7 +512,9 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.toOneKindQuestionsButtonArea} item>
             <Button
-              onClick={() => history.push("/questions/leg_raise?training_menu=leg_raise")}
+              onClick={() =>
+                history.push("/questions/leg_raise?training_menu=leg_raise")
+              }
             >
               レッグレイズの質問一覧はこちら
             </Button>
@@ -566,7 +574,9 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.toOneKindQuestionsButtonArea} item>
             <Button
-              onClick={() => history.push("/questions/bridge?training_menu=bridge")}
+              onClick={() =>
+                history.push("/questions/bridge?training_menu=bridge")
+              }
             >
               ブリッジの質問一覧はこちら
             </Button>
@@ -628,7 +638,11 @@ export const Questions = () => {
           </Grid>
           <Grid className={classes.toOneKindQuestionsButtonArea} item>
             <Button
-              onClick={() => history.push("/questions/handstand_push_up?training_menu=handstand_push_up")}
+              onClick={() =>
+                history.push(
+                  "/questions/handstand_push_up?training_menu=handstand_push_up"
+                )
+              }
             >
               ハンドスタンドプッシュアップの質問一覧はこちら
             </Button>

@@ -727,7 +727,7 @@ export const fetchOneKindQuestions = (trainingMenu) => {
 export const fetchDesignatedUsers = (userIds) => {
   return axios.get(showeDesignatedUsersPath, {
     params: {
-      'user_ids': userIds,
-    }
+      user_ids: userIds,
+    },
   });
 };

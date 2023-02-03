@@ -147,12 +147,12 @@ export const Advices = ({ match }) => {
 
   useEffect(() => {
     fetchCurrentUserBookmarks(token, client, uid)
-    .then((res) => {
-      setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .then((res) => {
+        setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   const showUserImage = (userId) => {
