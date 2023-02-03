@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { Grid, Card, Typography, CardHeader, ButtonBase, Avatar, CardContent, CardActions, Button } from "@material-ui/core";
+import { Grid, Card, Typography, CardHeader, ButtonBase, Avatar, CardContent, CardActions, Button, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 
@@ -104,7 +104,12 @@ export const OneKindQuestions = () => {
   return (
     <>
       <div className={classes.pageWrapper}>
-        <Typography className={classes.pageTitle} variant="h4">{`${showPageTitle(trainingMenu)}`}</Typography>
+        <Hidden xsDown>
+          <Typography className={classes.pageTitle} variant="h4">{`${showPageTitle(trainingMenu)}`}</Typography>
+        </Hidden>
+        <Hidden smUp>
+          <Typography className={classes.pageTitle} variant="h6">{`${showPageTitle(trainingMenu)}`}</Typography>
+        </Hidden>
         <Grid container spacing={3}>
           {questions.map((question, index) => {
             return (
