@@ -132,16 +132,19 @@ function App() {
               <Route exact path={`${match.path}/handstand_push_up`}>
                 <OneKindQuestions />
               </Route>
-            </Switch>
-          )}
-        />
-        <Route
-          path="/questions/:questionId"
-          render={({ match }) => (
-            <Switch>
-              <Route exact path={`${match.path}/advices`}>
-                <Advices match={match} />
-              </Route>
+              <Route
+                path="/questions/:questionId"
+                render={({ match }) => (
+                  <Switch>
+                    <Route exact path={`${match.path}/advices`}>
+                      <Advices match={match} />
+                    </Route>
+                    <Route path="*">
+                      <Page404 />
+                    </Route>
+                  </Switch>
+                )}
+              />
               <Route path="*">
                 <Page404 />
               </Route>

@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import moment from "moment";
 
@@ -101,8 +101,6 @@ export const Questions = () => {
   const [currentUser, setCurrentUser] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [questionsArr, setQuestionsArr] = useState([]);
-  const [usersArr, setUsersArr] = useState([]);
   const [pushUpQuestion, setPushUpQuestion] = useState([]);
   const [pushUpQuestionUser, setPushUpQuestionUser] = useState([]);
   const [squatQuestion, setSquatQuestion] = useState([]);
@@ -121,26 +119,6 @@ export const Questions = () => {
     fetchCurrentUser(token, client, uid)
       .then((res) => {
         setCurrentUser(res.data.currentUser);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetchQuestions(token, client, uid)
-      .then((res) => {
-        setQuestionsArr(res.data.questions);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetchUsers()
-      .then((res) => {
-        setUsersArr(res.data.users);
       })
       .catch((e) => {
         console.error(e);
@@ -171,12 +149,6 @@ export const Questions = () => {
   const showUserImage = (targetUser) => {
     const userImageUrl = targetUser.image?.url;
     return userImageUrl?.toString();
-  };
-
-  const showUserName = (userId) => {
-    const user = usersArr.find((user) => user.id === userId);
-
-    return user?.nickname;
   };
 
   const hundleTrainingMenuChange = (e) => {

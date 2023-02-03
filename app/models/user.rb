@@ -36,4 +36,14 @@ class User < ActiveRecord::Base
     recent_handstand_push_up = TrainingLog.where(user_id: user_id, training_menu: "ハンドスタンドプッシュアップ").order(id: 'DESC').limit(1)
     return recent_push_up, recent_squat, recent_pull_up, recent_leg_raise, recent_bridge, recent_handstand_push_up
   end
+
+  def self.fetch_designated_users(user_ids)
+    users_arr = []
+    user_ids.each do |user_id|
+      user_concerned = User.find(user_id)
+      users_arr.push(user_concerned)
+    end
+    return users_arr
+  end
+
 end

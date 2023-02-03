@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   usersIndexPage,
   postUserPage,
@@ -39,6 +40,7 @@ import {
   showNumberOfLikesPath,
   showRecentQuestionsPath,
   showOneKindQuestionPath,
+  showeDesignatedUsersPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -720,4 +722,12 @@ export const fetchOneKindQuestions = (trainingMenu) => {
     .catch((e) => {
       console.error(e);
     });
+};
+
+export const fetchDesignatedUsers = (userIds) => {
+  return axios.get(showeDesignatedUsersPath, {
+    params: {
+      'user_ids': userIds,
+    }
+  });
 };

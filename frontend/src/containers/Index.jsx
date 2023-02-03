@@ -201,7 +201,7 @@ export const Index = () => {
   };
 
   const fetchFollowingUserIds = () => {
-    const followingUserIds = currentUserFollowings.map((followingUser) => {
+    const followingUserIds = currentUserFollowings?.map((followingUser) => {
       return followingUser.id;
     });
     return followingUserIds;
@@ -210,7 +210,7 @@ export const Index = () => {
   const fetchFollowingUserTrainingLogs = () => {
     const followingUserIds = fetchFollowingUserIds();
     const result = allTrainingLogsArr.filter((trainingLog) => {
-      return followingUserIds.includes(trainingLog.user_id);
+      return followingUserIds?.includes(trainingLog.user_id);
     });
     return result;
   };
@@ -436,7 +436,7 @@ export const Index = () => {
       </div>
       <div className={classes.thirdWrapper}>
         <Container maxWidth="lg">
-          {currentUser.length !== 0 && currentUserFollowings.length !== 0 ? (
+          {currentUser?.length !== 0 && currentUserFollowings?.length !== 0 ? (
             <Typography
               variant="h5"
               className={classes.thirdWrapperTitle}
@@ -453,7 +453,7 @@ export const Index = () => {
               みんなの最新トレーニング記録
             </Typography>
           )}
-          {currentUser.length !== 0 && currentUserFollowings.length !== 0 ? (
+          {currentUser?.length !== 0 && currentUserFollowings?.length !== 0 ? (
             <Grid container spacing={4}>
               {fetchFollowingUserTrainingLogs().map((trainingLog, index) => {
                 if (index < 4) {
