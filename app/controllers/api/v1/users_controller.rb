@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices body_compositions recent_training_logs]
+      before_action :authenticate_api_v1_user!, except: %i[index show follows followers training_logs questions advices bookmark_advices body_compositions recent_training_logs fetch_designated_users]
       before_action :ensure_normal_user, only: %i[update destroy]
 
       def index
@@ -124,6 +124,13 @@ module Api
           recentLegRaise: recent_leg_raise[0],
           recentBridge: recent_bridge[0],
           recentHandstandPushUp: recent_handstand_push_up[0]
+        }, status: :ok
+      end
+
+      def fetch_designated_users
+        users = User.fetch_designated_users(params[:user_ids])
+        render json: {
+          users: users
         }, status: :ok
       end
 

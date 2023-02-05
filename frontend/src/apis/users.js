@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   usersIndexPage,
   postUserPage,
@@ -37,6 +38,9 @@ import {
   showCurrentUserLikesPath,
   showRecentTrainingLogsPath,
   showNumberOfLikesPath,
+  showRecentQuestionsPath,
+  showOneKindQuestionPath,
+  showeDesignatedUsersPath,
 } from "../urls/index";
 
 export const fetchUsers = () => {
@@ -692,4 +696,38 @@ export const fetchNumberOfLikes = (id) => {
     .catch((e) => {
       console.error(e);
     });
+};
+
+export const fetchRecentQuestions = () => {
+  return axios
+    .get(showRecentQuestionsPath)
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchOneKindQuestions = (trainingMenu) => {
+  return axios
+    .get(showOneKindQuestionPath, {
+      params: {
+        training_menu: trainingMenu,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+};
+
+export const fetchDesignatedUsers = (userIds) => {
+  return axios.get(showeDesignatedUsersPath, {
+    params: {
+      user_ids: userIds,
+    },
+  });
 };

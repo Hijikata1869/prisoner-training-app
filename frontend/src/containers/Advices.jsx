@@ -28,6 +28,7 @@ import {
   fetchUsers,
   fetchCurrentUser,
   postAdvice,
+  fetchCurrentUserBookmarks,
   createBookmark,
 } from "../apis/users";
 
@@ -138,6 +139,15 @@ export const Advices = ({ match }) => {
     fetchCurrentUser(token, client, uid)
       .then((res) => {
         setCurrentUser(res.data.currentUser);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchCurrentUserBookmarks(token, client, uid)
+      .then((res) => {
         setCurrentUserBookmarksArr(res.data.currentUserBookmarks);
       })
       .catch((e) => {

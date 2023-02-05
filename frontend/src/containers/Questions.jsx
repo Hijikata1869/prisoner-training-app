@@ -26,6 +26,8 @@ import {
   postQuestion,
   fetchQuestions,
   fetchUsers,
+  fetchRecentQuestions,
+  fetchUser,
 } from "../apis/users";
 
 // components
@@ -36,6 +38,7 @@ import { FailedAlert } from "../components/FailedAlert";
 const useStyles = makeStyles(() => ({
   questionsWrapper: {
     paddingTop: "2rem",
+    paddingBottom: "3rem",
   },
   postQuestionWrapper: {
     paddingLeft: "2rem",
@@ -59,7 +62,6 @@ const useStyles = makeStyles(() => ({
     marginBottom: "2rem",
   },
   questionCard: {
-    marginBottom: "2rem",
     padding: "1rem",
     marginLeft: "2rem",
   },
@@ -68,11 +70,20 @@ const useStyles = makeStyles(() => ({
     height: "60px",
   },
   viewQuestionTitle: {
-    marginBottom: "2rem",
     paddingLeft: "2rem",
   },
   adviceButton: {
     margin: "0 auto",
+  },
+  prymaryTitle: {
+    paddingLeft: "2rem",
+    marginBottom: "0.5rem",
+  },
+  toOneKindQuestionsButtonArea: {
+    marginLeft: "auto",
+  },
+  questionCardArea: {
+    marginTop: "2rem",
   },
 }));
 
@@ -90,8 +101,19 @@ export const Questions = () => {
   const [currentUser, setCurrentUser] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [questionsArr, setQuestionsArr] = useState([]);
-  const [usersArr, setUsersArr] = useState([]);
+  const [pushUpQuestion, setPushUpQuestion] = useState([]);
+  const [pushUpQuestionUser, setPushUpQuestionUser] = useState([]);
+  const [squatQuestion, setSquatQuestion] = useState([]);
+  const [squatQuestionUser, setSquatQuestionUser] = useState([]);
+  const [pullUpQuestion, setPullUpQuestion] = useState([]);
+  const [pullUpQuestionUser, setPullUpQuestionUser] = useState([]);
+  const [legRaiseQuestion, setLegRaiseQuestion] = useState([]);
+  const [legRaiseQuestionUser, setLegRaiseQuestionUser] = useState([]);
+  const [bridgeQuestion, setBridgeQuestion] = useState([]);
+  const [bridgeQuestionUser, setBridgeQuestionUser] = useState([]);
+  const [handstandPushUpQuestion, setHandstandPushUpQuestion] = useState([]);
+  const [handstandPushUpQuestionUser, setHandstandPushUpQuestionUser] =
+    useState([]);
 
   useEffect(() => {
     fetchCurrentUser(token, client, uid)
@@ -104,34 +126,29 @@ export const Questions = () => {
   }, []);
 
   useEffect(() => {
-    fetchQuestions(token, client, uid)
+    fetchRecentQuestions()
       .then((res) => {
-        setQuestionsArr(res.data.questions);
+        setPushUpQuestion(res.data.pushUpQuestion[0]);
+        setSquatQuestion(res.data.squatQuestion[0]);
+        setPullUpQuestion(res.data.pullUpQuestion[0]);
+        setLegRaiseQuestion(res.data.legRaiseQuestion[0]);
+        setBridgeQuestion(res.data.bridgeQuestion[0]);
+        setHandstandPushUpQuestion(res.data.handstandPushUpQuestion[0]);
+        setPushUpQuestionUser(res.data.pushUpQuestion[1]);
+        setSquatQuestionUser(res.data.squatQuestion[1]);
+        setPullUpQuestionUser(res.data.pullUpQuestion[1]);
+        setLegRaiseQuestionUser(res.data.legRaiseQuestion[1]);
+        setBridgeQuestionUser(res.data.bridgeQuestion[1]);
+        setHandstandPushUpQuestionUser(res.data.handstandPushUpQuestion[1]);
       })
       .catch((e) => {
         console.error(e);
       });
   }, []);
 
-  useEffect(() => {
-    fetchUsers()
-      .then((res) => {
-        setUsersArr(res.data.users);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  const showUserImage = (userId) => {
-    const user = usersArr.find((user) => user.id === userId);
-    return user?.image.url;
-  };
-
-  const showUserName = (userId) => {
-    const user = usersArr.find((user) => user.id === userId);
-
-    return user?.nickname;
+  const showUserImage = (targetUser) => {
+    const userImageUrl = targetUser.image?.url;
+    return userImageUrl?.toString();
   };
 
   const hundleTrainingMenuChange = (e) => {
@@ -251,63 +268,385 @@ export const Questions = () => {
           xs={12}
           direction="column"
         >
-          <Grid item>
-            <Typography className={classes.viewQuestionTitle} variant="h4">
-              質問一覧
+          <Typography className={classes.viewQuestionTitle} variant="h4">
+            質問一覧
+          </Typography>
+          <Grid item className={classes.questionCardArea}>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のプッシュアップに関する質問
             </Typography>
-          </Grid>
-          {questionsArr.map((data, index) => {
-            return (
-              <Card className={classes.questionCard} key={index}>
-                <CardHeader
-                  avatar={
-                    <ButtonBase
-                      onClick={() => history.push(`/users/${data.user_id}`)}
-                    >
-                      <Avatar
-                        className={classes.userImage}
-                        alt={showUserName(data.user_id)}
-                        src={showUserImage(data.user_id)}
-                        variant="rounded"
-                      />
-                    </ButtonBase>
-                  }
-                  title={
-                    <Typography variant="h5">{`${showUserName(
-                      data.user_id
-                    )}`}</Typography>
-                  }
-                  subheader={`投稿日：${moment(data.created_at).format(
-                    "YYYY-MM-DD"
-                  )}`}
-                />
-                <CardContent>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    質問したいトレーニングメニュー及びステップ
-                  </Typography>
-                  <Typography>{`${data.training_menu}の${data.step}について`}</Typography>
-                </CardContent>
-                <CardContent>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    困っていること、聞きたいこと
-                  </Typography>
-                  <Typography>{`${data.question}`}</Typography>
-                </CardContent>
-                <CardActions className={classes.adviceButtonArea}>
-                  <Button
-                    className={classes.adviceButton}
-                    variant="contained"
-                    color="primary"
+            <Card className={classes.questionCard}>
+              <CardHeader
+                avatar={
+                  <ButtonBase
                     onClick={() =>
-                      history.push(`/questions/${data.id}/advices`)
+                      history.push(`/users/${pushUpQuestion.user_id}`)
                     }
                   >
-                    アドバイスをする
-                  </Button>
-                </CardActions>
-              </Card>
-            );
-          })}
+                    <Avatar
+                      className={classes.userImage}
+                      variant="rounded"
+                      alt={pushUpQuestionUser.nickname}
+                      src={showUserImage(pushUpQuestionUser)}
+                    />
+                  </ButtonBase>
+                }
+                title={
+                  <Typography variant="h5">{`${pushUpQuestionUser.nickname}`}</Typography>
+                }
+                subheader={`投稿日：${moment(pushUpQuestion.created_at).format(
+                  "YYYY-MM-DD"
+                )}`}
+              />
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  質問したいトレーニングメニュー及びステップ
+                </Typography>
+                <Typography>{`${pushUpQuestion.training_menu}の${pushUpQuestion.step}について`}</Typography>
+              </CardContent>
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  困っていること、聞きたいこと
+                </Typography>
+                <Typography>{`${pushUpQuestion.question}`}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  className={classes.adviceButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/questions/${pushUpQuestion.id}/advices`)
+                  }
+                >
+                  アドバイスをする
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() =>
+                history.push("/questions/push_up?training_menu=push_up")
+              }
+            >
+              プッシュアップの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のスクワットに関する質問
+            </Typography>
+            <Card className={classes.questionCard}>
+              <CardHeader
+                avatar={
+                  <ButtonBase
+                    onClick={() =>
+                      history.push(`/users/${squatQuestion.user_id}`)
+                    }
+                  >
+                    <Avatar
+                      className={classes.userImage}
+                      variant="rounded"
+                      alt={squatQuestionUser.nickname}
+                      src={showUserImage(squatQuestionUser)}
+                    />
+                  </ButtonBase>
+                }
+                title={
+                  <Typography variant="h5">{`${squatQuestionUser.nickname}`}</Typography>
+                }
+                subheader={`投稿日：${moment(squatQuestion.created_at).format(
+                  "YYYY-MM-DD"
+                )}`}
+              />
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  質問したいトレーニングメニュー及びステップ
+                </Typography>
+                <Typography>{`${squatQuestion.training_menu}の${squatQuestion.step}について`}</Typography>
+              </CardContent>
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  困っていること、聞きたいこと
+                </Typography>
+                <Typography>{`${squatQuestion.question}`}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  className={classes.adviceButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/questions/${squatQuestion.id}/advices`)
+                  }
+                >
+                  アドバイスをする
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() =>
+                history.push("/questions/squat?training_menu=squat")
+              }
+            >
+              スクワットの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のプルアップに関する質問
+            </Typography>
+            <Card className={classes.questionCard}>
+              <CardHeader
+                avatar={
+                  <ButtonBase
+                    onClick={() =>
+                      history.push(`/users/${pullUpQuestion.user_id}`)
+                    }
+                  >
+                    <Avatar
+                      className={classes.userImage}
+                      variant="rounded"
+                      alt={pullUpQuestionUser.nickname}
+                      src={showUserImage(pullUpQuestionUser)}
+                    />
+                  </ButtonBase>
+                }
+                title={
+                  <Typography variant="h5">{`${pullUpQuestionUser.nickname}`}</Typography>
+                }
+                subheader={`投稿日：${moment(pullUpQuestion.created_at).format(
+                  "YYYY-MM-DD"
+                )}`}
+              />
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  質問したいトレーニングメニュー及びステップ
+                </Typography>
+                <Typography>{`${pullUpQuestion.training_menu}の${pullUpQuestion.step}について`}</Typography>
+              </CardContent>
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  困っていること、聞きたいこと
+                </Typography>
+                <Typography>{`${pullUpQuestion.question}`}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  className={classes.adviceButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/questions/${pullUpQuestion.id}/advices`)
+                  }
+                >
+                  アドバイスをする
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() =>
+                history.push("/questions/pull_up?training_menu=pull_up")
+              }
+            >
+              プルアップの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のレッグレイズに関する質問
+            </Typography>
+            <Card className={classes.questionCard}>
+              <CardHeader
+                avatar={
+                  <ButtonBase
+                    onClick={() =>
+                      history.push(`/users/${legRaiseQuestion.user_id}`)
+                    }
+                  >
+                    <Avatar
+                      className={classes.userImage}
+                      variant="rounded"
+                      alt={legRaiseQuestionUser.nickname}
+                      src={showUserImage(legRaiseQuestionUser)}
+                    />
+                  </ButtonBase>
+                }
+                title={
+                  <Typography variant="h5">{`${legRaiseQuestionUser.nickname}`}</Typography>
+                }
+                subheader={`投稿日：${moment(
+                  legRaiseQuestion.created_at
+                ).format("YYYY-MM-DD")}`}
+              />
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  質問したいトレーニングメニュー及びステップ
+                </Typography>
+                <Typography>{`${legRaiseQuestion.training_menu}の${legRaiseQuestion.step}について`}</Typography>
+              </CardContent>
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  困っていること、聞きたいこと
+                </Typography>
+                <Typography>{`${legRaiseQuestion.question}`}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  className={classes.adviceButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/questions/${legRaiseQuestion.id}/advices`)
+                  }
+                >
+                  アドバイスをする
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() =>
+                history.push("/questions/leg_raise?training_menu=leg_raise")
+              }
+            >
+              レッグレイズの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のブリッジに関する質問
+            </Typography>
+            <Card className={classes.questionCard}>
+              <CardHeader
+                avatar={
+                  <ButtonBase
+                    onClick={() =>
+                      history.push(`/users/${bridgeQuestion.user_id}`)
+                    }
+                  >
+                    <Avatar
+                      className={classes.userImage}
+                      variant="rounded"
+                      alt={bridgeQuestionUser.nickname}
+                      src={showUserImage(bridgeQuestionUser)}
+                    />
+                  </ButtonBase>
+                }
+                title={
+                  <Typography variant="h5">{`${bridgeQuestionUser.nickname}`}</Typography>
+                }
+                subheader={`投稿日：${moment(bridgeQuestion.created_at).format(
+                  "YYYY-MM-DD"
+                )}`}
+              />
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  質問したいトレーニングメニュー及びステップ
+                </Typography>
+                <Typography>{`${bridgeQuestion.training_menu}の${bridgeQuestion.step}について`}</Typography>
+              </CardContent>
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  困っていること、聞きたいこと
+                </Typography>
+                <Typography>{`${bridgeQuestion.question}`}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  className={classes.adviceButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    history.push(`/questions/${bridgeQuestion.id}/advices`)
+                  }
+                >
+                  アドバイスをする
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() =>
+                history.push("/questions/bridge?training_menu=bridge")
+              }
+            >
+              ブリッジの質問一覧はこちら
+            </Button>
+          </Grid>
+          <Grid item className={classes.questionCardArea}>
+            <Typography className={classes.prymaryTitle} color="textSecondary">
+              最新のハンドスタンドプッシュアップに関する質問
+            </Typography>
+            <Card className={classes.questionCard}>
+              <CardHeader
+                avatar={
+                  <ButtonBase
+                    onClick={() =>
+                      history.push(`/users/${handstandPushUpQuestion.user_id}`)
+                    }
+                  >
+                    <Avatar
+                      className={classes.userImage}
+                      variant="rounded"
+                      alt={handstandPushUpQuestionUser.nickname}
+                      src={showUserImage(handstandPushUpQuestionUser)}
+                    />
+                  </ButtonBase>
+                }
+                title={
+                  <Typography variant="h5">{`${handstandPushUpQuestionUser.nickname}`}</Typography>
+                }
+                subheader={`投稿日：${moment(
+                  handstandPushUpQuestion.created_at
+                ).format("YYYY-MM-DD")}`}
+              />
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  質問したいトレーニングメニュー及びステップ
+                </Typography>
+                <Typography>{`${handstandPushUpQuestion.training_menu}の${handstandPushUpQuestion.step}について`}</Typography>
+              </CardContent>
+              <CardContent>
+                <Typography variant="subtitle2" color="textSecondary">
+                  困っていること、聞きたいこと
+                </Typography>
+                <Typography>{`${handstandPushUpQuestion.question}`}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  className={classes.adviceButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    history.push(
+                      `/questions/${handstandPushUpQuestion.id}/advices`
+                    )
+                  }
+                >
+                  アドバイスをする
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid className={classes.toOneKindQuestionsButtonArea} item>
+            <Button
+              onClick={() =>
+                history.push(
+                  "/questions/handstand_push_up?training_menu=handstand_push_up"
+                )
+              }
+            >
+              ハンドスタンドプッシュアップの質問一覧はこちら
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </Fragment>

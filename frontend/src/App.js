@@ -20,6 +20,7 @@ import { UserFollowers } from "./containers/UserFollowers";
 import { TrainingLogs } from "./containers/TrainingLogs";
 import { Page404 } from "./containers/Page404";
 import { UserBodyComposition } from "./containers/UserBodyComposition";
+import { OneKindQuestions } from "./containers/OneKindQuestions";
 
 // components
 import { Header } from "./components/Header";
@@ -106,16 +107,44 @@ function App() {
         <Route exact path="/auth/password/edit">
           <PasswordUpdate />
         </Route>
-        <Route exact path="/questions">
-          <Questions />
-        </Route>
         <Route
-          path="/questions/:questionId"
+          path="/questions"
           render={({ match }) => (
             <Switch>
-              <Route exact path={`${match.path}/advices`}>
-                <Advices match={match} />
+              <Route exact path={`${match.path}`}>
+                <Questions />
               </Route>
+              <Route exact path={`${match.path}/push_up`}>
+                <OneKindQuestions />
+              </Route>
+              <Route exact path={`${match.path}/squat`}>
+                <OneKindQuestions />
+              </Route>
+              <Route exact path={`${match.path}/pull_up`}>
+                <OneKindQuestions />
+              </Route>
+              <Route exact path={`${match.path}/leg_raise`}>
+                <OneKindQuestions />
+              </Route>
+              <Route exact path={`${match.path}/bridge`}>
+                <OneKindQuestions />
+              </Route>
+              <Route exact path={`${match.path}/handstand_push_up`}>
+                <OneKindQuestions />
+              </Route>
+              <Route
+                path="/questions/:questionId"
+                render={({ match }) => (
+                  <Switch>
+                    <Route exact path={`${match.path}/advices`}>
+                      <Advices match={match} />
+                    </Route>
+                    <Route path="*">
+                      <Page404 />
+                    </Route>
+                  </Switch>
+                )}
+              />
               <Route path="*">
                 <Page404 />
               </Route>

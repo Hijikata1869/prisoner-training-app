@@ -1,7 +1,7 @@
 module Api
   module V1
     class QuestionsController < ApplicationController
-      before_action :authenticate_api_v1_user!, except: [:index]
+      before_action :authenticate_api_v1_user!, except: %i[index recent_questions fetch_one_kind_questions]
 
       def index
         questions = Question.all.order(id: 'DESC')
@@ -45,6 +45,31 @@ module Api
             message: 'failed'
           }, status: :bad_request
         end
+      end
+
+      def recent_questions
+        recent_push_up_question = Question.recent_question("プッシュアップ")
+        recent_squat_question = Question.recent_question("スクワット")
+        recent_pull_up_question = Question.recent_question("プルアップ")
+        recent_leg_raise_question = Question.recent_question("レッグレイズ")
+        recent_bridge_question = Question.recent_question("ブリッジ")
+        recent_handstand_push_up_question = Question.recent_question("ハンドスタンドプッシュアップ")
+        render json: {
+          pushUpQuestion: recent_push_up_question,
+          squatQuestion: recent_squat_question,
+          pullUpQuestion: recent_pull_up_question,
+          legRaiseQuestion: recent_leg_raise_question,
+          bridgeQuestion: recent_bridge_question,
+          handstandPushUpQuestion: recent_handstand_push_up_question,
+        }, status: :ok
+      end
+
+      def fetch_one_kind_questions
+        training_menu = params[:training_menu]
+        questions = Question.fetch_one_kind_questions(training_menu)
+        render json: {
+          questions: questions
+        }, status: :ok
       end
 
       private
