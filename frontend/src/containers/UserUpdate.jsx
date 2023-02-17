@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // apis
 import { userUpdateAction, fetchCurrentUser } from "../apis/users";
@@ -105,6 +106,11 @@ export const UserUpdate = ({ match }) => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>登録情報の更新</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal
           message="登録情報を更新しました"

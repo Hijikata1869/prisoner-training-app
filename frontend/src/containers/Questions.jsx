@@ -19,6 +19,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // api
 import {
@@ -177,6 +178,11 @@ export const Questions = () => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>質問する</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal message="質問を投稿しました" button={<ReloadButton />} />
       ) : null}

@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // api
 import { passwordUpdate } from "../apis/users";
@@ -92,6 +93,11 @@ export const PasswordUpdate = () => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>パスワードを変更する</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal
           message="パスワードが変更されました"

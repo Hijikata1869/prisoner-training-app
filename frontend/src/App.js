@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // containers
 import { Index } from "./containers/Index";
@@ -28,6 +29,12 @@ import { UsersContainer } from "./containers/UsersContainer";
 
 function App() {
   return (
+    <>
+    <HelmetProvider>
+      <Helmet>
+        <title>Prisoner Training App</title>
+      </Helmet>
+    </HelmetProvider>
     <Router>
       <Header />
       <Switch>
@@ -162,6 +169,7 @@ function App() {
         </Route>
       </Switch>
     </Router>
+    </>
   );
 }
 

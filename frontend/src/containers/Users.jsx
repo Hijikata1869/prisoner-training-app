@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // Icons
 import FitnessCenterOutlinedIcon from "@material-ui/icons/FitnessCenterOutlined";
@@ -386,6 +387,11 @@ export const Users = ({ match }) => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>{`${user.nickname}さんのプロフィール`}</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal
           message="プロフィール画像を変更しました"

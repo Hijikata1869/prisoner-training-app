@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const useStyles = makeStyles(() => ({
   contactContainer: {
@@ -27,6 +28,11 @@ export const Contact = () => {
 
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          <title>お問い合わせ</title>
+        </Helmet>
+      </HelmetProvider>
       <Grid className={classes.contactContainer} container direction="column">
         <Grid item>
           <Typography className={classes.pageTitle} variant="h4">

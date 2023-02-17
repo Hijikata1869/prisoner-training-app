@@ -3,6 +3,7 @@ import { Grid, Typography, TextField, Button, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // images
 import LoginLogo from "../images/loginLogo2.png";
@@ -110,6 +111,11 @@ export const Login = () => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>ログイン</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal message="ログインしました" button={<ToTopPageButton />} />
       ) : null}

@@ -15,6 +15,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // apis
 import {
@@ -152,6 +153,11 @@ export const UserQuestions = ({ match }) => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>{`${user.nickname}さんの質問一覧`}</title>
+        </Helmet>
+      </HelmetProvider>
       {dialogOpen ? <DeleteDialog deleteAction={questionDeleteAction} /> : null}
       {successAlertOpen ? <SuccessAlert message="削除しました" /> : null}
       <Grid container item direction="column">
