@@ -7,7 +7,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { TwitterIcon, TwitterShareButton, FacebookIcon, FacebookShareButton } from "react-share";
+import {
+  TwitterIcon,
+  TwitterShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+} from "react-share";
 
 // images
 import OgpImage from "../images/ogp.svg";
@@ -21,64 +26,70 @@ const useStyles = makeStyles((theme) => ({
     padding: "50px",
   },
   snsButtonArea: {
-    marginTop: '1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    marginTop: "1rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   twitterButton: {
-    marginTop: '0.5rem',
-    marginRight: '1rem'
-  }
+    marginTop: "0.5rem",
+    marginRight: "1rem",
+  },
 }));
 
-export const SuccessModalWithSnsShareButton = ({ message, button, match, ogTitle, ogDesc }) => {
+export const SuccessModalWithSnsShareButton = ({
+  message,
+  button,
+  match,
+  ogTitle,
+  ogDesc,
+}) => {
   const classes = useStyles();
 
   const ogUrl = `https://www.prisoner-training-app.com${match.url}/training_logs`;
 
-  const head = document.getElementsByTagName('head')[0];
+  const head = document.getElementsByTagName("head")[0];
 
   // const metaTags = head.getElementsByTagName('meta');
 
-  const ogTitleMeta = document.createElement('meta');
-  ogTitleMeta.setAttribute('property', 'og:title');
-  ogTitleMeta.setAttribute('content', ogTitle);
+  const ogTitleMeta = document.createElement("meta");
+  ogTitleMeta.setAttribute("property", "og:title");
+  ogTitleMeta.setAttribute("content", ogTitle);
   head.appendChild(ogTitleMeta);
 
-  const ogTypeMeta = document.createElement('meta');
-  ogTypeMeta.setAttribute('property', 'og:type');
-  ogTypeMeta.setAttribute('content', 'artcle');
+  const ogTypeMeta = document.createElement("meta");
+  ogTypeMeta.setAttribute("property", "og:type");
+  ogTypeMeta.setAttribute("content", "artcle");
   head.appendChild(ogTypeMeta);
 
-  const ogUrlMeta = document.createElement('meta');
-  ogUrlMeta.setAttribute('property', 'og:url');
-  ogUrlMeta.setAttribute('content', ogUrl);
+  const ogUrlMeta = document.createElement("meta");
+  ogUrlMeta.setAttribute("property", "og:url");
+  ogUrlMeta.setAttribute("content", ogUrl);
   head.appendChild(ogUrlMeta);
 
-  const ogImageMeta = document.createElement('meta');
-  ogImageMeta.setAttribute('property', 'og:image');
-  ogImageMeta.setAttribute('content', OgpImage);
+  const ogImageMeta = document.createElement("meta");
+  ogImageMeta.setAttribute("property", "og:image");
+  ogImageMeta.setAttribute("content", OgpImage);
   head.appendChild(ogImageMeta);
 
-  const ogSiteNameMeta = document.createElement('meta');
-  ogSiteNameMeta.setAttribute('property', 'og:site_name');
-  ogSiteNameMeta.setAttribute('content', 'Prisoner Training App');
+  const ogSiteNameMeta = document.createElement("meta");
+  ogSiteNameMeta.setAttribute("property", "og:site_name");
+  ogSiteNameMeta.setAttribute("content", "Prisoner Training App");
   head.appendChild(ogSiteNameMeta);
 
-  const ogDescMeta = document.createElement('meta');
-  ogDescMeta.setAttribute('property', 'og:description');
-  ogDescMeta.setAttribute('content', ogDesc);
+  const ogDescMeta = document.createElement("meta");
+  ogDescMeta.setAttribute("property", "og:description");
+  ogDescMeta.setAttribute("content", ogDesc);
   head.appendChild(ogDescMeta);
 
-  const twitterCardMeta = document.createElement('meta');
-  twitterCardMeta.setAttribute('name', 'twitter:card');
-  twitterCardMeta.setAttribute('content', 'summary_large_image');
+  const twitterCardMeta = document.createElement("meta");
+  twitterCardMeta.setAttribute("name", "twitter:card");
+  twitterCardMeta.setAttribute("content", "summary_large_image");
   head.appendChild(twitterCardMeta);
 
-  const facebookAppIdMeta = document.createElement('meta');
-  facebookAppIdMeta.setAttribute('property', 'fb:app_id');
-  facebookAppIdMeta.setAttribute('contnt', '850644569333854');
+  const facebookAppIdMeta = document.createElement("meta");
+  facebookAppIdMeta.setAttribute("property", "fb:app_id");
+  facebookAppIdMeta.setAttribute("contnt", "850644569333854");
   head.appendChild(facebookAppIdMeta);
 
   return (
@@ -90,9 +101,7 @@ export const SuccessModalWithSnsShareButton = ({ message, button, match, ogTitle
               {message}
             </Typography>
           </CardContent>
-          <CardActions>
-            {button}
-          </CardActions>
+          <CardActions>{button}</CardActions>
           <CardActions className={classes.snsButtonArea}>
             <div>
               <Typography>記録をシェア</Typography>
