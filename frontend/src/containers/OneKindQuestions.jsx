@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // apis
 import { fetchOneKindQuestions, fetchDesignatedUsers } from "../apis/users";
@@ -112,6 +113,11 @@ export const OneKindQuestions = () => {
 
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          <title>{`${showPageTitle(trainingMenu)}`}</title>
+        </Helmet>
+      </HelmetProvider>
       <div className={classes.pageWrapper}>
         <Hidden xsDown>
           <Typography

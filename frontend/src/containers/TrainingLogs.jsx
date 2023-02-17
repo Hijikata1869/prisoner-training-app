@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // icons
 import { ThumbUp, ThumbUpAltOutlined } from "@material-ui/icons";
@@ -196,6 +197,11 @@ export const TrainingLogs = () => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>トレーニング記録一覧</title>
+        </Helmet>
+      </HelmetProvider>
       <Grid className={classes.pageWrapper} container direction="column">
         <Hidden only="xs">
           <Typography variant="h4">トレーニング記録一覧</Typography>

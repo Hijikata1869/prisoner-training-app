@@ -10,6 +10,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // charts
 import { LineChart, XAxis, YAxis, Tooltip, Legend, Line } from "recharts";
@@ -132,6 +133,11 @@ export const UserBodyComposition = ({ match }) => {
 
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          <title>体組成記録</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal
           message="体組成を記録しました"

@@ -16,6 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // icons
 import { ThumbUp } from "@material-ui/icons";
@@ -32,11 +33,11 @@ import {
 } from "../apis/users";
 
 // components
-import { SuccessModal } from "../components/SuccessModal";
 import { ReloadButton } from "../components/ReloadButton";
 import { FailedAlert } from "../components/FailedAlert";
 import { DeleteDialog } from "../components/DeleteDialog";
 import { SuccessAlert } from "../components/SuccessAlert";
+import { SuccessModalWithSnsShareButton } from "../components/SuccessModalWithSnsShareButton";
 
 const useStyles = makeStyles(() => ({
   pageWrapper: {
@@ -367,10 +368,18 @@ export const UserTrainingLog = ({ match }) => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>トレーニング記録</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
-        <SuccessModal
+        <SuccessModalWithSnsShareButton
           message="トレーニングを記録しました"
           button={<ReloadButton />}
+          match={match}
+          ogTitle={`${currentUser?.nickname}さんがPrisoner Training Appでトレーニングを記録しました`}
+          ogDesc={`${trainingMenu}の${step}を${rep}回行いました`}
         />
       ) : null}
       {alertOpen ? (

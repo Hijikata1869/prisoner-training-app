@@ -15,6 +15,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // icons
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -173,7 +174,11 @@ export const UserBookmarks = ({ match }) => {
 
   return (
     <Fragment>
-      {console.log("レンダリング")}
+      <HelmetProvider>
+        <Helmet>
+          <title>ブックマーク</title>
+        </Helmet>
+      </HelmetProvider>
       <Grid container item direction="column">
         <Hidden only="xs">
           <Typography className={classes.pageTitle} variant="h4">

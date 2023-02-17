@@ -16,6 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // icons
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -226,6 +227,11 @@ export const UserAdvices = ({ match }) => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>{`${user.nickname}さんのアドバイス一覧`}</title>
+        </Helmet>
+      </HelmetProvider>
       {dialogOpen ? <DeleteDialog deleteAction={deleteAdviceAction} /> : null}
       {alertOpen ? (
         <SuccessAlert message="アドバイスを一件削除しました" />

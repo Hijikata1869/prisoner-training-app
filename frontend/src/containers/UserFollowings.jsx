@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // apis
 import { fetchUserFollowings } from "../apis/users";
@@ -50,7 +51,11 @@ export const UserFollowings = ({ match }) => {
 
   return (
     <Fragment>
-      {/* <Button variant="contained" onClick={() => console.log(followingUsersArr)}>api</Button> */}
+      <HelmetProvider>
+        <Helmet>
+          <title>フォローしているユーザー</title>
+        </Helmet>
+      </HelmetProvider>
       <Grid container item direction="column">
         <Typography className={classes.pageTitle} variant="h4">
           フォロー中のユーザー

@@ -3,6 +3,7 @@ import { Grid, Typography, TextField, Button, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // images
 import LoginLogo from "../images/loginLogo2.png";
@@ -124,6 +125,11 @@ export const SignUp = () => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>サインアップ</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal
           message="登録が完了しました"

@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // icons
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
@@ -232,6 +233,11 @@ export const Advices = ({ match }) => {
 
   return (
     <Fragment>
+      <HelmetProvider>
+        <Helmet>
+          <title>アドバイスする</title>
+        </Helmet>
+      </HelmetProvider>
       {modalOpen ? (
         <SuccessModal
           message="アドバイスを投稿しました"

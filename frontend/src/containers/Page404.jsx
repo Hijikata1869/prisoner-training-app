@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // images
 import Image404 from "../images/404image.svg";
@@ -30,6 +31,11 @@ export const Page404 = () => {
 
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          <title>存在しないページです</title>
+        </Helmet>
+      </HelmetProvider>
       <div className="firstWrapper">
         <Container className={classes.imageContainer}>
           <Grid container justifyContent="center">
