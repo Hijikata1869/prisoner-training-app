@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, memo, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Grid, Hidden, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,7 +18,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const UsersContainer = ({ match, mainComponent }) => {
+// eslint-disable-next-line react/display-name
+export const UsersContainer = memo(({ match, mainComponent }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -72,4 +73,4 @@ export const UsersContainer = ({ match, mainComponent }) => {
       )}
     </Fragment>
   );
-};
+});

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, memo, useEffect, useState } from "react";
 import {
   Grid,
   Typography,
@@ -78,7 +78,8 @@ const repsPrepare = () => {
   return reps;
 };
 
-export const UserTrainingLog = ({ match }) => {
+// eslint-disable-next-line react/display-name
+export const UserTrainingLog = memo(({ match }) => {
   const classes = useStyles();
   const trainingLepsArray = repsPrepare();
 
@@ -870,4 +871,4 @@ export const UserTrainingLog = ({ match }) => {
       </Grid>
     </Fragment>
   );
-};
+});
