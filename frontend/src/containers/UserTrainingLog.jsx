@@ -370,49 +370,49 @@ export const UserTrainingLog = memo(({ match }) => {
     returnTop();
   };
 
-  useEffect(() => {
-    const ogUrl = `https://www.prisoner-training-app.com${match.url}/training_logs`;
+  // useEffect(() => {
+  //   const ogUrl = `https://www.prisoner-training-app.com${match.url}/training_logs`;
   
-    const head = document.getElementsByTagName("head")[0];
-    const firstLinkTag = head.getElementsByTagName('link')[0];
+  //   const head = document.getElementsByTagName("head")[0];
+  //   const firstLinkTag = head.getElementsByTagName('link')[0];
   
-    // const metaTags = head.getElementsByTagName('meta');
+  //   const metaTags = head.getElementsByTagName('meta');
 
-    const ogTitleMeta = document.createElement("meta");
-    ogTitleMeta.setAttribute("property", "og:title");
-    ogTitleMeta.setAttribute("content", "Prisoner Training App");
-    head.insertBefore(ogTitleMeta, firstLinkTag)
+  //   const ogTitleMeta = document.createElement("meta");
+  //   ogTitleMeta.setAttribute("property", "og:title");
+  //   ogTitleMeta.setAttribute("content", "Prisoner Training App");
+  //   head.insertBefore(ogTitleMeta, firstLinkTag)
   
-    const ogTypeMeta = document.createElement("meta");
-    ogTypeMeta.setAttribute("property", "og:type");
-    ogTypeMeta.setAttribute("content", "article");
-    head.insertBefore(ogTypeMeta, firstLinkTag);
+  //   const ogTypeMeta = document.createElement("meta");
+  //   ogTypeMeta.setAttribute("property", "og:type");
+  //   ogTypeMeta.setAttribute("content", "article");
+  //   head.insertBefore(ogTypeMeta, firstLinkTag);
   
-    const ogUrlMeta = document.createElement("meta");
-    ogUrlMeta.setAttribute("property", "og:url");
-    ogUrlMeta.setAttribute("content", ogUrl);
-    head.insertBefore(ogUrlMeta, firstLinkTag);
+  //   const ogUrlMeta = document.createElement("meta");
+  //   ogUrlMeta.setAttribute("property", "og:url");
+  //   ogUrlMeta.setAttribute("content", ogUrl);
+  //   head.insertBefore(ogUrlMeta, firstLinkTag);
   
-    const ogImageMeta = document.createElement("meta");
-    ogImageMeta.setAttribute("property", "og:image");
-    ogImageMeta.setAttribute("content", OgpImage);
-    head.insertBefore(ogImageMeta, firstLinkTag);
+  //   const ogImageMeta = document.createElement("meta");
+  //   ogImageMeta.setAttribute("property", "og:image");
+  //   ogImageMeta.setAttribute("content", OgpImage);
+  //   head.insertBefore(ogImageMeta, firstLinkTag);
   
-    const ogSiteNameMeta = document.createElement("meta");
-    ogSiteNameMeta.setAttribute("property", "og:site_name");
-    ogSiteNameMeta.setAttribute("content", "Prisoner Training App");
-    head.insertBefore(ogSiteNameMeta, firstLinkTag);
+  //   const ogSiteNameMeta = document.createElement("meta");
+  //   ogSiteNameMeta.setAttribute("property", "og:site_name");
+  //   ogSiteNameMeta.setAttribute("content", "Prisoner Training App");
+  //   head.insertBefore(ogSiteNameMeta, firstLinkTag);
   
-    const twitterCardMeta = document.createElement("meta");
-    twitterCardMeta.setAttribute("name", "twitter:card");
-    twitterCardMeta.setAttribute("content", "summary_large_image");
-    head.insertBefore(twitterCardMeta, firstLinkTag);
+  //   const twitterCardMeta = document.createElement("meta");
+  //   twitterCardMeta.setAttribute("name", "twitter:card");
+  //   twitterCardMeta.setAttribute("content", "summary_large_image");
+  //   head.insertBefore(twitterCardMeta, firstLinkTag);
   
-    const facebookAppIdMeta = document.createElement("meta");
-    facebookAppIdMeta.setAttribute("property", "fb:app_id");
-    facebookAppIdMeta.setAttribute("contnt", "850644569333854");
-    head.insertBefore(facebookAppIdMeta, firstLinkTag);
-  }, []);
+  //   const facebookAppIdMeta = document.createElement("meta");
+  //   facebookAppIdMeta.setAttribute("property", "fb:app_id");
+  //   facebookAppIdMeta.setAttribute("contnt", "850644569333854");
+  //   head.insertBefore(facebookAppIdMeta, firstLinkTag);
+  // }, []);
 
   return (
     <Fragment>

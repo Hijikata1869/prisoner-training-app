@@ -49,15 +49,15 @@ export const SuccessModalWithSnsShareButton = memo(({
 
   const ogUrl = `https://www.prisoner-training-app.com${match.url}/training_logs`;
 
-  const head = document.getElementsByTagName("head")[0];
-  const firstLinkTag = head.getElementsByTagName('link')[0];
+  // const head = document.getElementsByTagName("head")[0];
+  // const firstLinkTag = head.getElementsByTagName('link')[0];
 
   // const metaTags = head.getElementsByTagName('meta');
 
-  const ogDescMeta = document.createElement("meta");
-  ogDescMeta.setAttribute("property", "og:description");
-  ogDescMeta.setAttribute("content", ogDesc);
-  head.insertBefore(ogDescMeta, firstLinkTag);
+  // const ogDescMeta = document.createElement("meta");
+  // ogDescMeta.setAttribute("property", "og:description");
+  // ogDescMeta.setAttribute("content", ogDesc);
+  // head.insertBefore(ogDescMeta, firstLinkTag);
 
   return (
     <>
