@@ -426,7 +426,6 @@ export const UserTrainingLog = memo(({ match }) => {
           message="トレーニングを記録しました"
           button={<ReloadButton />}
           match={match}
-          ogDesc={`${currentUser?.nickname}さんがPrisoner Training Appでトレーニングを記録しました`}
           ogTitle={`${trainingMenu}の${step}を${rep}回行いました`}
         />
       ) : null}

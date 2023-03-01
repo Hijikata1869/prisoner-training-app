@@ -43,7 +43,6 @@ export const SuccessModalWithSnsShareButton = memo(({
   button,
   match,
   ogTitle,
-  ogDesc,
 }) => {
   const classes = useStyles();
 
