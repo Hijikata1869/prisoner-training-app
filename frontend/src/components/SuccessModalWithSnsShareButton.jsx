@@ -73,10 +73,10 @@ export const SuccessModalWithSnsShareButton = memo(({
               <Typography>記録をシェア</Typography>
             </div>
             <div>
-              <TwitterShareButton className={classes.twitterButton} url={ogUrl} title={ogTitle}>
+              <TwitterShareButton className={classes.twitterButton} url={ogUrl} title={ogTitle} hashtags={["プリズナートレーニング", "PrisonerTrainingApp"]}>
                 <TwitterIcon size={48} round />
               </TwitterShareButton>
-              <FacebookShareButton url={ogUrl}>
+              <FacebookShareButton url={ogUrl} quote={ogTitle}>
                 <FacebookIcon size={48} round />
               </FacebookShareButton>
             </div>
